@@ -37,9 +37,11 @@ class Portfolio {
         // Navbar background on scroll
         window.addEventListener('scroll', () => {
             if (window.scrollY > 100) {
-                navbar.style.background = 'rgba(15, 20, 25, 0.98)';
+                navbar.style.background = 'rgba(10, 14, 26, 0.98)';
+                navbar.style.boxShadow = '0 4px 30px rgba(0, 0, 0, 0.4), 0 1px 0 rgba(99, 102, 241, 0.2) inset';
             } else {
-                navbar.style.background = 'rgba(15, 20, 25, 0.95)';
+                navbar.style.background = 'rgba(10, 14, 26, 0.95)';
+                navbar.style.boxShadow = '0 4px 30px rgba(0, 0, 0, 0.3), 0 1px 0 rgba(99, 102, 241, 0.1) inset';
             }
         });
 
@@ -805,7 +807,99 @@ document.addEventListener('keydown', (e) => {
     }
 });
 
+// Enhanced Interactive Cursor Effect
+class CursorEffect {
+    constructor() {
+        this.cursor = document.createElement('div');
+        this.cursor.className = 'custom-cursor';
+        this.cursor.style.cssText = `
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(99, 102, 241, 0.5);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            transition: all 0.15s ease;
+            mix-blend-mode: difference;
+        `;
+        document.body.appendChild(this.cursor);
+        
+        this.cursorDot = document.createElement('div');
+        this.cursorDot.style.cssText = `
+            width: 6px;
+            height: 6px;
+            background: rgba(168, 85, 247, 0.8);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 10000;
+            transition: all 0.08s ease;
+        `;
+        document.body.appendChild(this.cursorDot);
+        
+        this.init();
+    }
+    
+    init() {
+        document.addEventListener('mousemove', (e) => {
+            this.cursor.style.transform = `translate(${e.clientX - 10}px, ${e.clientY - 10}px)`;
+            this.cursorDot.style.transform = `translate(${e.clientX - 3}px, ${e.clientY - 3}px)`;
+        });
+        
+        // Enhance cursor on hover
+        document.querySelectorAll('a, button, .btn, .project-card, .skill-item').forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                this.cursor.style.width = '40px';
+                this.cursor.style.height = '40px';
+                this.cursor.style.borderColor = 'rgba(168, 85, 247, 0.8)';
+                this.cursor.style.transform = `translate(${event.clientX - 20}px, ${event.clientY - 20}px)`;
+            });
+            
+            el.addEventListener('mouseleave', () => {
+                this.cursor.style.width = '20px';
+                this.cursor.style.height = '20px';
+                this.cursor.style.borderColor = 'rgba(99, 102, 241, 0.5)';
+            });
+        });
+    }
+}
+
+// Initialize Enhanced Cursor (Only on desktop)
+if (window.innerWidth > 768) {
+    new CursorEffect();
+}
+
+// Add floating animation to cards
+const addFloatingAnimation = () => {
+    const cards = document.querySelectorAll('.skill-category, .project-card, .profile-card');
+    
+    cards.forEach((card, index) => {
+        const delay = index * 0.1;
+        card.style.animation = `float 3s ease-in-out ${delay}s infinite`;
+    });
+};
+
+// Define float animation if not exists
+if (!document.getElementById('float-animation-style')) {
+    const style = document.createElement('style');
+    style.id = 'float-animation-style';
+    style.textContent = `
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+    `;
+    document.head.appendChild(style);
+}
+
+setTimeout(addFloatingAnimation, 1000);
+
 // Export for potential module usage
 if (typeof module !== 'undefined' && module.exports) {
-    module.exports = { Portfolio, Utils, InteractiveFeatures, PerformanceOptimizer };
+    module.exports = { Portfolio, Utils, InteractiveFeatures, PerformanceOptimizer, CursorEffect };
 }

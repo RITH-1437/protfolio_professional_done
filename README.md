@@ -1,6 +1,6 @@
 # Portfolio - RIN Nairith
 
-A modern, responsive portfolio website showcasing my skills and projects as a Full Stack Developer & Data Scientist.
+A modern, responsive portfolio website showcasing my skills and projects as a Full Stack Developer.
 
 ## 🚀 Features
 

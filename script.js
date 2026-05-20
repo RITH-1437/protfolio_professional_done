@@ -35,15 +35,17 @@ class Portfolio {
         const navLinks = document.querySelectorAll('.nav-link');
         
         // Navbar background on scroll
-        window.addEventListener('scroll', () => {
+        const updateNavbar = () => {
+            const isLight = document.body.getAttribute('data-theme') === 'light';
             if (window.scrollY > 100) {
-                navbar.style.background = 'rgba(10, 14, 26, 0.98)';
-                navbar.style.boxShadow = '0 4px 30px rgba(0, 0, 0, 0.4), 0 1px 0 rgba(99, 102, 241, 0.2) inset';
+                navbar.style.background = isLight ? 'rgba(255, 255, 255, 0.98)' : 'rgba(15, 20, 25, 0.98)';
+                navbar.style.boxShadow = isLight ? '0 2px 15px rgba(0, 0, 0, 0.1)' : '0 2px 15px rgba(0, 0, 0, 0.25)';
             } else {
-                navbar.style.background = 'rgba(10, 14, 26, 0.95)';
-                navbar.style.boxShadow = '0 4px 30px rgba(0, 0, 0, 0.3), 0 1px 0 rgba(99, 102, 241, 0.1) inset';
+                navbar.style.background = isLight ? 'rgba(255, 255, 255, 0.95)' : 'rgba(15, 20, 25, 0.95)';
+                navbar.style.boxShadow = isLight ? '0 2px 15px rgba(0, 0, 0, 0.08)' : '0 2px 15px rgba(0, 0, 0, 0.2)';
             }
-        });
+        };
+        window.addEventListener('scroll', updateNavbar);
 
         // Active navigation link highlighting
         const sections = document.querySelectorAll('section[id]');
@@ -154,6 +156,17 @@ class Portfolio {
                 themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
                 localStorage.setItem('theme', 'light');
             }
+
+            // Re-apply navbar color immediately after theme switch
+            const navbar = document.querySelector('.navbar');
+            const isLight = body.getAttribute('data-theme') === 'light';
+            if (window.scrollY > 100) {
+                navbar.style.background = isLight ? 'rgba(255, 255, 255, 0.98)' : 'rgba(15, 20, 25, 0.98)';
+                navbar.style.boxShadow = isLight ? '0 2px 15px rgba(0, 0, 0, 0.1)' : '0 2px 15px rgba(0, 0, 0, 0.25)';
+            } else {
+                navbar.style.background = isLight ? 'rgba(255, 255, 255, 0.95)' : 'rgba(15, 20, 25, 0.95)';
+                navbar.style.boxShadow = isLight ? '0 2px 15px rgba(0, 0, 0, 0.08)' : '0 2px 15px rgba(0, 0, 0, 0.2)';
+            }
         });
     }
 
@@ -162,12 +175,22 @@ class Portfolio {
         if (!typingElement) return;
 
         const roles = [
-            'Full Stack Developer',
-            'Data Scientist',
-            'AI Engineer',
-            'Web Developer',
-            'Machine Learning Expert'
-        ];
+  'Full Stack Web Developer',
+  'Frontend Developer',
+  'Backend Developer',
+  'Software Engineer',
+  'Computer Science Student',
+  'Web Application Developer',
+  'API Developer',
+  'UI/UX Enthusiast',
+  'AI & Tech Enthusiast',
+  'DevOps Learner',
+  'Open Source Learner',
+  'Problem Solver',
+  'System Design Enthusiast',
+  'Java Spring Boot Developer',
+  'Future AI Engineer',
+];
 
         let roleIndex = 0;
         let charIndex = 0;
@@ -214,7 +237,7 @@ class Portfolio {
                         }
                     },
                     color: {
-                        value: '#2563eb'
+                        value: '#5a67d8'
                     },
                     shape: {
                         type: 'circle',
@@ -224,7 +247,7 @@ class Portfolio {
                         }
                     },
                     opacity: {
-                        value: 0.3,
+                        value: 0.2,
                         random: false,
                         anim: {
                             enable: false,
@@ -246,8 +269,8 @@ class Portfolio {
                     line_linked: {
                         enable: true,
                         distance: 150,
-                        color: '#2563eb',
-                        opacity: 0.2,
+                        color: '#5a67d8',
+                        opacity: 0.15,
                         width: 1
                     },
                     move: {
@@ -352,31 +375,35 @@ class Portfolio {
 
     setupContactForm() {
         const contactForm = document.getElementById('contact-form');
-        
+
         contactForm?.addEventListener('submit', async (e) => {
             e.preventDefault();
-            
-            const formData = new FormData(contactForm);
+
             const submitBtn = contactForm.querySelector('button[type="submit"]');
             const originalText = submitBtn.innerHTML;
-            
-            // Show loading state
+
             submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
             submitBtn.disabled = true;
-            
+
+            const templateParams = {
+                from_name:  contactForm.querySelector('#name').value,
+                from_email: contactForm.querySelector('#email').value,
+                subject:    contactForm.querySelector('#subject').value,
+                message:    contactForm.querySelector('#message').value,
+            };
+
             try {
-                // Simulate form submission (replace with actual API call)
-                await this.simulateFormSubmission(formData);
-                
-                // Show success message
-                this.showNotification('Message sent successfully!', 'success');
+                await emailjs.send(
+                    window.EMAILJS_SERVICE_ID,
+                    window.EMAILJS_TEMPLATE_ID,
+                    templateParams
+                );
+                this.showNotification('Message sent successfully! I\'ll get back to you soon.', 'success');
                 contactForm.reset();
-                
             } catch (error) {
-                // Show error message
-                this.showNotification('Failed to send message. Please try again.', 'error');
+                console.error('EmailJS error:', error);
+                this.showNotification('Failed to send message. Please try again or email me directly.', 'error');
             } finally {
-                // Reset button
                 submitBtn.innerHTML = originalText;
                 submitBtn.disabled = false;
             }
@@ -666,7 +693,7 @@ class InteractiveFeatures {
             item.addEventListener('mouseenter', () => {
                 const skillLevel = item.querySelector('.skill-level');
                 if (skillLevel) {
-                    skillLevel.style.boxShadow = '0 0 20px var(--primary-color)';
+                    skillLevel.style.boxShadow = 'none';
                 }
             });
             
@@ -815,7 +842,7 @@ class CursorEffect {
         this.cursor.style.cssText = `
             width: 20px;
             height: 20px;
-            border: 2px solid rgba(99, 102, 241, 0.5);
+            border: 2px solid rgba(90, 103, 216, 0.4);
             border-radius: 50%;
             position: fixed;
             pointer-events: none;

@@ -23,12 +23,15 @@ if (!fs.existsSync(outputDir)) {
 fs.writeFileSync(outputFile, html);
 
 // Copy other files to dist
-const filesToCopy = ['styles.css', 'script.js', 'README.md'];
+const filesToCopy = ['styles.css', 'script.js', 'me.jpg', 'README.md'];
 filesToCopy.forEach(file => {
     const srcPath = path.join(__dirname, file);
     const destPath = path.join(outputDir, file);
     if (fs.existsSync(srcPath)) {
         fs.copyFileSync(srcPath, destPath);
+        console.log(`✓ Copied ${file}`);
+    } else {
+        console.log(`⚠ Skipped ${file} (not found)`);
     }
 });
 

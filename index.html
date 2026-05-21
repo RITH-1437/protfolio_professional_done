@@ -557,21 +557,31 @@
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-    <script src="config.js"></script>
+    <script src="config.js" onerror="console.log('config.js not found, using environment variables')"></script>
     <script>
         // ── EmailJS Configuration ──────────────────────────────────────────
-        // Configuration is now loaded from config.js
-        // Values are stored in .env for reference
-        // Both config.js and .env are in .gitignore for security
+        // For local development: uses config.js (in .gitignore)
+        // For Vercel deployment: uses environment variables
+        // Set these in Vercel Dashboard → Settings → Environment Variables:
+        //   - EMAILJS_PUBLIC_KEY
+        //   - EMAILJS_SERVICE_ID
+        //   - EMAILJS_TEMPLATE_ID
         // ──────────────────────────────────────────────────────────────────
         (function () {
-            emailjs.init({
-                publicKey: CONFIG.EMAILJS_PUBLIC_KEY,
-            });
-        })();
+            // Use CONFIG from config.js if available, otherwise use environment variables
+            const config = typeof CONFIG !== 'undefined' ? CONFIG : {
+                EMAILJS_PUBLIC_KEY: '{{EMAILJS_PUBLIC_KEY}}',
+                EMAILJS_SERVICE_ID: '{{EMAILJS_SERVICE_ID}}',
+                EMAILJS_TEMPLATE_ID: '{{EMAILJS_TEMPLATE_ID}}'
+            };
 
-        window.EMAILJS_SERVICE_ID  = CONFIG.EMAILJS_SERVICE_ID;
-        window.EMAILJS_TEMPLATE_ID = CONFIG.EMAILJS_TEMPLATE_ID;
+            emailjs.init({
+                publicKey: config.EMAILJS_PUBLIC_KEY,
+            });
+
+            window.EMAILJS_SERVICE_ID  = config.EMAILJS_SERVICE_ID;
+            window.EMAILJS_TEMPLATE_ID = config.EMAILJS_TEMPLATE_ID;
+        })();
     </script>
     <script src="script.js"></script>
 </body>

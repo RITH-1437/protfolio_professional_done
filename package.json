@@ -1,0 +1,11 @@
+{
+  "name": "portfolio-professional",
+  "version": "1.0.0",
+  "description": "Professional Portfolio Website",
+  "scripts": {
+    "build": "node build.js"
+  },
+  "keywords": ["portfolio", "website"],
+  "author": "",
+  "license": "MIT"
+}

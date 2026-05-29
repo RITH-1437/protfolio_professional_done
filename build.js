@@ -6,13 +6,22 @@ const inputFile = path.join(__dirname, 'index.html');
 const outputDir = path.join(__dirname, 'dist');
 const outputFile = path.join(outputDir, 'index.html');
 
+// Validate required environment variables
+const required = ['EMAILJS_PUBLIC_KEY', 'EMAILJS_SERVICE_ID', 'EMAILJS_TEMPLATE_ID'];
+const missing = required.filter(key => !process.env[key]);
+if (missing.length > 0) {
+    console.error('✗ Missing required environment variables:', missing.join(', '));
+    console.error('  Set them in Vercel Dashboard → Project → Settings → Environment Variables');
+    process.exit(1);
+}
+
 // Read the template
 let html = fs.readFileSync(inputFile, 'utf8');
 
 // Replace placeholders with environment variables
-html = html.replace('{{EMAILJS_PUBLIC_KEY}}', process.env.EMAILJS_PUBLIC_KEY || '');
-html = html.replace('{{EMAILJS_SERVICE_ID}}', process.env.EMAILJS_SERVICE_ID || '');
-html = html.replace('{{EMAILJS_TEMPLATE_ID}}', process.env.EMAILJS_TEMPLATE_ID || '');
+html = html.replace(/\{\{EMAILJS_PUBLIC_KEY\}\}/g, process.env.EMAILJS_PUBLIC_KEY);
+html = html.replace(/\{\{EMAILJS_SERVICE_ID\}\}/g, process.env.EMAILJS_SERVICE_ID);
+html = html.replace(/\{\{EMAILJS_TEMPLATE_ID\}\}/g, process.env.EMAILJS_TEMPLATE_ID);
 
 // Create dist directory if it doesn't exist
 if (!fs.existsSync(outputDir)) {

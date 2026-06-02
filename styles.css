@@ -509,6 +509,13 @@ body::before {
     margin-bottom: 3rem;
 }
 
+.about-buttons {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+  flex-wrap: wrap;
+}
+
 .btn {
     padding: 14px 32px;
     border: none;

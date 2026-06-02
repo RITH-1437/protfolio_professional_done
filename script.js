@@ -1,4 +1,21 @@
 // Portfolio JavaScript - Modern Interactive Features
+
+// EmailJS Configuration
+const EMAILJS_CONFIG = {
+    PUBLIC_KEY: 'r21wFB7iMhijX8UL2',
+    SERVICE_ID: 'service_vulxbtf',
+    TEMPLATE_ID: 'template_lo3avs9'
+};
+
+// Initialize EmailJS
+(function() {
+    if (typeof emailjs !== 'undefined') {
+        emailjs.init({
+            publicKey: EMAILJS_CONFIG.PUBLIC_KEY,
+        });
+    }
+})();
+
 class Portfolio {
     constructor() {
         this.init();
@@ -393,16 +410,24 @@ class Portfolio {
             };
 
             try {
+                // Check if EmailJS is properly configured
+                if (!EMAILJS_CONFIG.PUBLIC_KEY || EMAILJS_CONFIG.PUBLIC_KEY === 'r21wFB7iMhijX8UL2') {
+                    throw new Error('EmailJS not configured. Please add your credentials in script.js');
+                }
+                
                 await emailjs.send(
-                    window.EMAILJS_SERVICE_ID,
-                    window.EMAILJS_TEMPLATE_ID,
+                    EMAILJS_CONFIG.SERVICE_ID,
+                    EMAILJS_CONFIG.TEMPLATE_ID,
                     templateParams
                 );
                 this.showNotification('Message sent successfully! I\'ll get back to you soon.', 'success');
                 contactForm.reset();
             } catch (error) {
                 console.error('EmailJS error:', error);
-                this.showNotification('Failed to send message. Please try again or email me directly.', 'error');
+                const errorMsg = error.message.includes('not configured') 
+                    ? 'Email service not configured yet. Please contact me directly at your-email@example.com'
+                    : 'Failed to send message. Please try again or email me directly.';
+                this.showNotification(errorMsg, 'error');
             } finally {
                 submitBtn.innerHTML = originalText;
                 submitBtn.disabled = false;

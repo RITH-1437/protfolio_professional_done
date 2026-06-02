@@ -3,9 +3,13 @@
   "version": "1.0.0",
   "description": "Professional Portfolio Website",
   "scripts": {
-    "build": "node build.js"
+    "build": "node build.js",
+    "dev": "npx serve . -p 3000"
   },
   "keywords": ["portfolio", "website"],
   "author": "",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "dotenv": "^16.0.0"
+  }
 }

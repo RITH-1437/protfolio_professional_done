@@ -2,6 +2,13 @@
 const fs = require('fs');
 const path = require('path');
 
+// Load .env file for local development (ignored in production where env vars are set by the host)
+try {
+    require('dotenv').config();
+} catch (e) {
+    // dotenv not installed — environment variables must be set externally (e.g. Vercel dashboard)
+}
+
 const inputFile = path.join(__dirname, 'index.html');
 const outputDir = path.join(__dirname, 'dist');
 const outputFile = path.join(outputDir, 'index.html');

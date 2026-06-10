@@ -3,7 +3,7 @@
 // EmailJS Configuration
 const EMAILJS_CONFIG = {
     PUBLIC_KEY: 'r21wFB7iMhijX8UL2',
-    SERVICE_ID: 'service_tpur9hk',
+    SERVICE_ID: 'service_vulxbtf',
     TEMPLATE_ID: 'template_lo3avs9'
 };
 const CONTACT_EMAIL = 'nairithrin143@gmail.com';

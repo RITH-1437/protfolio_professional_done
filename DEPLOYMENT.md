@@ -13,7 +13,7 @@ To deploy your portfolio to Vercel, you need to configure the EmailJS environmen
 | Variable Name | Value | Example |
 |--------------|-------|---------|
 | `EMAILJS_PUBLIC_KEY` | Your EmailJS public key | `hwYjaXfaARoJ1b-WA` |
-| `EMAILJS_SERVICE_ID` | Your EmailJS service ID | `service_tpur9hk` |
+| `EMAILJS_SERVICE_ID` | Your EmailJS service ID | `service_vulxbtf` |
 | `EMAILJS_TEMPLATE_ID` | Your EmailJS template ID | `template_lo3avs9` |
 
 4. Make sure to set them for **Production**, **Preview**, and **Development** environments
@@ -58,7 +58,7 @@ This means EmailJS can reach your EmailJS service, but the Gmail authorization c
 
 1. Sign in to your EmailJS dashboard
 2. Open **Email Services**
-3. Select the Gmail service used by `EMAILJS_SERVICE_ID` (`service_tpur9hk`)
+3. Select the Gmail service used by `EMAILJS_SERVICE_ID` (`service_vulxbtf`)
 4. Click **Reconnect** or re-authorize the Gmail account
 5. Send another test message from the deployed site
 

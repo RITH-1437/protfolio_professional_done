@@ -3,9 +3,10 @@
 // EmailJS Configuration
 const EMAILJS_CONFIG = {
     PUBLIC_KEY: 'r21wFB7iMhijX8UL2',
-    SERVICE_ID: 'service_vulxbtf',
+    SERVICE_ID: 'service_tpur9hk',
     TEMPLATE_ID: 'template_lo3avs9'
 };
+const CONTACT_EMAIL = 'nairithrin143@gmail.com';
 
 // Initialize EmailJS
 (function() {
@@ -405,34 +406,60 @@ class Portfolio {
             const templateParams = {
                 from_name:  contactForm.querySelector('#name').value,
                 from_email: contactForm.querySelector('#email').value,
+                reply_to:   contactForm.querySelector('#email').value,
                 subject:    contactForm.querySelector('#subject').value,
                 message:    contactForm.querySelector('#message').value,
+                name:       contactForm.querySelector('#name').value,
+                email:      contactForm.querySelector('#email').value,
             };
 
             try {
-                // Check if EmailJS is properly configured
-                if (!EMAILJS_CONFIG.PUBLIC_KEY || EMAILJS_CONFIG.PUBLIC_KEY === 'r21wFB7iMhijX8UL2') {
+                if (!EMAILJS_CONFIG.PUBLIC_KEY || EMAILJS_CONFIG.PUBLIC_KEY === 'YOUR_PUBLIC_KEY') {
                     throw new Error('EmailJS not configured. Please add your credentials in script.js');
                 }
-                
-                await emailjs.send(
+
+                const response = await emailjs.send(
                     EMAILJS_CONFIG.SERVICE_ID,
                     EMAILJS_CONFIG.TEMPLATE_ID,
-                    templateParams
+                    templateParams,
+                    EMAILJS_CONFIG.PUBLIC_KEY
                 );
+                console.log('SUCCESS!', response.status, response.text);
                 this.showNotification('Message sent successfully! I\'ll get back to you soon.', 'success');
                 contactForm.reset();
             } catch (error) {
                 console.error('EmailJS error:', error);
-                const errorMsg = error.message.includes('not configured') 
-                    ? 'Email service not configured yet. Please contact me directly at your-email@example.com'
-                    : 'Failed to send message. Please try again or email me directly.';
-                this.showNotification(errorMsg, 'error');
+                const errorText = error.text || error.message || 'Unknown error';
+                const errorStatus = error.status || 'No status code';
+                console.error('EmailJS error details:', errorStatus, errorText);
+                this.showNotification(this.getContactFormErrorMessage(errorStatus, errorText), 'error');
             } finally {
                 submitBtn.innerHTML = originalText;
                 submitBtn.disabled = false;
             }
         });
+    }
+
+    getContactFormErrorMessage(status, errorText) {
+        const normalizedText = String(errorText).toLowerCase();
+        const normalizedStatus = String(status);
+
+        if (normalizedText.includes('not configured')) {
+            return `Email service is not configured yet. Please contact me directly at ${CONTACT_EMAIL}`;
+        }
+
+        if (
+            normalizedStatus === '412' &&
+            (
+                normalizedText.includes('invalid grant') ||
+                normalizedText.includes('gmail_api') ||
+                normalizedText.includes('reconnect your gmail account')
+            )
+        ) {
+            return `Email service needs to be reconnected. Please email me directly at ${CONTACT_EMAIL}`;
+        }
+
+        return `Message could not be sent right now. Please email me directly at ${CONTACT_EMAIL}`;
     }
 
     setupNewsletterForm() {
@@ -496,13 +523,23 @@ class Portfolio {
         // Create notification element
         const notification = document.createElement('div');
         notification.className = `notification notification-${type}`;
-        notification.innerHTML = `
-            <div class="notification-content">
-                <i class="fas ${type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle'}"></i>
-                <span>${message}</span>
-                <button class="notification-close"><i class="fas fa-times"></i></button>
-            </div>
-        `;
+        const content = document.createElement('div');
+        content.className = 'notification-content';
+
+        const icon = document.createElement('i');
+        icon.className = `fas ${type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle'}`;
+
+        const text = document.createElement('span');
+        text.textContent = message;
+
+        const closeButton = document.createElement('button');
+        closeButton.className = 'notification-close';
+        closeButton.type = 'button';
+        closeButton.setAttribute('aria-label', 'Close notification');
+        closeButton.innerHTML = '<i class="fas fa-times"></i>';
+
+        content.append(icon, text, closeButton);
+        notification.appendChild(content);
         
         // Add styles
         notification.style.cssText = `
@@ -520,13 +557,13 @@ class Portfolio {
             max-width: 300px;
         `;
         
-        notification.querySelector('.notification-content').style.cssText = `
+        content.style.cssText = `
             display: flex;
             align-items: center;
             gap: 0.5rem;
         `;
         
-        notification.querySelector('.notification-close').style.cssText = `
+        closeButton.style.cssText = `
             background: none;
             border: none;
             color: white;
@@ -549,7 +586,7 @@ class Portfolio {
         }, 5000);
         
         // Manual close
-        notification.querySelector('.notification-close').addEventListener('click', () => {
+        closeButton.addEventListener('click', () => {
             clearTimeout(autoRemoveTimeout);
             this.removeNotification(notification);
         });

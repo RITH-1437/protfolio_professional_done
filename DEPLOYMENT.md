@@ -13,7 +13,7 @@ To deploy your portfolio to Vercel, you need to configure the EmailJS environmen
 | Variable Name | Value | Example |
 |--------------|-------|---------|
 | `EMAILJS_PUBLIC_KEY` | Your EmailJS public key | `hwYjaXfaARoJ1b-WA` |
-| `EMAILJS_SERVICE_ID` | Your EmailJS service ID | `service_vulxbtf` |
+| `EMAILJS_SERVICE_ID` | Your EmailJS service ID | `service_tpur9hk` |
 | `EMAILJS_TEMPLATE_ID` | Your EmailJS template ID | `template_lo3avs9` |
 
 4. Make sure to set them for **Production**, **Preview**, and **Development** environments
@@ -52,6 +52,17 @@ After deployment:
 - Check that all three environment variables are set in Vercel
 - Verify the values match your EmailJS account credentials
 - Check the browser console for any error messages
+
+### Issue: `412 Gmail_API: Invalid grant`
+This means EmailJS can reach your EmailJS service, but the Gmail authorization connected to that service has expired or was revoked.
+
+1. Sign in to your EmailJS dashboard
+2. Open **Email Services**
+3. Select the Gmail service used by `EMAILJS_SERVICE_ID` (`service_tpur9hk`)
+4. Click **Reconnect** or re-authorize the Gmail account
+5. Send another test message from the deployed site
+
+If reconnecting the existing service is not available, create a new Gmail service in EmailJS, update `EMAILJS_SERVICE_ID` in Vercel, and redeploy.
 
 ### Issue: Build fails on Vercel
 - Ensure `build.js`, `vercel.json`, and `package.json` are committed to your repository

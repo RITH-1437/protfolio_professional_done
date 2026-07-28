@@ -14,7 +14,7 @@ const CONFIG = {
   },
   contactEmail: 'nairithrin143@gmail.com',
   typingRoles: [
-    'Full Stack Developer',
+    'Software Developer',
     'PHP Framework Author',
     'Backend Engineer',
     'Frontend Developer',

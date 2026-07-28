@@ -1,1052 +1,455 @@
-// Portfolio JavaScript - Modern Interactive Features
+/* =============================================================
+   RIN NAIRITH — Portfolio Script
+   Clean ES6, modular, no dead code
+   ============================================================= */
 
-// EmailJS Configuration
-const EMAILJS_CONFIG = {
-    PUBLIC_KEY: 'r21wFB7iMhijX8UL2',
-    SERVICE_ID: 'service_vulxbtf',
-    TEMPLATE_ID: 'template_lo3avs9'
+'use strict';
+
+/* ── Config ── */
+const CONFIG = {
+  emailjs: {
+    publicKey:  'rRBwkMN6Au2l2cVRQ',
+    serviceId:  'service_3lw8wsw',
+    templateId: 'template_zpxtsi9',
+  },
+  contactEmail: 'nairithrin143@gmail.com',
+  typingRoles: [
+    'Full Stack Developer',
+    'PHP Framework Author',
+    'Backend Engineer',
+    'Frontend Developer',
+    'Cloud & DevOps Learner',
+    'API Developer',
+    'Open Source Builder',
+    'Problem Solver',
+    'Java Spring Boot Dev',
+    'System Design Enthusiast',
+  ],
 };
-const CONTACT_EMAIL = 'nairithrin143@gmail.com';
 
-// Initialize EmailJS
-(function() {
-    if (typeof emailjs !== 'undefined') {
-        emailjs.init({
-            publicKey: EMAILJS_CONFIG.PUBLIC_KEY,
-        });
-    }
-})();
-
-class Portfolio {
-    constructor() {
-        this.init();
-    }
-
-    init() {
-        this.setupEventListeners();
-        this.initializeAnimations();
-        this.setupThemeToggle();
-        this.initTypingAnimation();
-        this.initParticles();
-        this.initSkillBars();
-        this.setupContactForm();
-        this.setupNewsletterForm();
-        this.initScrollAnimations();
-    }
-
-    setupEventListeners() {
-        // Navigation
-        this.setupNavigation();
-        
-        // Back to top button
-        this.setupBackToTop();
-        
-        // Smooth scrolling for anchor links
-        this.setupSmoothScrolling();
-        
-        // Mobile menu toggle
-        this.setupMobileMenu();
-    }
-
-    setupNavigation() {
-        const navbar = document.querySelector('.navbar');
-        const navLinks = document.querySelectorAll('.nav-link');
-        
-        // Navbar background on scroll
-        const updateNavbar = () => {
-            const isLight = document.body.getAttribute('data-theme') === 'light';
-            if (window.scrollY > 100) {
-                navbar.style.background = isLight ? 'rgba(255, 255, 255, 0.98)' : 'rgba(15, 20, 25, 0.98)';
-                navbar.style.boxShadow = isLight ? '0 2px 15px rgba(0, 0, 0, 0.1)' : '0 2px 15px rgba(0, 0, 0, 0.25)';
-            } else {
-                navbar.style.background = isLight ? 'rgba(255, 255, 255, 0.95)' : 'rgba(15, 20, 25, 0.95)';
-                navbar.style.boxShadow = isLight ? '0 2px 15px rgba(0, 0, 0, 0.08)' : '0 2px 15px rgba(0, 0, 0, 0.2)';
-            }
-        };
-        window.addEventListener('scroll', updateNavbar);
-
-        // Active navigation link highlighting
-        const sections = document.querySelectorAll('section[id]');
-        
-        const observerOptions = {
-            threshold: 0.3,
-            rootMargin: '-80px 0px -80px 0px'
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    navLinks.forEach(link => {
-                        link.classList.remove('active');
-                        if (link.getAttribute('href') === `#${entry.target.id}`) {
-                            link.classList.add('active');
-                        }
-                    });
-                }
-            });
-        }, observerOptions);
-
-        sections.forEach(section => observer.observe(section));
-    }
-
-    setupMobileMenu() {
-        const hamburger = document.querySelector('.hamburger');
-        const navMenu = document.querySelector('.nav-menu');
-        const navLinks = document.querySelectorAll('.nav-link');
-
-        hamburger?.addEventListener('click', () => {
-            hamburger.classList.toggle('active');
-            navMenu.classList.toggle('active');
-        });
-
-        // Close mobile menu when clicking on a link
-        navLinks.forEach(link => {
-            link.addEventListener('click', () => {
-                hamburger?.classList.remove('active');
-                navMenu?.classList.remove('active');
-            });
-        });
-
-        // Close mobile menu when clicking outside
-        document.addEventListener('click', (e) => {
-            if (!hamburger?.contains(e.target) && !navMenu?.contains(e.target)) {
-                hamburger?.classList.remove('active');
-                navMenu?.classList.remove('active');
-            }
-        });
-    }
-
-    setupSmoothScrolling() {
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    const offsetTop = target.offsetTop - 80;
-                    window.scrollTo({
-                        top: offsetTop,
-                        behavior: 'smooth'
-                    });
-                }
-            });
-        });
-    }
-
-    setupBackToTop() {
-        const backToTopBtn = document.getElementById('back-to-top');
-        
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 500) {
-                backToTopBtn.classList.add('visible');
-            } else {
-                backToTopBtn.classList.remove('visible');
-            }
-        });
-
-        backToTopBtn?.addEventListener('click', () => {
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
-        });
-    }
-
-    setupThemeToggle() {
-        const themeToggle = document.getElementById('theme-toggle');
-        const body = document.body;
-        
-        // Check for saved theme preference
-        const savedTheme = localStorage.getItem('theme') || 'dark';
-        if (savedTheme === 'light') {
-            body.setAttribute('data-theme', 'light');
-            themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
-        }
-
-        themeToggle?.addEventListener('click', () => {
-            const currentTheme = body.getAttribute('data-theme');
-            
-            if (currentTheme === 'light') {
-                body.removeAttribute('data-theme');
-                themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
-                localStorage.setItem('theme', 'dark');
-            } else {
-                body.setAttribute('data-theme', 'light');
-                themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
-                localStorage.setItem('theme', 'light');
-            }
-
-            // Re-apply navbar color immediately after theme switch
-            const navbar = document.querySelector('.navbar');
-            const isLight = body.getAttribute('data-theme') === 'light';
-            if (window.scrollY > 100) {
-                navbar.style.background = isLight ? 'rgba(255, 255, 255, 0.98)' : 'rgba(15, 20, 25, 0.98)';
-                navbar.style.boxShadow = isLight ? '0 2px 15px rgba(0, 0, 0, 0.1)' : '0 2px 15px rgba(0, 0, 0, 0.25)';
-            } else {
-                navbar.style.background = isLight ? 'rgba(255, 255, 255, 0.95)' : 'rgba(15, 20, 25, 0.95)';
-                navbar.style.boxShadow = isLight ? '0 2px 15px rgba(0, 0, 0, 0.08)' : '0 2px 15px rgba(0, 0, 0, 0.2)';
-            }
-        });
-    }
-
-    initTypingAnimation() {
-        const typingElement = document.querySelector('.typing-text');
-        if (!typingElement) return;
-
-        const roles = [
-  'Software Developer',
-  'Frontend Developer',
-  'Backend Developer',
-  'Computer Science Student',
-  'Web Application Developer',
-  'API Developer',
-  'UI/UX Enthusiast',
-  'AI & Tech Enthusiast',
-  'DevOps Learner',
-  'Open Source Learner',
-  'Problem Solver',
-  'System Design Enthusiast',
-  'Java Spring Boot Developer',
-  'Future AI Engineer',
-  'Founder of ZeroPing Framework'
-];
-
-        let roleIndex = 0;
-        let charIndex = 0;
-        let isDeleting = false;
-        let typingSpeed = 100;
-
-        const typeRole = () => {
-            const currentRole = roles[roleIndex];
-            
-            if (isDeleting) {
-                typingElement.textContent = currentRole.substring(0, charIndex - 1);
-                charIndex--;
-                typingSpeed = 50;
-            } else {
-                typingElement.textContent = currentRole.substring(0, charIndex + 1);
-                charIndex++;
-                typingSpeed = 100;
-            }
-
-            if (!isDeleting && charIndex === currentRole.length) {
-                isDeleting = true;
-                typingSpeed = 2000; // Pause before deleting
-            } else if (isDeleting && charIndex === 0) {
-                isDeleting = false;
-                roleIndex = (roleIndex + 1) % roles.length;
-                typingSpeed = 500; // Pause before typing next role
-            }
-
-            setTimeout(typeRole, typingSpeed);
-        };
-
-        typeRole();
-    }
-
-    initParticles() {
-        if (typeof particlesJS !== 'undefined') {
-            particlesJS('particles-js', {
-                particles: {
-                    number: {
-                        value: 50,
-                        density: {
-                            enable: true,
-                            value_area: 800
-                        }
-                    },
-                    color: {
-                        value: '#5a67d8'
-                    },
-                    shape: {
-                        type: 'circle',
-                        stroke: {
-                            width: 0,
-                            color: '#000000'
-                        }
-                    },
-                    opacity: {
-                        value: 0.2,
-                        random: false,
-                        anim: {
-                            enable: false,
-                            speed: 1,
-                            opacity_min: 0.1,
-                            sync: false
-                        }
-                    },
-                    size: {
-                        value: 3,
-                        random: true,
-                        anim: {
-                            enable: false,
-                            speed: 40,
-                            size_min: 0.1,
-                            sync: false
-                        }
-                    },
-                    line_linked: {
-                        enable: true,
-                        distance: 150,
-                        color: '#5a67d8',
-                        opacity: 0.15,
-                        width: 1
-                    },
-                    move: {
-                        enable: true,
-                        speed: 2,
-                        direction: 'none',
-                        random: false,
-                        straight: false,
-                        out_mode: 'out',
-                        bounce: false,
-                        attract: {
-                            enable: false,
-                            rotateX: 600,
-                            rotateY: 1200
-                        }
-                    }
-                },
-                interactivity: {
-                    detect_on: 'canvas',
-                    events: {
-                        onhover: {
-                            enable: true,
-                            mode: 'repulse'
-                        },
-                        onclick: {
-                            enable: true,
-                            mode: 'push'
-                        },
-                        resize: true
-                    },
-                    modes: {
-                        grab: {
-                            distance: 400,
-                            line_linked: {
-                                opacity: 1
-                            }
-                        },
-                        bubble: {
-                            distance: 400,
-                            size: 40,
-                            duration: 2,
-                            opacity: 8,
-                            speed: 3
-                        },
-                        repulse: {
-                            distance: 200,
-                            duration: 0.4
-                        },
-                        push: {
-                            particles_nb: 4
-                        },
-                        remove: {
-                            particles_nb: 2
-                        }
-                    }
-                },
-                retina_detect: true
-            });
-        }
-    }
-
-    initSkillBars() {
-        const skillObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const skillLevels = entry.target.querySelectorAll('.skill-level');
-                    skillLevels.forEach(skillLevel => {
-                        const level = skillLevel.dataset.level;
-                        skillLevel.style.setProperty('--skill-width', `${level}%`);
-                    });
-                }
-            });
-        }, { threshold: 0.5 });
-
-        const skillsSection = document.querySelector('.skills');
-        if (skillsSection) {
-            skillObserver.observe(skillsSection);
-        }
-    }
-
-    initScrollAnimations() {
-        const animateOnScroll = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('animate-fade-up');
-                }
-            });
-        }, {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        });
-
-        // Add animation to cards and sections
-        const elementsToAnimate = document.querySelectorAll(
-            '.project-card, .blog-card, .skill-category, .about-highlights .highlight-item, .contact-item, .exp-item'
-        );
-
-        elementsToAnimate.forEach(element => {
-            animateOnScroll.observe(element);
-        });
-    }
-
-    setupContactForm() {
-        const contactForm = document.getElementById('contact-form');
-
-        contactForm?.addEventListener('submit', async (e) => {
-            e.preventDefault();
-
-            const submitBtn = contactForm.querySelector('button[type="submit"]');
-            const originalText = submitBtn.innerHTML;
-
-            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
-            submitBtn.disabled = true;
-
-            const templateParams = {
-                from_name:  contactForm.querySelector('#name').value,
-                from_email: contactForm.querySelector('#email').value,
-                reply_to:   contactForm.querySelector('#email').value,
-                subject:    contactForm.querySelector('#subject').value,
-                message:    contactForm.querySelector('#message').value,
-                name:       contactForm.querySelector('#name').value,
-                email:      contactForm.querySelector('#email').value,
-            };
-
-            try {
-                if (!EMAILJS_CONFIG.PUBLIC_KEY || EMAILJS_CONFIG.PUBLIC_KEY === 'YOUR_PUBLIC_KEY') {
-                    throw new Error('EmailJS not configured. Please add your credentials in script.js');
-                }
-
-                const response = await emailjs.send(
-                    EMAILJS_CONFIG.SERVICE_ID,
-                    EMAILJS_CONFIG.TEMPLATE_ID,
-                    templateParams,
-                    EMAILJS_CONFIG.PUBLIC_KEY
-                );
-                console.log('SUCCESS!', response.status, response.text);
-                this.showNotification('Message sent successfully! I\'ll get back to you soon.', 'success');
-                contactForm.reset();
-            } catch (error) {
-                console.error('EmailJS error:', error);
-                const errorText = error.text || error.message || 'Unknown error';
-                const errorStatus = error.status || 'No status code';
-                console.error('EmailJS error details:', errorStatus, errorText);
-                this.showNotification(this.getContactFormErrorMessage(errorStatus, errorText), 'error');
-            } finally {
-                submitBtn.innerHTML = originalText;
-                submitBtn.disabled = false;
-            }
-        });
-    }
-
-    getContactFormErrorMessage(status, errorText) {
-        const normalizedText = String(errorText).toLowerCase();
-        const normalizedStatus = String(status);
-
-        if (normalizedText.includes('not configured')) {
-            return `Email service is not configured yet. Please contact me directly at ${CONTACT_EMAIL}`;
-        }
-
-        if (
-            normalizedStatus === '412' &&
-            (
-                normalizedText.includes('invalid grant') ||
-                normalizedText.includes('gmail_api') ||
-                normalizedText.includes('reconnect your gmail account')
-            )
-        ) {
-            return `Email service needs to be reconnected. Please email me directly at ${CONTACT_EMAIL}`;
-        }
-
-        return `Message could not be sent right now. Please email me directly at ${CONTACT_EMAIL}`;
-    }
-
-    setupNewsletterForm() {
-        const newsletterForm = document.querySelector('.newsletter-form');
-        
-        newsletterForm?.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            
-            const email = newsletterForm.querySelector('input[type="email"]').value;
-            const submitBtn = newsletterForm.querySelector('button');
-            const originalText = submitBtn.innerHTML;
-            
-            // Show loading state
-            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Subscribing...';
-            submitBtn.disabled = true;
-            
-            try {
-                // Simulate newsletter subscription (replace with actual API call)
-                await this.simulateNewsletterSubscription(email);
-                
-                // Show success message
-                this.showNotification('Successfully subscribed to newsletter!', 'success');
-                newsletterForm.reset();
-                
-            } catch (error) {
-                // Show error message
-                this.showNotification('Failed to subscribe. Please try again.', 'error');
-            } finally {
-                // Reset button
-                submitBtn.innerHTML = originalText;
-                submitBtn.disabled = false;
-            }
-        });
-    }
-
-    async simulateFormSubmission(formData) {
-        // Simulate API call delay
-        return new Promise((resolve, reject) => {
-            setTimeout(() => {
-                // Simulate random success/failure for demo
-                Math.random() > 0.1 ? resolve() : reject();
-            }, 2000);
-        });
-    }
-
-    async simulateNewsletterSubscription(email) {
-        // Simulate API call delay
-        return new Promise((resolve, reject) => {
-            setTimeout(() => {
-                // Simulate random success/failure for demo
-                Math.random() > 0.1 ? resolve() : reject();
-            }, 1500);
-        });
-    }
-
-    showNotification(message, type = 'info') {
-        // Remove existing notifications
-        const existingNotifications = document.querySelectorAll('.notification');
-        existingNotifications.forEach(notification => notification.remove());
-        
-        // Create notification element
-        const notification = document.createElement('div');
-        notification.className = `notification notification-${type}`;
-        const content = document.createElement('div');
-        content.className = 'notification-content';
-
-        const icon = document.createElement('i');
-        icon.className = `fas ${type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle'}`;
-
-        const text = document.createElement('span');
-        text.textContent = message;
-
-        const closeButton = document.createElement('button');
-        closeButton.className = 'notification-close';
-        closeButton.type = 'button';
-        closeButton.setAttribute('aria-label', 'Close notification');
-        closeButton.innerHTML = '<i class="fas fa-times"></i>';
-
-        content.append(icon, text, closeButton);
-        notification.appendChild(content);
-        
-        // Add styles
-        notification.style.cssText = `
-            position: fixed;
-            top: 100px;
-            right: 20px;
-            background: ${type === 'success' ? '#10b981' : type === 'error' ? '#ef4444' : '#3b82f6'};
-            color: white;
-            padding: 1rem 1.5rem;
-            border-radius: 8px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-            z-index: 10000;
-            transform: translateX(100%);
-            transition: transform 0.3s ease;
-            max-width: 300px;
-        `;
-        
-        content.style.cssText = `
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        `;
-        
-        closeButton.style.cssText = `
-            background: none;
-            border: none;
-            color: white;
-            cursor: pointer;
-            padding: 0;
-            margin-left: auto;
-        `;
-        
-        // Add to DOM
-        document.body.appendChild(notification);
-        
-        // Animate in
-        setTimeout(() => {
-            notification.style.transform = 'translateX(0)';
-        }, 100);
-        
-        // Auto remove after 5 seconds
-        const autoRemoveTimeout = setTimeout(() => {
-            this.removeNotification(notification);
-        }, 5000);
-        
-        // Manual close
-        closeButton.addEventListener('click', () => {
-            clearTimeout(autoRemoveTimeout);
-            this.removeNotification(notification);
-        });
-    }
-
-    removeNotification(notification) {
-        notification.style.transform = 'translateX(100%)';
-        setTimeout(() => {
-            notification.remove();
-        }, 300);
-    }
-
-    initializeAnimations() {
-        // Add entrance animations to elements
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.opacity = '1';
-                    entry.target.style.transform = 'translateY(0)';
-                }
-            });
-        }, { threshold: 0.1 });
-
-        // Animate cards and content sections
-        const animatedElements = document.querySelectorAll(`
-            .hero-content,
-            .about-content,
-            .skill-category,
-            .project-card,
-            .blog-card,
-            .contact-content
-        `);
-
-        animatedElements.forEach(element => {
-            element.style.opacity = '0';
-            element.style.transform = 'translateY(30px)';
-            element.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-            observer.observe(element);
-        });
-    }
+/* ── EmailJS ── */
+if (typeof emailjs !== 'undefined') {
+  emailjs.init({ publicKey: CONFIG.emailjs.publicKey });
 }
 
-// Additional utility functions
-class Utils {
-    static debounce(func, wait) {
-        let timeout;
-        return function executedFunction(...args) {
-            const later = () => {
-                clearTimeout(timeout);
-                func(...args);
-            };
-            clearTimeout(timeout);
-            timeout = setTimeout(later, wait);
-        };
-    }
+/* ── Utility helpers ── */
+const $ = (sel, ctx = document) => ctx.querySelector(sel);
+const $$ = (sel, ctx = document) => [...ctx.querySelectorAll(sel)];
 
-    static throttle(func, limit) {
-        let inThrottle;
-        return function() {
-            const args = arguments;
-            const context = this;
-            if (!inThrottle) {
-                func.apply(context, args);
-                inThrottle = true;
-                setTimeout(() => inThrottle = false, limit);
-            }
-        };
-    }
-
-    static isInViewport(element) {
-        const rect = element.getBoundingClientRect();
-        return (
-            rect.top >= 0 &&
-            rect.left >= 0 &&
-            rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
-            rect.right <= (window.innerWidth || document.documentElement.clientWidth)
-        );
-    }
+function debounce(fn, ms) {
+  let t;
+  return (...args) => { clearTimeout(t); t = setTimeout(() => fn(...args), ms); };
 }
 
-// Additional interactive features
-class InteractiveFeatures {
-    constructor() {
-        this.initCursorEffect();
-        this.initProjectHover();
-        this.initSkillHover();
-    }
-
-    initCursorEffect() {
-        // Create custom cursor
-        const cursor = document.createElement('div');
-        cursor.className = 'custom-cursor';
-        cursor.style.cssText = `
-            position: fixed;
-            width: 20px;
-            height: 20px;
-            background: var(--primary-color);
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 9999;
-            opacity: 0;
-            transition: opacity 0.3s ease, transform 0.1s ease;
-            mix-blend-mode: difference;
-        `;
-        document.body.appendChild(cursor);
-
-        // Update cursor position
-        document.addEventListener('mousemove', (e) => {
-            cursor.style.left = e.clientX - 10 + 'px';
-            cursor.style.top = e.clientY - 10 + 'px';
-            cursor.style.opacity = '1';
-        });
-
-        // Hide cursor when leaving window
-        document.addEventListener('mouseleave', () => {
-            cursor.style.opacity = '0';
-        });
-
-        // Scale cursor on hover over interactive elements
-        const interactiveElements = document.querySelectorAll('a, button, .project-card, .blog-card');
-        interactiveElements.forEach(element => {
-            element.addEventListener('mouseenter', () => {
-                cursor.style.transform = 'scale(1.5)';
-            });
-            element.addEventListener('mouseleave', () => {
-                cursor.style.transform = 'scale(1)';
-            });
-        });
-    }
-
-    initProjectHover() {
-        const projectCards = document.querySelectorAll('.project-card');
-        
-        projectCards.forEach(card => {
-            card.addEventListener('mouseenter', () => {
-                // Add tilt effect
-                card.style.transform = 'translateY(-10px) rotateX(5deg) rotateY(5deg)';
-                card.style.transformStyle = 'preserve-3d';
-            });
-            
-            card.addEventListener('mouseleave', () => {
-                card.style.transform = 'translateY(0) rotateX(0) rotateY(0)';
-            });
-            
-            // Add mouse move effect for more dynamic tilt
-            card.addEventListener('mousemove', (e) => {
-                const rect = card.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
-                
-                const centerX = rect.width / 2;
-                const centerY = rect.height / 2;
-                
-                const rotateX = (y - centerY) / 10;
-                const rotateY = (centerX - x) / 10;
-                
-                card.style.transform = `translateY(-10px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
-            });
-        });
-    }
-
-    initSkillHover() {
-        const skillItems = document.querySelectorAll('.skill-item');
-        
-        skillItems.forEach(item => {
-            item.addEventListener('mouseenter', () => {
-                const skillLevel = item.querySelector('.skill-level');
-                if (skillLevel) {
-                    skillLevel.style.boxShadow = 'none';
-                }
-            });
-            
-            item.addEventListener('mouseleave', () => {
-                const skillLevel = item.querySelector('.skill-level');
-                if (skillLevel) {
-                    skillLevel.style.boxShadow = 'none';
-                }
-            });
-        });
-    }
+function throttle(fn, ms) {
+  let last = 0;
+  return (...args) => {
+    const now = Date.now();
+    if (now - last >= ms) { last = now; fn(...args); }
+  };
 }
 
-// Performance optimization
-class PerformanceOptimizer {
-    constructor() {
-        this.lazyLoadImages();
-        this.optimizeScrollEvents();
-    }
+const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    lazyLoadImages() {
-        const images = document.querySelectorAll('img[data-src]');
-        
-        const imageObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const img = entry.target;
-                    img.src = img.dataset.src;
-                    img.classList.add('loaded');
-                    imageObserver.unobserve(img);
-                }
-            });
-        });
 
-        images.forEach(img => imageObserver.observe(img));
-    }
+/* =============================================================
+   NAVBAR
+   ============================================================= */
+function initNavbar() {
+  const navbar   = $('.navbar');
+  const menu     = $('.nav-menu');
+  const burger   = $('#hamburger');
+  const navLinks = $$('.nav-link');
 
-    optimizeScrollEvents() {
-        // Use throttled scroll events for better performance
-        const throttledScroll = Utils.throttle(() => {
-            // Update scroll-dependent elements
-            this.updateScrollProgress();
-        }, 16); // ~60fps
+  /* Scroll: add .scrolled class + active section highlight */
+  const onScroll = throttle(() => {
+    navbar.classList.toggle('scrolled', window.scrollY > 40);
+    updateScrollProgress();
+    highlightNavLink();
+  }, 80);
+  window.addEventListener('scroll', onScroll, { passive: true });
 
-        window.addEventListener('scroll', throttledScroll);
-    }
+  /* Mobile hamburger */
+  burger?.addEventListener('click', () => {
+    const isOpen = burger.classList.toggle('open');
+    menu.classList.toggle('open', isOpen);
+    burger.setAttribute('aria-expanded', String(isOpen));
+  });
 
-    updateScrollProgress() {
-        const scrollProgress = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
-        
-        // Update scroll progress indicator if it exists
-        const progressBar = document.querySelector('.scroll-progress');
-        if (progressBar) {
-            progressBar.style.width = `${scrollProgress}%`;
-        }
-    }
-}
-
-// Initialize everything when DOM is loaded
-document.addEventListener('DOMContentLoaded', () => {
-    new Portfolio();
-    new InteractiveFeatures();
-    new PerformanceOptimizer();
-});
-
-// Handle page visibility changes
-document.addEventListener('visibilitychange', () => {
-    if (document.hidden) {
-        // Pause animations when page is not visible
-        document.body.classList.add('page-hidden');
-    } else {
-        // Resume animations when page becomes visible
-        document.body.classList.remove('page-hidden');
-    }
-});
-
-// Handle window resize
-window.addEventListener('resize', Utils.debounce(() => {
-    // Reinitialize particles on resize
-    if (typeof pJSDom !== 'undefined' && pJSDom.length > 0) {
-        pJSDom[0].pJS.fn.particlesRefresh();
-    }
-}, 250));
-
-// Preload critical resources
-window.addEventListener('load', () => {
-    // Preload important images
-    const criticalImages = [
-        'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=face'
-    ];
-    
-    criticalImages.forEach(src => {
-        const img = new Image();
-        img.src = src;
+  /* Close mobile menu on link click */
+  navLinks.forEach(link => {
+    link.addEventListener('click', () => {
+      menu.classList.remove('open');
+      burger?.classList.remove('open');
+      burger?.setAttribute('aria-expanded', 'false');
     });
-});
+  });
 
-// Location Modal Functions
+  /* Close on outside click */
+  document.addEventListener('click', e => {
+    if (!navbar.contains(e.target)) {
+      menu.classList.remove('open');
+      burger?.classList.remove('open');
+      burger?.setAttribute('aria-expanded', 'false');
+    }
+  });
+
+  /* Smooth scroll for anchor links */
+  $$('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const target = $(a.getAttribute('href'));
+      if (!target) return;
+      e.preventDefault();
+      window.scrollTo({ top: target.offsetTop - 65, behavior: 'smooth' });
+    });
+  });
+}
+
+function highlightNavLink() {
+  const sections  = $$('section[id]');
+  const navLinks  = $$('.nav-link');
+  const scrollMid = window.scrollY + window.innerHeight / 2;
+
+  let current = '';
+  sections.forEach(sec => {
+    if (sec.offsetTop <= scrollMid) current = sec.id;
+  });
+
+  navLinks.forEach(link => {
+    link.classList.toggle('active', link.getAttribute('href') === `#${current}`);
+  });
+}
+
+/* =============================================================
+   SCROLL PROGRESS BAR
+   ============================================================= */
+function updateScrollProgress() {
+  const bar = $('#scroll-progress');
+  if (!bar) return;
+  const pct = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight) * 100;
+  bar.style.width = `${Math.min(pct, 100)}%`;
+}
+
+/* =============================================================
+   THEME TOGGLE
+   ============================================================= */
+function initTheme() {
+  const btn  = $('#theme-toggle');
+  const body = document.body;
+  const saved = localStorage.getItem('theme') || 'dark';
+
+  const apply = theme => {
+    body.dataset.theme = theme === 'light' ? 'light' : '';
+    if (!body.dataset.theme) body.removeAttribute('data-theme');
+    if (btn) btn.innerHTML = theme === 'light'
+      ? '<i class="fas fa-sun" aria-hidden="true"></i>'
+      : '<i class="fas fa-moon" aria-hidden="true"></i>';
+  };
+
+  apply(saved);
+
+  btn?.addEventListener('click', () => {
+    const next = body.dataset.theme === 'light' ? 'dark' : 'light';
+    apply(next);
+    localStorage.setItem('theme', next);
+  });
+}
+
+
+/* =============================================================
+   TYPING ANIMATION
+   ============================================================= */
+function initTyping() {
+  const el = $('.typing-text');
+  if (!el || prefersReducedMotion) {
+    if (el) el.textContent = CONFIG.typingRoles[0];
+    return;
+  }
+
+  const roles = CONFIG.typingRoles;
+  let ri = 0, ci = 0, deleting = false;
+
+  const tick = () => {
+    const role = roles[ri];
+    if (deleting) {
+      ci--;
+      el.textContent = role.slice(0, ci);
+      if (ci === 0) {
+        deleting = false;
+        ri = (ri + 1) % roles.length;
+        setTimeout(tick, 420);
+        return;
+      }
+      setTimeout(tick, 40);
+    } else {
+      ci++;
+      el.textContent = role.slice(0, ci);
+      if (ci === role.length) {
+        deleting = true;
+        setTimeout(tick, 1800);
+        return;
+      }
+      setTimeout(tick, 90);
+    }
+  };
+  setTimeout(tick, 500);
+}
+
+/* =============================================================
+   SCROLL-REVEAL ANIMATIONS (staggered)
+   ============================================================= */
+function initScrollAnimations() {
+  if (prefersReducedMotion) {
+    $$('[data-animate]').forEach(el => el.classList.add('is-visible'));
+    return;
+  }
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (!entry.isIntersecting) return;
+      /* stagger siblings inside same parent */
+      const delay = entry.target.dataset.stagger || 0;
+      setTimeout(() => {
+        entry.target.classList.add('is-visible');
+      }, delay);
+      observer.unobserve(entry.target);
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+  /* Add stagger delays to card groups */
+  const staggerGroups = [
+    '.skills-grid .skill-group',
+    '.projects-grid .project-card',
+    '.about-highlights .highlight-item',
+    '.timeline-item',
+  ];
+  staggerGroups.forEach(sel => {
+    $$(sel).forEach((el, i) => {
+      el.dataset.animate = el.dataset.animate || 'fade-up';
+      el.dataset.stagger = i * 80;
+    });
+  });
+
+  $$('[data-animate]').forEach(el => observer.observe(el));
+}
+
+/* =============================================================
+   BACK TO TOP
+   ============================================================= */
+function initBackToTop() {
+  const btn = $('#back-to-top');
+  if (!btn) return;
+
+  window.addEventListener('scroll', throttle(() => {
+    btn.classList.toggle('visible', window.scrollY > 500);
+  }, 100), { passive: true });
+
+  btn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+}
+
+/* =============================================================
+   FOOTER ENTRANCE + CURSOR
+   ============================================================= */
+function initFooter() {
+  const footer = $('#site-footer');
+  if (!footer) return;
+
+  if (prefersReducedMotion) {
+    footer.classList.add('footer--visible');
+    return;
+  }
+
+  const obs = new IntersectionObserver(entries => {
+    if (entries[0].isIntersecting) {
+      footer.classList.add('footer--visible');
+      obs.disconnect();
+    }
+  }, { threshold: 0.1 });
+  obs.observe(footer);
+
+  /* Blinking cursor on copyright line */
+  const copy = footer.querySelector('.footer-copy');
+  if (copy) {
+    const cur = document.createElement('span');
+    cur.setAttribute('aria-hidden', 'true');
+    cur.style.cssText = 'display:inline-block;width:2px;height:0.8em;background:currentColor;margin-left:4px;vertical-align:middle;animation:_fc 1.1s step-start infinite';
+    copy.appendChild(cur);
+    if (!document.getElementById('_fcs')) {
+      const s = document.createElement('style');
+      s.id = '_fcs';
+      s.textContent = '@keyframes _fc{0%,100%{opacity:1}50%{opacity:0}}';
+      document.head.appendChild(s);
+    }
+  }
+}
+
+/* =============================================================
+   PARTICLES
+   ============================================================= */
+function initParticles() {
+  if (typeof particlesJS === 'undefined' || prefersReducedMotion) return;
+  particlesJS('particles-js', {
+    particles: {
+      number: { value: 35, density: { enable: true, value_area: 900 } },
+      color: { value: '#6366f1' },
+      shape: { type: 'circle' },
+      opacity: { value: 0.15, random: false },
+      size: { value: 2.5, random: true },
+      line_linked: { enable: true, distance: 140, color: '#6366f1', opacity: 0.1, width: 1 },
+      move: { enable: true, speed: 1.2, direction: 'none', out_mode: 'out' },
+    },
+    interactivity: {
+      detect_on: 'canvas',
+      events: { onhover: { enable: true, mode: 'repulse' }, onclick: { enable: false }, resize: true },
+      modes: { repulse: { distance: 120, duration: 0.4 } },
+    },
+    retina_detect: true,
+  });
+}
+
+
+/* =============================================================
+   NOTIFICATIONS
+   ============================================================= */
+function showNotification(message, type = 'info') {
+  $$('.notification').forEach(n => n.remove());
+
+  const n = document.createElement('div');
+  n.className = 'notification';
+  n.setAttribute('role', 'alert');
+  n.setAttribute('aria-live', 'polite');
+
+  const iconMap = { success: 'fa-check-circle', error: 'fa-exclamation-circle', info: 'fa-info-circle' };
+  n.innerHTML = `
+    <i class="fas ${iconMap[type] || iconMap.info} notification-icon ${type}" aria-hidden="true"></i>
+    <span class="notification-text">${message}</span>
+    <button class="notification-close" aria-label="Close notification">
+      <i class="fas fa-times" aria-hidden="true"></i>
+    </button>`;
+
+  document.body.appendChild(n);
+  requestAnimationFrame(() => n.classList.add('show'));
+
+  const dismiss = () => {
+    n.classList.remove('show');
+    n.addEventListener('transitionend', () => n.remove(), { once: true });
+  };
+
+  n.querySelector('.notification-close').addEventListener('click', dismiss);
+  const timer = setTimeout(dismiss, 5000);
+  n.querySelector('.notification-close').addEventListener('click', () => clearTimeout(timer), { once: true });
+}
+
+/* =============================================================
+   CONTACT FORM
+   ============================================================= */
+function initContactForm() {
+  const form = $('#contact-form');
+  if (!form) return;
+
+  form.addEventListener('submit', async e => {
+    e.preventDefault();
+    const btn = form.querySelector('button[type="submit"]');
+    const orig = btn.innerHTML;
+
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin" aria-hidden="true"></i> <span>Sending…</span>';
+    btn.disabled = true;
+
+    const params = {
+      title:   $('#subject', form).value,
+      name:    $('#name', form).value,
+      email:   $('#email', form).value,
+      message: $('#message', form).value,
+      time:    new Date().toLocaleString(),
+      initial: $('#name', form).value.charAt(0).toUpperCase(),
+    };
+
+    try {
+      if (!CONFIG.emailjs.publicKey || CONFIG.emailjs.publicKey === 'YOUR_PUBLIC_KEY') {
+        throw new Error('not_configured');
+      }
+      await emailjs.send(CONFIG.emailjs.serviceId, CONFIG.emailjs.templateId, params);
+      showNotification('Message sent! I\'ll get back to you soon.', 'success');
+      form.reset();
+    } catch (err) {
+      const txt = String(err?.text || err?.message || '').toLowerCase();
+      const msg = txt.includes('not_configured') || txt.includes('invalid grant')
+        ? `Email not configured yet. Contact me at ${CONFIG.contactEmail}`
+        : `Couldn't send right now. Email me at ${CONFIG.contactEmail}`;
+      showNotification(msg, 'error');
+    } finally {
+      btn.innerHTML = orig;
+      btn.disabled = false;
+    }
+  });
+}
+
+/* =============================================================
+   LOCATION MODAL
+   ============================================================= */
 function openLocationModal() {
-    const modal = document.getElementById('locationModal');
-    modal.style.display = 'flex';
-    setTimeout(() => {
-        modal.classList.add('show');
-    }, 10);
-    
-    // Prevent body scroll when modal is open
-    document.body.style.overflow = 'hidden';
+  const modal = $('#locationModal');
+  if (!modal) return;
+  modal.style.display = 'flex';
+  requestAnimationFrame(() => modal.classList.add('show'));
+  document.body.style.overflow = 'hidden';
+  modal.querySelector('.modal-close')?.focus();
 }
 
 function closeLocationModal() {
-    const modal = document.getElementById('locationModal');
-    modal.classList.remove('show');
-    setTimeout(() => {
-        modal.style.display = 'none';
-    }, 300);
-    
-    // Restore body scroll
-    document.body.style.overflow = 'auto';
+  const modal = $('#locationModal');
+  if (!modal) return;
+  modal.classList.remove('show');
+  modal.addEventListener('transitionend', () => { modal.style.display = 'none'; }, { once: true });
+  document.body.style.overflow = '';
 }
 
-// Close modal when clicking outside of it
+/* close on backdrop click */
 document.addEventListener('DOMContentLoaded', () => {
-    const modal = document.getElementById('locationModal');
-    modal?.addEventListener('click', (e) => {
-        if (e.target === modal) {
-            closeLocationModal();
-        }
-    });
+  $('#locationModal')?.addEventListener('click', e => {
+    if (e.target === e.currentTarget) closeLocationModal();
+  });
 });
 
-// Close modal with Escape key
-document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') {
-        const modal = document.getElementById('locationModal');
-        if (modal && modal.classList.contains('show')) {
-            closeLocationModal();
-        }
-    }
+/* close on Escape */
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    const modal = $('#locationModal');
+    if (modal?.classList.contains('show')) closeLocationModal();
+  }
 });
 
-// Enhanced Interactive Cursor Effect
-class CursorEffect {
-    constructor() {
-        this.cursor = document.createElement('div');
-        this.cursor.className = 'custom-cursor';
-        this.cursor.style.cssText = `
-            width: 20px;
-            height: 20px;
-            border: 2px solid rgba(90, 103, 216, 0.4);
-            border-radius: 50%;
-            position: fixed;
-            pointer-events: none;
-            z-index: 9999;
-            transition: all 0.15s ease;
-            mix-blend-mode: difference;
-        `;
-        document.body.appendChild(this.cursor);
-        
-        this.cursorDot = document.createElement('div');
-        this.cursorDot.style.cssText = `
-            width: 6px;
-            height: 6px;
-            background: rgba(168, 85, 247, 0.8);
-            border-radius: 50%;
-            position: fixed;
-            pointer-events: none;
-            z-index: 10000;
-            transition: all 0.08s ease;
-        `;
-        document.body.appendChild(this.cursorDot);
-        
-        this.init();
-    }
-    
-    init() {
-        document.addEventListener('mousemove', (e) => {
-            this.cursor.style.transform = `translate(${e.clientX - 10}px, ${e.clientY - 10}px)`;
-            this.cursorDot.style.transform = `translate(${e.clientX - 3}px, ${e.clientY - 3}px)`;
-        });
-        
-        // Enhance cursor on hover
-        document.querySelectorAll('a, button, .btn, .project-card, .skill-item').forEach(el => {
-            el.addEventListener('mouseenter', () => {
-                this.cursor.style.width = '40px';
-                this.cursor.style.height = '40px';
-                this.cursor.style.borderColor = 'rgba(168, 85, 247, 0.8)';
-                this.cursor.style.transform = `translate(${event.clientX - 20}px, ${event.clientY - 20}px)`;
-            });
-            
-            el.addEventListener('mouseleave', () => {
-                this.cursor.style.width = '20px';
-                this.cursor.style.height = '20px';
-                this.cursor.style.borderColor = 'rgba(99, 102, 241, 0.5)';
-            });
-        });
-    }
-}
+/* Expose to inline onclick */
+window.openLocationModal  = openLocationModal;
+window.closeLocationModal = closeLocationModal;
 
-// Initialize Enhanced Cursor (Only on desktop)
-if (window.innerWidth > 768) {
-    new CursorEffect();
-}
+/* =============================================================
+   PAGE VISIBILITY — pause particles when hidden
+   ============================================================= */
+document.addEventListener('visibilitychange', () => {
+  const canvas = $('#particles-js canvas');
+  if (canvas) canvas.style.visibility = document.hidden ? 'hidden' : 'visible';
+});
 
-// Add floating animation to cards
-const addFloatingAnimation = () => {
-    const cards = document.querySelectorAll('.skill-category, .project-card, .profile-card');
-    
-    cards.forEach((card, index) => {
-        const delay = index * 0.1;
-        card.style.animation = `float 3s ease-in-out ${delay}s infinite`;
-    });
-};
-
-// Define float animation if not exists
-if (!document.getElementById('float-animation-style')) {
-    const style = document.createElement('style');
-    style.id = 'float-animation-style';
-    style.textContent = `
-        @keyframes float {
-            0%, 100% {
-                transform: translateY(0px);
-            }
-            50% {
-                transform: translateY(-10px);
-            }
-        }
-    `;
-    document.head.appendChild(style);
-}
-
-setTimeout(addFloatingAnimation, 1000);
-
-// Export for potential module usage
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = { Portfolio, Utils, InteractiveFeatures, PerformanceOptimizer, CursorEffect };
-}
-
-// ─────────────────────────────────────────────────────────────────
-// Footer — scroll-triggered entrance + blinking-cursor effect
-// ─────────────────────────────────────────────────────────────────
-(function initFooterAnimation() {
-  'use strict';
-
-  const footer = document.getElementById('site-footer');
-  if (!footer) return;
-
-  // Respect prefers-reduced-motion: skip JS animation,
-  // the CSS already makes the footer fully visible via media query.
-  const prefersReducedMotion =
-    window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  if (!prefersReducedMotion) {
-    // Fade-in + slide-up on scroll
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            footer.classList.add('footer--visible');
-            observer.unobserve(footer); // fire once
-          }
-        });
-      },
-      { threshold: 0.15 }
-    );
-    observer.observe(footer);
+/* =============================================================
+   WINDOW RESIZE — debounced particle refresh
+   ============================================================= */
+window.addEventListener('resize', debounce(() => {
+  if (typeof pJSDom !== 'undefined' && pJSDom.length) {
+    pJSDom[0].pJS.fn.particlesRefresh();
   }
+}, 300));
 
-  // Blinking cursor appended to the copyright line
-  const copyEl = footer.querySelector('.footer-copy');
-  if (copyEl && !prefersReducedMotion) {
-    const cursor = document.createElement('span');
-    cursor.setAttribute('aria-hidden', 'true');
-    cursor.style.cssText = [
-      'display:inline-block',
-      'width:2px',
-      'height:0.85em',
-      'background:currentColor',
-      'margin-left:4px',
-      'vertical-align:middle',
-      'opacity:1',
-      'animation:footer-cursor-blink 1.1s step-start infinite',
-    ].join(';');
-    copyEl.appendChild(cursor);
-
-    // Inject the keyframes once
-    if (!document.getElementById('footer-cursor-style')) {
-      const style = document.createElement('style');
-      style.id = 'footer-cursor-style';
-      style.textContent =
-        '@keyframes footer-cursor-blink{0%,100%{opacity:1}50%{opacity:0}}';
-      document.head.appendChild(style);
-    }
-  }
-})();
+/* =============================================================
+   BOOT — initialise everything after DOM ready
+   ============================================================= */
+document.addEventListener('DOMContentLoaded', () => {
+  initTheme();
+  initNavbar();
+  initTyping();
+  initScrollAnimations();
+  initBackToTop();
+  initFooter();
+  initParticles();
+  initContactForm();
+});

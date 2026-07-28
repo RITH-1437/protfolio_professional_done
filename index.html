@@ -3,31 +3,32 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>RIN Nairith - Software Developer Portfolio</title>
-    <meta
-      name="description"
-      content="Portfolio of RIN Nairith - Software Developer from Cambodia"
-    />
+    <meta name="theme-color" content="#0d1117" />
+    <title>RIN Nairith — Full Stack Developer</title>
+    <meta name="description" content="RIN Nairith — Full Stack Developer based in Cambodia. Building modern web experiences with PHP, Java, Vue.js, and cloud infrastructure." />
+    <meta name="author" content="RIN Nairith" />
+    <meta property="og:title" content="RIN Nairith — Full Stack Developer" />
+    <meta property="og:description" content="Full Stack Developer building modern web applications and open-source tools." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://rith-1437.github.io/protfolio_professional_done/" />
+    <link rel="canonical" href="https://rith-1437.github.io/protfolio_professional_done/" />
     <link rel="stylesheet" href="styles.css" />
-    <link
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
-      rel="stylesheet"
-    />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
   </head>
-
   <body>
+
     <!-- Navigation -->
-    <nav class="navbar">
+    <nav class="navbar" role="navigation" aria-label="Main navigation">
       <div class="nav-container">
-        <div class="nav-logo">
-          <i class="fas fa-code"></i>
-          <span>Software Developer</span>
-        </div>
-        <ul class="nav-menu">
+        <a href="#home" class="nav-logo" aria-label="RIN Nairith home">
+          <span class="logo-bracket">&lt;</span>
+          <span class="logo-name">RIN</span>
+          <span class="logo-bracket">/&gt;</span>
+        </a>
+        <ul class="nav-menu" role="list">
           <li><a href="#home" class="nav-link">Home</a></li>
           <li><a href="#about" class="nav-link">About</a></li>
           <li><a href="#skills" class="nav-link">Skills</a></li>
@@ -35,223 +36,270 @@
           <li><a href="#projects" class="nav-link">Projects</a></li>
           <li><a href="#contact" class="nav-link">Contact</a></li>
         </ul>
-        <div class="nav-toggle">
-          <button class="theme-toggle" id="theme-toggle">
-            <i class="fas fa-moon"></i>
+        <div class="nav-actions">
+          <button class="theme-toggle" id="theme-toggle" aria-label="Toggle color theme">
+            <i class="fas fa-moon" aria-hidden="true"></i>
           </button>
-          <div class="hamburger">
-            <span></span>
-            <span></span>
-            <span></span>
-          </div>
+          <button class="hamburger" id="hamburger" aria-label="Toggle mobile menu" aria-expanded="false">
+            <span></span><span></span><span></span>
+          </button>
         </div>
       </div>
     </nav>
 
-    <!-- Hero Section -->
+
+    <!-- Hero -->
     <section id="home" class="hero">
       <div class="hero-container">
         <div class="hero-content">
-          <div class="hero-text">
-            <h1>Hi, I'm <span class="highlight">RIN Nairith</span>, a</h1>
-            <h2 class="typing-text">Software Developer</h2>
-            <p>
-              Passionate software developer specializing in modern web
-              technologies and building scalable applications. Based in
-              Cambodia, I create innovative digital experiences and robust
-              software solutions.
-            </p>
 
-            <div class="hero-buttons">
-              <a href="#projects" class="btn btn-primary">View My Work</a>
-              <a href="#contact" class="btn btn-secondary">Get In Touch</a>
+          <div class="hero-text" data-animate="fade-up">
+            <div class="hero-badge">
+              <span class="badge-dot"></span>
+              <span>Available for opportunities</span>
             </div>
-
+            <h1>
+              I'm <span class="text-gradient">RIN Nairith</span>
+            </h1>
+            <p class="hero-role">
+              <span class="typing-text" aria-live="polite"></span><span class="cursor" aria-hidden="true">|</span>
+            </p>
+            <p class="hero-desc">
+              Full Stack Developer based in Cambodia. I build scalable web applications, open-source frameworks, and cloud-deployed systems.
+            </p>
+            <div class="hero-cta">
+              <a href="#projects" class="btn btn-primary">View Projects</a>
+              <a href="#contact" class="btn btn-ghost">Get in Touch</a>
+            </div>
             <div class="hero-stats">
-              <div class="stat">
-                <h3>6+</h3>
-                <p>Months of Experience</p>
+              <div class="stat-item">
+                <span class="stat-num">15+</span>
+                <span class="stat-label">Projects shipped</span>
               </div>
-              <div class="stat">
-                <h3>15+</h3>
-                <p>Successful Projects</p>
+              <div class="stat-divider" aria-hidden="true"></div>
+              <div class="stat-item">
+                <span class="stat-num">6+</span>
+                <span class="stat-label">Months experience</span>
               </div>
-              <div class="stat">
-                <h3>10+</h3>
-                <p>Happy Clients (Teacher)</p>
+              <div class="stat-divider" aria-hidden="true"></div>
+              <div class="stat-item">
+                <span class="stat-num">5+</span>
+                <span class="stat-label">Tech stacks</span>
               </div>
             </div>
-
-            <div class="social-links">
-              <a
-                href="https://github.com/RITH-1437"
-                target="_blank"
-                title="GitHub"
-              >
-                <i class="fab fa-github"></i>
+            <div class="hero-socials">
+              <a href="https://github.com/RITH-1437" target="_blank" rel="noopener noreferrer" aria-label="GitHub profile">
+                <i class="fab fa-github" aria-hidden="true"></i>
               </a>
-              <a href="https://t.me/rith1506" target="_blank" title="LinkedIn">
-                <i class="fab fa-telegram"></i>
+              <a href="https://t.me/rith1506" target="_blank" rel="noopener noreferrer" aria-label="Telegram">
+                <i class="fab fa-telegram" aria-hidden="true"></i>
               </a>
-              <a href="mailto:nairithrin143@gmail.com" title="Email">
-                <i class="fas fa-envelope"></i>
+              <a href="https://web.facebook.com/nairith.rin.2025/" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+                <i class="fab fa-facebook" aria-hidden="true"></i>
               </a>
-              <a
-                href="https://web.facebook.com/nairith.rin.2025/"
-                target="_blank"
-                title="Facebook"
-              >
-                <i class="fab fa-facebook"></i>
+              <a href="mailto:nairithrin143@gmail.com" aria-label="Send email">
+                <i class="fas fa-envelope" aria-hidden="true"></i>
               </a>
             </div>
           </div>
 
-          <div class="hero-image">
-            <div class="image-container">
-              <div class="profile-card">
-                <div class="profile-image">
-                  <img src="./images/me.jpg" alt="RIN Nairith" />
-                  <div class="status-indicator"></div>
-                </div>
-                <h3>Nice to meet you,<br />I'm RIN Nairith</h3>
-                <p>
-                  Software developer with a passion for creating digital
-                  solutions and modern web applications.
-                </p>
+          <div class="hero-visual" data-animate="fade-left">
+            <div class="profile-card">
+              <div class="profile-img-wrap">
+                <img src="./images/me.jpg" alt="RIN Nairith — Full Stack Developer" width="180" height="180" />
+                <span class="online-dot" aria-label="Online"></span>
               </div>
-              <div class="floating-elements">
-                <div class="code-snippet">
-                  <!-- <div class="code-header">
-                                    <div class="dots">
-                                        <span></span>
-                                        <span></span>
-                                        <span></span>
-                                    </div>
-                                </div>  -->
-                  <div class="code-content">
-                    <div class="line">
-                      <span class="keyword">const</span> developer = {
-                    </div>
-                    <div class="line">
-                      name: <span class="string">"RIN Nairith"</span>,
-                    </div>
-                    <div class="line">
-                      role: <span class="string">"Software Dev"</span>,
-                    </div>
-                    <div class="line">
-                      location: <span class="string">"Cambodia"</span>
-                    </div>
-                    <div class="line">};</div>
-                  </div>
+              <div class="profile-info">
+                <p class="profile-name">RIN Nairith</p>
+                <p class="profile-title">Full Stack Developer</p>
+                <p class="profile-loc"><i class="fas fa-map-marker-alt" aria-hidden="true"></i> Phnom Penh, Cambodia</p>
+              </div>
+              <div class="code-card" aria-hidden="true">
+                <div class="code-header">
+                  <span class="dot dot-red"></span>
+                  <span class="dot dot-yellow"></span>
+                  <span class="dot dot-green"></span>
                 </div>
+                <pre class="code-body"><span class="kw">const</span> developer = {
+  name: <span class="str">"RIN Nairith"</span>,
+  role: <span class="str">"Full Stack Dev"</span>,
+  open: <span class="bool">true</span>,
+};</pre>
               </div>
             </div>
           </div>
+
         </div>
       </div>
-      <div class="scroll-indicator">
-        <div class="scroll-arrow">
-          <i class="fas fa-chevron-down"></i>
-        </div>
-      </div>
+      <a href="#about" class="scroll-hint" aria-label="Scroll to about section">
+        <i class="fas fa-chevron-down" aria-hidden="true"></i>
+      </a>
     </section>
 
-    <!-- About Section -->
-    <section id="about" class="about">
+
+    <!-- About -->
+    <section id="about" class="about section">
       <div class="container">
-        <div class="section-header">
-          <h2>About Me</h2>
-          <p>Get to know more about my background and expertise</p>
-        </div>
-
-        <div class="about-content">
-          <div class="about-text">
-            <h3>I'm a passionate software developer</h3>
-            <p>
-              With over 6 months of experience in software development, I
-              specialize in creating innovative digital solutions. My expertise
-              spans across modern web technologies, scalable backend systems,
-              and database management.
-            </p>
-
-            <p>
-              Based in Cambodia, I'm dedicated to leveraging technology to solve
-              real-world problems and create meaningful digital experiences. I
-              enjoy working with cutting-edge technologies and am always eager
-              to learn new skills.
-            </p>
-
+        <div class="section-label" data-animate="fade-up">About</div>
+        <div class="about-grid">
+          <div class="about-text" data-animate="fade-up">
+            <h2>Building things that matter</h2>
+            <p>I'm a Full Stack Developer with a passion for clean architecture, developer tooling, and shipping production-ready software. I founded the <strong>ZeroPing PHP Framework</strong> and have deployed multiple applications on AWS EC2 with Docker, Nginx, and CI/CD pipelines.</p>
+            <p>Based in Cambodia, I'm currently working at <strong>CTX-98 Co., Ltd</strong> as a Software Developer while continuously expanding my skills in cloud infrastructure, system design, and modern web development.</p>
             <div class="about-highlights">
-              <div class="highlight-item">
-                <i class="fas fa-laptop-code"></i>
+              <div class="highlight-item" data-animate="fade-up">
+                <div class="highlight-icon"><i class="fas fa-layer-group" aria-hidden="true"></i></div>
                 <div>
-                  <h4>Software Development</h4>
-                  <p>
-                    Expertise in modern web technologies including Vue.js, Java
-                    Spring Boot, and cloud deployment
-                  </p>
+                  <h4>Full Stack Engineering</h4>
+                  <p>Vue.js frontends, Java Spring Boot and PHP Laravel backends, production cloud deployments.</p>
                 </div>
               </div>
-              <div class="highlight-item">
-                <i class="fas fa-server"></i>
+              <div class="highlight-item" data-animate="fade-up">
+                <div class="highlight-icon"><i class="fas fa-cloud" aria-hidden="true"></i></div>
                 <div>
-                  <h4>Backend Development</h4>
-                  <p>
-                    Proficient in Java Spring Boot, C#.NET, PHP & Laravel and
-                    building scalable RESTful APIs
-                  </p>
+                  <h4>Cloud &amp; DevOps</h4>
+                  <p>AWS EC2, Docker, Nginx, SSL/HTTPS, GitHub Actions CI/CD, Linux server administration.</p>
                 </div>
               </div>
-              <div class="highlight-item">
-                <i class="fas fa-database"></i>
+              <div class="highlight-item" data-animate="fade-up">
+                <div class="highlight-icon"><i class="fas fa-cube" aria-hidden="true"></i></div>
                 <div>
-                  <h4>Database Management</h4>
-                  <p>
-                    Experience with MySQL and PostgreSQL for scalable data
-                    solutions
-                  </p>
+                  <h4>Open Source</h4>
+                  <p>Creator of ZeroPing — a modern PHP MVC framework with CLI tooling, ORM, and queues.</p>
                 </div>
               </div>
             </div>
-
-            <div class="about-buttons">
-              <a href="#contact" class="btn btn-primary">
-                Let's Work Together
-              </a>
-
-              <a
-                href="./rin_nairith_cv.pdf"
-                download
-                class="btn btn-secondary"
-                target="_blank"
-              >
-                <i class="fas fa-download"></i> Download CV
+            <div class="about-actions">
+              <a href="#contact" class="btn btn-primary">Let's Work Together</a>
+              <a href="./rin_nairith_cv.pdf" download target="_blank" class="btn btn-ghost">
+                <i class="fas fa-download" aria-hidden="true"></i> Download CV
               </a>
             </div>
           </div>
+          <div class="about-card" data-animate="fade-left">
+            <h4 class="card-title">Expertise</h4>
+            <ul class="expertise-list" role="list">
+              <li><i class="fas fa-check-circle" aria-hidden="true"></i>Full Stack Web Development</li>
+              <li><i class="fas fa-check-circle" aria-hidden="true"></i>RESTful API Design</li>
+              <li><i class="fas fa-check-circle" aria-hidden="true"></i>Relational Database Design</li>
+              <li><i class="fas fa-check-circle" aria-hidden="true"></i>Cloud Infrastructure (AWS)</li>
+              <li><i class="fas fa-check-circle" aria-hidden="true"></i>CI/CD &amp; GitHub Actions</li>
+              <li><i class="fas fa-check-circle" aria-hidden="true"></i>Framework Architecture</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
 
-          <div class="about-image">
-            <div class="experience-card">
-              <div class="card-header">
-                <h4>My Skills</h4>
+    <!-- Skills -->
+    <section id="skills" class="skills section">
+      <div class="container">
+        <div class="section-label" data-animate="fade-up">Skills</div>
+        <h2 class="section-title" data-animate="fade-up">Technologies I work with</h2>
+        <div class="skills-grid" data-animate="fade-up">
+
+          <div class="skill-group">
+            <h3 class="skill-group-title"><i class="fas fa-desktop" aria-hidden="true"></i> Frontend</h3>
+            <div class="skill-chips">
+              <span class="chip">HTML5</span>
+              <span class="chip">CSS3</span>
+              <span class="chip">JavaScript</span>
+              <span class="chip">Vue.js</span>
+              <span class="chip">Bootstrap</span>
+              <span class="chip">TailwindCSS</span>
+            </div>
+          </div>
+
+          <div class="skill-group">
+            <h3 class="skill-group-title"><i class="fas fa-server" aria-hidden="true"></i> Backend</h3>
+            <div class="skill-chips">
+              <span class="chip">PHP</span>
+              <span class="chip">Laravel</span>
+              <span class="chip">ZeroPing</span>
+              <span class="chip">Java</span>
+              <span class="chip">Spring Boot</span>
+              <span class="chip">C# .NET</span>
+            </div>
+          </div>
+
+          <div class="skill-group">
+            <h3 class="skill-group-title"><i class="fas fa-database" aria-hidden="true"></i> Database</h3>
+            <div class="skill-chips">
+              <span class="chip">MySQL</span>
+              <span class="chip">PostgreSQL</span>
+              <span class="chip">Database Design</span>
+              <span class="chip">ORM</span>
+            </div>
+          </div>
+
+          <div class="skill-group">
+            <h3 class="skill-group-title"><i class="fas fa-cloud-upload-alt" aria-hidden="true"></i> DevOps &amp; Cloud</h3>
+            <div class="skill-chips">
+              <span class="chip">AWS EC2</span>
+              <span class="chip">Docker</span>
+              <span class="chip">Nginx</span>
+              <span class="chip">Linux</span>
+              <span class="chip">GitHub Actions</span>
+              <span class="chip">SSL/HTTPS</span>
+            </div>
+          </div>
+
+          <div class="skill-group">
+            <h3 class="skill-group-title"><i class="fas fa-tools" aria-hidden="true"></i> Tools</h3>
+            <div class="skill-chips">
+              <span class="chip">Git</span>
+              <span class="chip">GitHub</span>
+              <span class="chip">Composer</span>
+              <span class="chip">Vercel</span>
+              <span class="chip">Postman</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+
+    <!-- Experience -->
+    <section id="experience" class="experience section">
+      <div class="container">
+        <div class="section-label" data-animate="fade-up">Experience</div>
+        <h2 class="section-title" data-animate="fade-up">Professional journey</h2>
+        <div class="timeline">
+          <div class="timeline-item" data-animate="fade-up">
+            <div class="timeline-marker" aria-hidden="true"></div>
+            <div class="timeline-card">
+              <div class="timeline-header">
+                <div>
+                  <h3>Software Developer</h3>
+                  <p class="timeline-company">CTX-98 Co., Ltd</p>
+                </div>
+                <span class="timeline-badge">Present</span>
               </div>
-              <div class="expertise-list">
-                <div class="expertise-item">
-                  <span class="icon">💻</span>
-                  <span>Software Development</span>
+              <p>Building and maintaining software solutions, developing web applications, and collaborating with cross-functional teams to deliver high-quality products in a production environment.</p>
+              <div class="timeline-tags">
+                <span>Software Development</span>
+                <span>Web Applications</span>
+                <span>System Design</span>
+                <span>Team Collaboration</span>
+              </div>
+            </div>
+          </div>
+          <div class="timeline-item" data-animate="fade-up">
+            <div class="timeline-marker" aria-hidden="true"></div>
+            <div class="timeline-card">
+              <div class="timeline-header">
+                <div>
+                  <h3>Computer Science Student</h3>
+                  <p class="timeline-company">Institute of Technology of Cambodia</p>
                 </div>
-                <div class="expertise-item">
-                  <span class="icon">🤖</span>
-                  <span>API Development</span>
-                </div>
-                <div class="expertise-item">
-                  <span class="icon">🗄️</span>
-                  <span>Database Design</span>
-                </div>
-                <div class="expertise-item">
-                  <span class="icon">☁️</span>
-                  <span>Cloud Deployment</span>
-                </div>
+                <span class="timeline-badge timeline-badge--outline">2023 – Present</span>
+              </div>
+              <p>Studying computer science fundamentals, algorithms, operating systems, and software engineering. Building projects that apply theoretical knowledge to real-world problems.</p>
+              <div class="timeline-tags">
+                <span>Algorithms</span>
+                <span>OS Concepts</span>
+                <span>Software Engineering</span>
               </div>
             </div>
           </div>
@@ -259,550 +307,234 @@
       </div>
     </section>
 
-    <!-- Skills Section -->
-    <section id="skills" class="skills">
+    <!-- Projects -->
+    <section id="projects" class="projects section">
       <div class="container">
-        <div class="section-header">
-          <h2>My Skills</h2>
-          <p>Technologies and tools I work with</p>
-        </div>
-
-        <div class="skills-container">
-          <div class="skill-category">
-            <h3><i class="fas fa-laptop-code"></i> Frontend Development</h3>
-            <div class="skills-grid">
-              <div class="skill-item">
-                <i class="fab fa-html5"></i>
-                <span>HTML5</span>
-                <div class="skill-level" data-level="90"></div>
-              </div>
-              <div class="skill-item">
-                <i class="fab fa-css3-alt"></i>
-                <span>CSS3</span>
-                <div class="skill-level" data-level="90"></div>
-              </div>
-              <div class="skill-item">
-                <i class="fab fa-bootstrap"></i>
-                <span>Bootstrap</span>
-                <div class="skill-level" data-level="70"></div>
-              </div>
-              <div class="skill-item">
-                <i class="fab fa-js-square"></i>
-                <span>JavaScript</span>
-                <div class="skill-level" data-level="80"></div>
-              </div>
-              <div class="skill-item">
-                <i class="fab fa-vuejs"></i>
-                <span>Vue.js</span>
-                <div class="skill-level" data-level="80"></div>
-              </div>
-            </div>
-          </div>
-
-          <div class="skill-category">
-            <h3><i class="fas fa-server"></i> Backend Development</h3>
-            <div class="skills-grid">
-              <div class="skill-item">
-                <i class="fab fa-java"></i>
-                <span>Java</span>
-                <div class="skill-level" data-level="85"></div>
-              </div>
-              <div class="skill-item">
-                <i class="fas fa-leaf"></i>
-                <span>Spring Boot</span>
-                <div class="skill-level" data-level="80"></div>
-              </div>
-              <div class="skill-item">
-                <i class="fab fa-microsoft"></i>
-                <span>C#</span>
-                <div class="skill-level" data-level="85"></div>
-              </div>
-              <div class="skill-item">
-                <i class="fas fa-laravel"></i>
-                <span>Laravel</span>
-                <div class="skill-level" data-level="80"></div>
-              </div>
-              <div class="skill-item">
-                <i class="fas fa-php"></i>
-                <span>PHP</span>
-                <div class="skill-level" data-level="80"></div>
-              </div>
-            </div>
-          </div>
-
-          <div class="skill-category">
-            <h3><i class="fas fa-tools"></i> Tools & Deployment</h3>
-            <div class="skills-grid">
-              <div class="skill-item">
-                <i class="fab fa-git-alt"></i>
-                <span>Git</span>
-                <div class="skill-level" data-level="80"></div>
-              </div>
-              <div class="skill-item">
-                <i class="fab fa-github"></i>
-                <span>GitHub</span>
-                <div class="skill-level" data-level="80"></div>
-              </div>
-              <div class="skill-item">
-                <i class="fas fa-cloud"></i>
-                <span>Vercel</span>
-                <div class="skill-level" data-level="80"></div>
-              </div>
-              <div class="skill-item">
-                <i class="fab fa-docker"></i>
-                <span>Docker</span>
-                <div class="skill-level" data-level="70"></div>
-              </div>
-              <div class="skill-item">
-                <i class="fab fa-aws"></i>
-                <span>AWS</span>
-                <div class="skill-level" data-level="80"></div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Experience Section -->
-    <section id="experience" class="experience">
-      <div class="container">
-        <div class="section-header">
-          <h2>Experience</h2>
-          <p>My professional journey and current role</p>
-        </div>
-
-        <div class="exp-timeline">
-          <div class="exp-item">
-            <div class="exp-header">
-              <div class="exp-icon">
-                <i class="fas fa-briefcase"></i>
-              </div>
-              <div class="exp-meta">
-                <h3>Software Developer</h3>
-                <span class="exp-company">CTX-98 ., Co LTD</span>
-                <span class="exp-date">Present</span>
-              </div>
-            </div>
-            <p>
-              Working as a Software Developer, building and maintaining software
-              solutions, developing web applications, and collaborating with
-              cross-functional teams to deliver high-quality products.
-            </p>
-            <div class="exp-tags">
-              <span>Software Development</span>
-              <span>Web Applications</span>
-              <span>System Design</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Projects Section -->
-    <section id="projects" class="projects">
-      <div class="container">
-        <div class="section-header">
-          <h2>Featured Projects</h2>
-          <p>Some of my recent work and professional projects</p>
-        </div>
-
+        <div class="section-label" data-animate="fade-up">Projects</div>
+        <h2 class="section-title" data-animate="fade-up">Featured work</h2>
         <div class="projects-grid">
-          <div class="project-card">
-            <div class="project-image">
-              <img
-                src="./images/zeroping.png?w=600&h=400&fit=crop"
-                alt="ZeroPing Framework"
-              />
-              <a
-                href="https://github.com/RITH-1437/ZeroPing"
-                target="_blank"
-                class="project-github-link"
-              >
-                <i class="fab fa-github"></i>
+
+          <article class="project-card" data-animate="fade-up">
+            <div class="project-img">
+              <img src="./images/zeroping.png" alt="ZeroPing PHP Framework screenshot" loading="lazy" width="600" height="340" />
+              <a href="https://github.com/RITH-1437/ZeroPing" target="_blank" rel="noopener noreferrer" class="project-gh-btn" aria-label="View ZeroPing on GitHub">
+                <i class="fab fa-github" aria-hidden="true"></i>
               </a>
             </div>
-
-            <div class="project-content">
-              <div class="project-meta">
-                <h3>ZeroPing – Modern PHP Framework</h3>
-                <span class="project-date">06/2026 – Present</span>
+            <div class="project-body">
+              <div class="project-top">
+                <div>
+                  <span class="project-date">06/2026 – Present</span>
+                  <h3>ZeroPing – PHP Framework</h3>
+                </div>
+                <span class="project-status project-status--live">Open Source</span>
               </div>
-
-              <p>
-                Architected and developed an open-source PHP MVC framework
-                focused on developer productivity, clean architecture, and high
-                performance. Built a custom CLI for project scaffolding, code
-                generation, database migrations, caching, queues, scheduling,
-                package management, and application diagnostics. Designed a
-                modular service container, routing system, middleware pipeline,
-                ORM, validation, authentication, configuration management, and
-                production deployment workflow using Docker, Nginx, AWS EC2,
-                SSL/HTTPS, and GitHub Actions CI/CD.
-              </p>
-
+              <p>Open-source PHP MVC framework with CLI scaffolding, custom ORM, service container, middleware pipeline, queue system, and full CI/CD deployment on Docker + AWS EC2.</p>
               <div class="project-tech">
-                <span>PHP</span>
-                <span>MVC</span>
-                <span>Composer</span>
-                <span>Docker</span>
-                <span>Nginx</span>
-                <span>AWS EC2</span>
-                <span>GitHub Actions</span>
-                <span>MySQL</span>
-                <span>SSL/HTTPS</span>
-                <span>Linux</span>
+                <span>PHP</span><span>MVC</span><span>Docker</span><span>Nginx</span><span>AWS EC2</span><span>GitHub Actions</span><span>MySQL</span>
               </div>
             </div>
-
-            <div class="project-link-container">
-              <a
-                href="https://zero-ping.duckdns.org/"
-                target="_blank"
-                class="project-link-btn"
-              >
-                <i class="fas fa-external-link-alt"></i> View Framework
+            <div class="project-footer">
+              <a href="https://zero-ping.duckdns.org/" target="_blank" rel="noopener noreferrer" class="project-link">
+                <i class="fas fa-external-link-alt" aria-hidden="true"></i> View Framework
               </a>
             </div>
-          </div>
+          </article>
 
-          <div class="project-card">
-            <div class="project-image">
-              <img
-                src="./images/prompthub.png?w=600&h=400&fit=crop"
-                alt="CPU Scheduling Visualizer"
-              />
-              <a
-                href="https://github.com/RITH-1437/prompthub"
-                target="_blank"
-                class="project-github-link"
-              >
-                <i class="fab fa-github"></i>
+          <article class="project-card" data-animate="fade-up">
+            <div class="project-img">
+              <img src="./images/prompthub.png" alt="PromptHub AI platform screenshot" loading="lazy" width="600" height="340" />
+              <a href="https://github.com/RITH-1437/prompthub" target="_blank" rel="noopener noreferrer" class="project-gh-btn" aria-label="View PromptHub on GitHub">
+                <i class="fab fa-github" aria-hidden="true"></i>
               </a>
             </div>
-            <div class="project-content">
-              <div class="project-meta">
-                <h3>PromptHub – AI Prompt Sharing Platform</h3>
-                <span class="project-date">05/2026 – 06/2026</span>
+            <div class="project-body">
+              <div class="project-top">
+                <div>
+                  <span class="project-date">05/2026 – 06/2026</span>
+                  <h3>PromptHub – AI Prompt Platform</h3>
+                </div>
+                <span class="project-status project-status--live">Live</span>
               </div>
-              <p>
-                Designed and deployed a full-stack AI prompt sharing platform
-                using Laravel, PHP, MySQL, and AWS EC2. Developed features
-                including user authentication, public profiles, prompt
-                publishing, collections, favorites, analytics, leaderboards,
-                avatar uploads, and responsive dashboards. Configured Nginx,
-                PHP-FPM, SSL/HTTPS certificates, Linux server administration,
-                custom domain integration, and GitHub deployment workflows.
-                Implemented production-ready architecture with secure
-                authentication, database management, and cloud hosting
-                infrastructure.
-              </p>
+              <p>Full-stack AI prompt sharing platform with user auth, public profiles, analytics, leaderboards, and avatar uploads. Deployed on AWS EC2 with Nginx, PHP-FPM, and SSL/HTTPS.</p>
               <div class="project-tech">
-                <span>Laravel</span>
-                <span>PHP</span>
-                <span>MySQL</span>
-                <span>AWS EC2</span>
-                <span>Nginx</span>
-                <span>PHP-FPM</span>
-                <span>SSL/HTTPS</span>
-                <span>Linux</span>
-                <span>GitHub</span>
+                <span>Laravel</span><span>PHP</span><span>MySQL</span><span>AWS EC2</span><span>Nginx</span><span>SSL/HTTPS</span>
               </div>
             </div>
-            <div class="project-link-container">
-              <a
-                href="https://prompthub-free.duckdns.org/"
-                target="_blank"
-                class="project-link-btn"
-              >
-                <i class="fas fa-external-link-alt"></i> View Live Site
+            <div class="project-footer">
+              <a href="https://prompthub-free.duckdns.org/" target="_blank" rel="noopener noreferrer" class="project-link">
+                <i class="fas fa-external-link-alt" aria-hidden="true"></i> View Live Site
               </a>
             </div>
-          </div>
+          </article>
 
-          <div class="project-card">
-            <div class="project-image">
-              <img
-                src="./images/todo.png?w=600&h=400&fit=crop"
-                alt="AWS Todo App Deployment"
-              />
-
-              <a
-                href="https://github.com/RITH-1437/todo_app"
-                target="_blank"
-                class="project-github-link"
-              >
-                <i class="fab fa-github"></i>
+          <article class="project-card" data-animate="fade-up">
+            <div class="project-img">
+              <img src="./images/todo.png" alt="AWS Todo App screenshot" loading="lazy" width="600" height="340" />
+              <a href="https://github.com/RITH-1437/todo_app" target="_blank" rel="noopener noreferrer" class="project-gh-btn" aria-label="View Todo App on GitHub">
+                <i class="fab fa-github" aria-hidden="true"></i>
               </a>
             </div>
-
-            <div class="project-content">
-              <div class="project-meta">
-                <h3>AWS Todo App Deployment</h3>
-                <span class="project-date">05/2026 – 06/2026</span>
+            <div class="project-body">
+              <div class="project-top">
+                <div>
+                  <span class="project-date">05/2026 – 06/2026</span>
+                  <h3>AWS Todo App Deployment</h3>
+                </div>
+                <span class="project-status project-status--live">Live</span>
               </div>
-
-              <p>
-                Developed and deployed a full-stack Todo Management web
-                application using PHP and MySQL on AWS EC2. Implemented secure
-                authentication, task management, comments system, profile
-                management, and responsive dashboard UI. Configured Apache2
-                server, Linux environment, SSL HTTPS certification, domain
-                integration, and GitHub deployment workflow. Managed production
-                debugging, database configuration, and cloud deployment
-                infrastructure in a real-world hosting environment.
-              </p>
-
+              <p>Full-stack todo management app deployed on AWS EC2 with Apache2, SSL, custom domain, and GitHub deployment workflow. Features auth, comments, and profile management.</p>
               <div class="project-tech">
-                <span>PHP</span>
-                <span>MySQL</span>
-                <span>AWS EC2</span>
-                <span>Apache2</span>
-                <span>Linux</span>
-                <span>TailwindCSS</span>
-                <span>GitHub</span>
-                <span>SSL/HTTPS</span>
+                <span>PHP</span><span>MySQL</span><span>AWS EC2</span><span>Apache2</span><span>TailwindCSS</span><span>SSL/HTTPS</span>
               </div>
             </div>
-
-            <div class="project-link-container">
-              <a
-                href="http://todo-2-friends.duckdns.org/"
-                target="_blank"
-                class="project-link-btn"
-              >
-                <i class="fas fa-external-link-alt"></i> View Live Site
+            <div class="project-footer">
+              <a href="http://todo-2-friends.duckdns.org/" target="_blank" rel="noopener noreferrer" class="project-link">
+                <i class="fas fa-external-link-alt" aria-hidden="true"></i> View Live Site
               </a>
             </div>
-          </div>
+          </article>
 
-          <div class="project-card">
-            <div class="project-image">
-              <img
-                src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=600&h=400&fit=crop"
-                alt="Coffee Aroma"
-              />
-              <a
-                href="https://github.com/RITH-1437/coffee_aroma_spring.git"
-                target="_blank"
-                class="project-github-link"
-              >
-                <i class="fab fa-github"></i>
+          <article class="project-card" data-animate="fade-up">
+            <div class="project-img">
+              <img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=600&h=340&fit=crop" alt="Coffee Aroma web application screenshot" loading="lazy" width="600" height="340" />
+              <a href="https://github.com/RITH-1437/coffee_aroma_spring.git" target="_blank" rel="noopener noreferrer" class="project-gh-btn" aria-label="View Coffee Aroma on GitHub">
+                <i class="fab fa-github" aria-hidden="true"></i>
               </a>
             </div>
-            <div class="project-content">
-              <div class="project-meta">
-                <h3>Coffee Aroma Full Stack Web Application</h3>
-                <span class="project-date">07/2025 – 10/2025</span>
+            <div class="project-body">
+              <div class="project-top">
+                <div>
+                  <span class="project-date">07/2025 – 10/2025</span>
+                  <h3>Coffee Aroma Full Stack App</h3>
+                </div>
               </div>
-              <p>
-                Built a full-stack coffee ordering system using Spring Boot and
-                MySQL. Integrated Telegram Bot API for real-time order
-                notifications. Developed core features: product catalog, cart,
-                order management, and reviews. Designed a normalized relational
-                database with multiple tables and constraints. Created a
-                frontend and admin dashboard using HTML, CSS, and JavaScript.
-              </p>
+              <p>Full-stack coffee ordering system with Spring Boot and MySQL. Integrated Telegram Bot API for real-time order notifications, product catalog, cart, and admin dashboard.</p>
               <div class="project-tech">
-                <span>Spring Boot</span>
-                <span>MySQL</span>
-                <span>Telegram Bot API</span>
-                <span>HTML/CSS/JS</span>
+                <span>Spring Boot</span><span>MySQL</span><span>Telegram Bot API</span><span>HTML/CSS/JS</span>
               </div>
             </div>
-          </div>
+          </article>
 
-          <div class="project-card">
-            <div class="project-image">
-              <img
-                src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=600&h=400&fit=crop"
-                alt="CPU Scheduling Visualizer"
-              />
-              <a
-                href="https://github.com/RITH-1437/cpu-scheduling"
-                target="_blank"
-                class="project-github-link"
-              >
-                <i class="fab fa-github"></i>
+          <article class="project-card" data-animate="fade-up">
+            <div class="project-img">
+              <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=600&h=340&fit=crop" alt="CPU Scheduling Visualizer screenshot" loading="lazy" width="600" height="340" />
+              <a href="https://github.com/RITH-1437/cpu-scheduling" target="_blank" rel="noopener noreferrer" class="project-gh-btn" aria-label="View CPU Scheduler on GitHub">
+                <i class="fab fa-github" aria-hidden="true"></i>
               </a>
             </div>
-            <div class="project-content">
-              <div class="project-meta">
-                <h3>CPU Scheduling Visualizer</h3>
-                <span class="project-date">01/2025 – 02/2025</span>
+            <div class="project-body">
+              <div class="project-top">
+                <div>
+                  <span class="project-date">01/2025 – 02/2025</span>
+                  <h3>CPU Scheduling Visualizer</h3>
+                </div>
               </div>
-              <p>
-                Developed an interactive CPU Scheduling simulator for Operating
-                Systems concepts. Implemented scheduling algorithms including
-                FCFS, SJF, Round Robin, and Priority Scheduling. Visualized
-                process execution and scheduling behavior in real time. Built
-                responsive UI using modern frontend technologies. Configured
-                GitHub Pages deployment and CI/CD workflow.
-              </p>
+              <p>Interactive CPU scheduling simulator implementing FCFS, SJF, Round Robin, and Priority algorithms with real-time visualisation. Deployed on GitHub Pages.</p>
               <div class="project-tech">
-                <span>JavaScript</span>
-                <span>HTML/CSS</span>
-                <span>OS Algorithms</span>
-                <span>GitHub Pages</span>
+                <span>JavaScript</span><span>HTML/CSS</span><span>OS Algorithms</span><span>GitHub Pages</span>
               </div>
             </div>
-          </div>
+          </article>
 
-          <div class="project-card">
-            <div class="project-image">
-              <img
-                src="https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?w=600&h=400&fit=crop"
-                alt="File Extension Validator"
-              />
-              <a
-                href="https://github.com/RITH-1437/File_Extension.git"
-                target="_blank"
-                class="project-github-link"
-              >
-                <i class="fab fa-github"></i>
+          <article class="project-card" data-animate="fade-up">
+            <div class="project-img">
+              <img src="https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?w=600&h=340&fit=crop" alt="File Extension Validator screenshot" loading="lazy" width="600" height="340" />
+              <a href="https://github.com/RITH-1437/File_Extension.git" target="_blank" rel="noopener noreferrer" class="project-gh-btn" aria-label="View File Validator on GitHub">
+                <i class="fab fa-github" aria-hidden="true"></i>
               </a>
             </div>
-            <div class="project-content">
-              <div class="project-meta">
-                <h3>File Extension Validator</h3>
-                <span class="project-date">11/2025 – 12/2025</span>
+            <div class="project-body">
+              <div class="project-top">
+                <div>
+                  <span class="project-date">11/2025 – 12/2025</span>
+                  <h3>File Extension Validator</h3>
+                </div>
               </div>
-              <p>
-                Developed a mini validation tool to analyze and verify file
-                names and extensions. Implemented validation rules for missing
-                names, invalid formats, and unsupported extensions. Practiced
-                pattern matching and input validation using Java and regular
-                expressions. Built simple GUI-based interaction for testing file
-                validation scenarios.
-              </p>
+              <p>Mini Java tool to validate file names and extensions using regular expressions, with GUI interaction for testing edge cases and invalid format detection.</p>
               <div class="project-tech">
-                <span>Java</span>
-                <span>Regular Expressions</span>
-                <span>GUI</span>
-                <span>Validation</span>
+                <span>Java</span><span>Regex</span><span>GUI</span><span>Validation</span>
               </div>
             </div>
-          </div>
+          </article>
+
         </div>
-
-        <div class="projects-footer">
-          <a
-            href="https://github.com/RITH-1437"
-            class="btn btn-primary"
-            target="_blank"
-          >
-            <i class="fab fa-github"></i>
-            View All Projects on GitHub
+        <div class="projects-cta" data-animate="fade-up">
+          <a href="https://github.com/RITH-1437" target="_blank" rel="noopener noreferrer" class="btn btn-ghost">
+            <i class="fab fa-github" aria-hidden="true"></i> View All on GitHub
           </a>
         </div>
       </div>
     </section>
 
-    <!-- Contact Section -->
-    <section id="contact" class="contact">
+
+    <!-- Contact -->
+    <section id="contact" class="contact section">
       <div class="container">
-        <div class="section-header">
-          <h2>Let's Work Together</h2>
-          <p>
-            Ready to start your next project? Let's discuss how I can help bring
-            your ideas to life
-          </p>
-        </div>
+        <div class="section-label" data-animate="fade-up">Contact</div>
+        <h2 class="section-title" data-animate="fade-up">Let's work together</h2>
+        <div class="contact-grid">
 
-        <div class="contact-content">
-          <div class="contact-info">
-            <h3>Get In Touch</h3>
-            <p>
-              I'm always interested in new opportunities and exciting projects.
-              Whether you're a company looking to hire, or you're looking for a
-              developer to work with, I'd love to hear from you.
-            </p>
-
-            <div class="contact-details">
-              <div class="contact-item">
-                <i class="fas fa-envelope"></i>
+          <div class="contact-info" data-animate="fade-up">
+            <p class="contact-desc">I'm open to full-time roles, freelance projects, and collaboration. Whether you have a specific idea or just want to connect — reach out.</p>
+            <div class="contact-items">
+              <a href="mailto:nairithrin143@gmail.com" class="contact-item">
+                <span class="contact-icon"><i class="fas fa-envelope" aria-hidden="true"></i></span>
                 <div>
-                  <h4>Email</h4>
-                  <p>nairithrin143@gmail.com</p>
+                  <span class="contact-label">Email</span>
+                  <span class="contact-val">nairithrin143@gmail.com</span>
                 </div>
-              </div>
-              <div class="contact-item">
-                <i class="fas fa-phone"></i>
+              </a>
+              <a href="tel:+85596627314" class="contact-item">
+                <span class="contact-icon"><i class="fas fa-phone" aria-hidden="true"></i></span>
                 <div>
-                  <h4>Phone</h4>
-                  <p>+855 96 62 73 314</p>
+                  <span class="contact-label">Phone</span>
+                  <span class="contact-val">+855 96 62 73 314</span>
                 </div>
-              </div>
-              <div
-                class="contact-item location-item"
-                onclick="openLocationModal()"
-              >
-                <i class="fas fa-map-marker-alt"></i>
+              </a>
+              <button class="contact-item location-btn" onclick="openLocationModal()" aria-label="View location on map">
+                <span class="contact-icon"><i class="fas fa-map-marker-alt" aria-hidden="true"></i></span>
                 <div>
-                  <h4>Location</h4>
-                  <p>Phnom Penh, Cambodia</p>
-                  <small>Click to view on map</small>
+                  <span class="contact-label">Location</span>
+                  <span class="contact-val">Phnom Penh, Cambodia <span class="contact-hint">↗ map</span></span>
                 </div>
-              </div>
+              </button>
             </div>
-
-            <div class="social-links">
-              <a
-                href="https://github.com/nairithrin"
-                target="_blank"
-                title="GitHub"
-              >
-                <i class="fab fa-github"></i>
-              </a>
-              <a href="https://t.me/rith1506" target="_blank" title="LinkedIn">
-                <i class="fab fa-telegram"></i>
-              </a>
-              <a
-                href="https://web.facebook.com/nairith.rin.2025/"
-                target="_blank"
-                title="Facebook"
-              >
-                <i class="fab fa-facebook"></i>
-              </a>
-              <a href="mailto:nairithrin143@gmail.com" title="Email">
-                <i class="fas fa-envelope"></i>
-              </a>
+            <div class="contact-socials">
+              <a href="https://github.com/RITH-1437" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><i class="fab fa-github" aria-hidden="true"></i></a>
+              <a href="https://t.me/rith1506" target="_blank" rel="noopener noreferrer" aria-label="Telegram"><i class="fab fa-telegram" aria-hidden="true"></i></a>
+              <a href="https://web.facebook.com/nairith.rin.2025/" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><i class="fab fa-facebook" aria-hidden="true"></i></a>
+              <a href="https://www.linkedin.com/in/nairith-rin-4889933b3/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><i class="fab fa-linkedin" aria-hidden="true"></i></a>
             </div>
           </div>
 
-          <div class="contact-form-container">
-            <form class="contact-form" id="contact-form">
-              <div class="form-group">
-                <label for="name">Name</label>
-                <input type="text" id="name" name="name" required />
+          <div class="contact-form-wrap" data-animate="fade-left">
+            <form class="contact-form" id="contact-form" novalidate>
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="name">Name</label>
+                  <input type="text" id="name" name="name" placeholder="Your name" autocomplete="name" required />
+                </div>
+                <div class="form-group">
+                  <label for="email">Email</label>
+                  <input type="email" id="email" name="email" placeholder="your@email.com" autocomplete="email" required />
+                </div>
               </div>
-
-              <div class="form-group">
-                <label for="email">Email</label>
-                <input type="email" id="email" name="email" required />
-              </div>
-
               <div class="form-group">
                 <label for="subject">Subject</label>
-                <input type="text" id="subject" name="subject" required />
+                <input type="text" id="subject" name="subject" placeholder="What's this about?" required />
               </div>
-
               <div class="form-group">
                 <label for="message">Message</label>
-                <textarea
-                  id="message"
-                  name="message"
-                  rows="5"
-                  required
-                ></textarea>
+                <textarea id="message" name="message" rows="5" placeholder="Tell me about your project..." required></textarea>
               </div>
-
-              <button type="submit" class="btn btn-primary">
+              <button type="submit" class="btn btn-primary btn-full">
                 <span>Send Message</span>
-                <i class="fas fa-paper-plane"></i>
+                <i class="fas fa-paper-plane" aria-hidden="true"></i>
               </button>
             </form>
           </div>
+
         </div>
       </div>
     </section>
@@ -810,76 +542,51 @@
     <!-- Footer -->
     <footer class="footer" id="site-footer" aria-label="Site footer">
       <div class="footer-inner">
-
-        <!-- ASCII Identity -->
         <div class="footer-brand" aria-label="RIN NAIRITH ASCII logo">
-          <pre class="footer-ascii" aria-hidden="true">
- ██████╗ ██╗███╗  ██╗    ███╗  ██╗ █████╗ ██╗██████╗ ██╗████████╗██╗  ██╗
+          <pre class="footer-ascii" aria-hidden="true"> ██████╗ ██╗███╗  ██╗    ███╗  ██╗ █████╗ ██╗██████╗ ██╗████████╗██╗  ██╗
  ██╔══██╗██║████╗ ██║    ████╗ ██║██╔══██╗██║██╔══██╗██║╚══██╔══╝██║  ██║
  ██████╔╝██║██╔██╗██║    ██╔██╗██║███████║██║██████╔╝██║   ██║   ███████║
  ██╔══██╗██║██║╚████║    ██║╚████║██╔══██║██║██╔══██╗██║   ██║   ██╔══██║
  ██║  ██║██║██║ ╚███║    ██║ ╚███║██║  ██║██║██║  ██║██║   ██║   ██║  ██║
  ╚═╝  ╚═╝╚═╝╚═╝  ╚══╝   ╚═╝  ╚══╝╚═╝  ╚═╝╚═╝╚═╝  ╚═╝╚═╝   ╚═╝   ╚═╝  ╚═╝</pre>
         </div>
-
-        <!-- Divider -->
         <div class="footer-divider" aria-hidden="true"></div>
-
-        <!-- Bottom row -->
         <div class="footer-bottom">
-          <p class="footer-tagline">
-            Full Stack Developer&nbsp;&nbsp;·&nbsp;&nbsp;UI/UX Enthusiast&nbsp;&nbsp;·&nbsp;&nbsp;Problem Solver
-          </p>
-          <p class="footer-copy">
-            © 2026 RIN NAIRITH&nbsp;&nbsp;·&nbsp;&nbsp;Building modern web experiences.
-          </p>
+          <p class="footer-tagline">Full Stack Developer &nbsp;·&nbsp; UI/UX Enthusiast &nbsp;·&nbsp; Problem Solver</p>
+          <p class="footer-copy">© 2026 RIN NAIRITH &nbsp;·&nbsp; Building modern web experiences.</p>
         </div>
-
       </div>
     </footer>
 
-    <!-- Back to Top Button -->
-    <button class="back-to-top" id="back-to-top">
-      <i class="fas fa-chevron-up"></i>
+    <!-- Back to top -->
+    <button class="back-to-top" id="back-to-top" aria-label="Scroll to top">
+      <i class="fas fa-chevron-up" aria-hidden="true"></i>
     </button>
 
-    <!-- Particles Background -->
-    <div id="particles-js"></div>
+    <!-- Scroll progress bar -->
+    <div class="scroll-progress" id="scroll-progress" aria-hidden="true"></div>
+
+    <!-- Particles -->
+    <div id="particles-js" aria-hidden="true"></div>
 
     <!-- Location Modal -->
-    <div id="locationModal" class="modal">
+    <div id="locationModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
       <div class="modal-content">
         <div class="modal-header">
-          <h3><i class="fas fa-map-marker-alt"></i> My Location</h3>
-          <span class="close" onclick="closeLocationModal()">&times;</span>
+          <h3 id="modal-title"><i class="fas fa-map-marker-alt" aria-hidden="true"></i> My Location</h3>
+          <button class="modal-close" onclick="closeLocationModal()" aria-label="Close modal">&times;</button>
         </div>
         <div class="modal-body">
-          <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4198.843065409815!2d104.89550541087388!3d11.5704027439993!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3109517388680e15%3A0x63057e6682968f5!2sInstitute%20of%20Technology%20of%20Cambodia!5e1!3m2!1sen!2skh!4v1760153926110!5m2!1sen!2skh"
-            width="100%"
-            height="400"
-            style="border: 0"
-            allowfullscreen=""
-            loading="lazy"
-            referrerpolicy="no-referrer-when-downgrade"
-          >
-          </iframe>
+          <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4198.843065409815!2d104.89550541087388!3d11.5704027439993!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3109517388680e15%3A0x63057e6682968f5!2sInstitute%20of%20Technology%20of%20Cambodia!5e1!3m2!1sen!2skh!4v1760153926110!5m2!1sen!2skh"
+            width="100%" height="380" style="border:0" allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Map showing Institute of Technology of Cambodia"></iframe>
           <div class="location-info">
-            <h4>Institute of Technology of Cambodia</h4>
+            <p><strong>Institute of Technology of Cambodia</strong></p>
             <p>Phnom Penh, Cambodia</p>
-            <a
-              href="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4198.843065409815!2d104.89550541087388!3d11.5704027439993!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3109517388680e15%3A0x63057e6682968f5!2sInstitute%20of%20Technology%20of%20Cambodia!5e1!3m2!1sen!2skh!4v1760153926110!5m2!1sen!2skh"
-              target="_blank"
-              class="btn btn-primary"
-            >
-              <i class="fas fa-external-link-alt"></i> Open in Google Maps
-            </a>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
     <script src="script.js"></script>

@@ -992,3 +992,61 @@ setTimeout(addFloatingAnimation, 1000);
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = { Portfolio, Utils, InteractiveFeatures, PerformanceOptimizer, CursorEffect };
 }
+
+// ─────────────────────────────────────────────────────────────────
+// Footer — scroll-triggered entrance + blinking-cursor effect
+// ─────────────────────────────────────────────────────────────────
+(function initFooterAnimation() {
+  'use strict';
+
+  const footer = document.getElementById('site-footer');
+  if (!footer) return;
+
+  // Respect prefers-reduced-motion: skip JS animation,
+  // the CSS already makes the footer fully visible via media query.
+  const prefersReducedMotion =
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (!prefersReducedMotion) {
+    // Fade-in + slide-up on scroll
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            footer.classList.add('footer--visible');
+            observer.unobserve(footer); // fire once
+          }
+        });
+      },
+      { threshold: 0.15 }
+    );
+    observer.observe(footer);
+  }
+
+  // Blinking cursor appended to the copyright line
+  const copyEl = footer.querySelector('.footer-copy');
+  if (copyEl && !prefersReducedMotion) {
+    const cursor = document.createElement('span');
+    cursor.setAttribute('aria-hidden', 'true');
+    cursor.style.cssText = [
+      'display:inline-block',
+      'width:2px',
+      'height:0.85em',
+      'background:currentColor',
+      'margin-left:4px',
+      'vertical-align:middle',
+      'opacity:1',
+      'animation:footer-cursor-blink 1.1s step-start infinite',
+    ].join(';');
+    copyEl.appendChild(cursor);
+
+    // Inject the keyframes once
+    if (!document.getElementById('footer-cursor-style')) {
+      const style = document.createElement('style');
+      style.id = 'footer-cursor-style';
+      style.textContent =
+        '@keyframes footer-cursor-blink{0%,100%{opacity:1}50%{opacity:0}}';
+      document.head.appendChild(style);
+    }
+  }
+})();

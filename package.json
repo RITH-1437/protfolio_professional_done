@@ -7,7 +7,7 @@
     "dev": "npx serve . -p 3000"
   },
   "keywords": ["portfolio", "website"],
-  "author": "",
+  "author": "RIN NAIRITH",
   "license": "MIT",
   "devDependencies": {
     "dotenv": "^16.0.0"

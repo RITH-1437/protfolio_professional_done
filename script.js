@@ -193,10 +193,9 @@ class Portfolio {
         if (!typingElement) return;
 
         const roles = [
-  'Full Stack Web Developer',
+  'Software Developer',
   'Frontend Developer',
   'Backend Developer',
-  'Software Engineer',
   'Computer Science Student',
   'Web Application Developer',
   'API Developer',
@@ -208,6 +207,7 @@ class Portfolio {
   'System Design Enthusiast',
   'Java Spring Boot Developer',
   'Future AI Engineer',
+  'Founder of ZeroPing Framework'
 ];
 
         let roleIndex = 0;
@@ -383,7 +383,7 @@ class Portfolio {
 
         // Add animation to cards and sections
         const elementsToAnimate = document.querySelectorAll(
-            '.project-card, .blog-card, .skill-category, .about-highlights .highlight-item, .contact-item'
+            '.project-card, .blog-card, .skill-category, .about-highlights .highlight-item, .contact-item, .exp-item'
         );
 
         elementsToAnimate.forEach(element => {

@@ -1781,7 +1781,7 @@ body::before {
 /* Footer */
 .footer {
     background: var(--bg-secondary);
-    padding: 60px 0 20px;
+    padding: 60px 0;
     border-top: 1px solid rgba(90, 103, 216, 0.12);
 }
 
@@ -1862,17 +1862,6 @@ body::before {
     height: 50px;
 }
 
-.footer-bottom {
-    text-align: center;
-    padding-top: 2rem;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-    color: var(--text-secondary);
-    font-size: 0.9rem;
-}
-
-.footer-bottom i {
-    color: #ef4444;
-}
 
 /* Back to Top Button */
 .back-to-top {

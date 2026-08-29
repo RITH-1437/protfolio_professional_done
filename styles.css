@@ -1009,6 +1009,11 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   color: var(--clr-green);
   border: 1px solid rgba(63,185,80,0.3);
 }
+.project-status--unavailable {
+  background: rgba(110,118,129,0.12);
+  color: var(--clr-text-3);
+  border: 1px solid rgba(110,118,129,0.35);
+}
 
 .project-tech {
   display: flex;
@@ -1053,6 +1058,15 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   color: var(--clr-text);
   border-color: var(--clr-border-hover);
   background: var(--clr-bg-2);
+}
+.project-link--disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+.project-link--disabled:hover {
+  color: var(--clr-text-2);
+  border-color: var(--clr-border);
+  background: transparent;
 }
 
 .projects-cta { text-align: center; }

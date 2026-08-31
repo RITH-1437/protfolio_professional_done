@@ -49,7 +49,10 @@ vercel --prod
 ## How it works
 
 - **Static site**: served from the repo root (`index.html`, `styles.css`,
-  `script.js`, `images/`, `assets/`) via `vercel.json` static builds.
+  `script.js`, `images/`, `assets/`) via Vercel's zero-config static hosting.
+- **API function**: `vercel.json` uses the `functions` field to build
+  `api/send-email.js` with the Node.js runtime; Vercel exposes it at
+  `/api/send-email` automatically.
 - **Contact form** (`script.js`): on submit, `fetch('/api/send-email', ...)` is called.
 - **`api/send-email.js`**: a serverless function that validates the payload and
   calls the Resend API with `RESEND_API_KEY`.
@@ -58,6 +61,16 @@ vercel --prod
   the live site serves from the root).
 
 ## Troubleshooting
+
+### 404 on `/api/send-email` (form fails to send)
+The serverless function is not deployed. Causes and fixes:
+- Make sure `api/send-email.js` and `vercel.json` are committed and pushed.
+- **Redeploy** the project in Vercel after pushing — any deploy built before the
+  `api/` folder existed won't include the function.
+- Confirm the deployment's build log shows the function being built.
+- After deploying, verify with:
+  `curl -X POST https://<your-site>.vercel.app/api/send-email -H "Content-Type: application/json" -d '{}'`
+  (you should get a validation error like 400/500, NOT 404).
 
 ### "Resend API key is not configured"
 `RESEND_API_KEY` is unset in Vercel → add it and redeploy.

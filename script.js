@@ -550,8 +550,8 @@ function initCursor() {
     glow.style.transform = `translate(${x}px, ${y}px) translate(-50%, -50%)`;
   }
   function setPoint(x, y) {
-    /* tip (top-right corner of the caret) sits exactly on the cursor */
-    point.style.transform = `translate(${x - 20}px, ${y}px)`;
+    /* tip (top-left corner of the caret) sits exactly on the cursor */
+    point.style.transform = `translate(${x - 24}px, ${y}px)`;
   }
 
   function loop() {

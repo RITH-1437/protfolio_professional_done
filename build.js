@@ -19,7 +19,7 @@ fs.copyFileSync(inputFile, outputFile);
 console.log('✓ Copied index.html');
 
 // Copy other files and the images folder to dist
-const rootFilesToCopy = ['styles.css', 'script.js', 'README.md'];
+const rootFilesToCopy = ['styles.css', 'script.js', 'README.md', 'robots.txt', 'sitemap.xml'];
 rootFilesToCopy.forEach(file => {
     const srcPath = path.join(__dirname, file);
     const destPath = path.join(outputDir, file);

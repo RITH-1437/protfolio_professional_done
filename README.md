@@ -22,11 +22,14 @@ A modern, professional portfolio website showcasing my skills, services, and pro
 ## 📂 Structure
 
 ```
-├── index.html      # Main HTML file
+├── index.html      # Main HTML file (metadata, structured data, content)
 ├── styles.css      # Styling and animations
 ├── script.js       # Interactive functionality
-├── build.js        # Build script (injects env vars, copies assets → dist/)
+├── build.js        # Build script (copies assets → dist/)
 ├── images/         # Project and profile images
+├── assets/         # Favicons and site manifest
+├── robots.txt      # Search-engine crawl rules (served at site root)
+├── sitemap.xml     # Search-engine sitemap (served at site root)
 └── README.md       # This file
 ```
 

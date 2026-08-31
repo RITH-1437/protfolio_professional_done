@@ -528,7 +528,8 @@ function initCursor() {
   const dot  = $('.cursor-dot');
   const ring = $('.cursor-ring');
   const glow = $('.cursor-glow');
-  if (!dot || !ring || !glow) return;
+  const point = $('.cursor-point');
+  if (!dot || !ring || !glow || !point) return;
 
   document.body.classList.add('custom-cursor');
 
@@ -548,6 +549,10 @@ function initCursor() {
   function setGlow(x, y) {
     glow.style.transform = `translate(${x}px, ${y}px) translate(-50%, -50%)`;
   }
+  function setPoint(x, y) {
+    /* tip (top-right corner of the caret) sits exactly on the cursor */
+    point.style.transform = `translate(${x - 20}px, ${y}px)`;
+  }
 
   function loop() {
     ringX += (mouseX - ringX) * 0.18;
@@ -563,6 +568,7 @@ function initCursor() {
     mouseX = e.clientX;
     mouseY = e.clientY;
     setDot(mouseX, mouseY);
+    setPoint(mouseX, mouseY);
 
     if (!visible) {
       visible = true;
@@ -580,7 +586,7 @@ function initCursor() {
     const nowHovering = !!target;
     if (nowHovering !== hovering) {
       hovering = nowHovering;
-      ring.classList.toggle('cursor-hover', hovering);
+      document.body.classList.toggle('cursor-hovering', hovering);
     }
   }, { passive: true });
 

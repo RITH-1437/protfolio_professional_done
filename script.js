@@ -230,6 +230,82 @@ function initScrollAnimations() {
 }
 
 /* =============================================================
+   PROJECTS PAGINATION (6 per page)
+   ============================================================= */
+function initProjectsPagination() {
+  const grid = $('.projects-grid');
+  const pagination = $('#projects-pagination');
+  if (!grid || !pagination) return;
+
+  const cards   = $$('.project-card', grid);
+  const perPage = 6;
+  const pages   = Math.max(1, Math.ceil(cards.length / perPage));
+
+  const pagesWrap = $('#pagination-pages');
+  const prevBtn   = $('#pagination-prev');
+  const nextBtn   = $('#pagination-next');
+
+  let current = 1;
+
+  function reveal(card) {
+    card.classList.add('is-visible');
+  }
+
+  function render() {
+    let idx = 0;
+    cards.forEach((card, i) => {
+      const page = Math.floor(i / perPage) + 1;
+      const show = page === current;
+      card.classList.toggle('hidden', !show);
+      if (show) {
+        card.style.order = String(idx++);
+        reveal(card);
+      }
+    });
+
+    /* rebuild page number buttons */
+    pagesWrap.innerHTML = '';
+    for (let p = 1; p <= pages; p++) {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'pagination-page' + (p === current ? ' active' : '');
+      btn.textContent = String(p);
+      btn.setAttribute('aria-label', `Page ${p}`);
+      btn.setAttribute('aria-current', p === current ? 'page' : 'false');
+      btn.addEventListener('click', () => {
+        current = p;
+        render();
+        scrollPaginationIntoView();
+      });
+      pagesWrap.appendChild(btn);
+    }
+
+    prevBtn.disabled = current === 1;
+    nextBtn.disabled = current === pages;
+    prevBtn.setAttribute('aria-disabled', String(current === 1));
+    nextBtn.setAttribute('aria-disabled', String(current === pages));
+  }
+
+  function scrollPaginationIntoView() {
+    const rect = pagination.getBoundingClientRect();
+    const alreadyVisible = rect.top >= 0 && rect.bottom <= window.innerHeight;
+    if (!alreadyVisible) {
+      const top = pagination.offsetTop - 80;
+      window.scrollTo({ top, behavior: 'smooth' });
+    }
+  }
+
+  prevBtn?.addEventListener('click', () => {
+    if (current > 1) { current--; render(); scrollPaginationIntoView(); }
+  });
+  nextBtn?.addEventListener('click', () => {
+    if (current < pages) { current++; render(); scrollPaginationIntoView(); }
+  });
+
+  render();
+}
+
+/* =============================================================
    BACK TO TOP
    ============================================================= */
 function initBackToTop() {
@@ -450,6 +526,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initNavbar();
   initTyping();
   initScrollAnimations();
+  initProjectsPagination();
   initBackToTop();
   initFooter();
   initParticles();

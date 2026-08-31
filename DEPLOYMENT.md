@@ -43,16 +43,18 @@ vercel --prod
 
 #### Option B: Via Git
 1. Push the repository to GitHub/GitLab/Bitbucket.
-2. Import it in the Vercel dashboard — Vercel auto-builds using `vercel.json`.
+2. Import it in the Vercel dashboard — Vercel auto-detects the static site and
+   the `api/` serverless function (no `vercel.json` needed).
 3. Add the environment variables above before/after deploy, then redeploy.
 
 ## How it works
 
 - **Static site**: served from the repo root (`index.html`, `styles.css`,
   `script.js`, `images/`, `assets/`) via Vercel's zero-config static hosting.
-- **API function**: `vercel.json` uses the `functions` field to build
-  `api/send-email.js` with the Node.js runtime; Vercel exposes it at
-  `/api/send-email` automatically.
+- **API function**: Vercel's zero-config auto-detects `api/send-email.js` and
+  builds it as a serverless function with the default Node runtime, exposing it
+  at `/api/send-email`. **No `vercel.json` is required** — adding one with a
+  custom `runtime` can break the build.
 - **Contact form** (`script.js`): on submit, `fetch('/api/send-email', ...)` is called.
 - **`api/send-email.js`**: a serverless function that validates the payload and
   calls the Resend API with `RESEND_API_KEY`.
@@ -64,9 +66,12 @@ vercel --prod
 
 ### 404 on `/api/send-email` (form fails to send)
 The serverless function is not deployed. Causes and fixes:
-- Make sure `api/send-email.js` and `vercel.json` are committed and pushed.
+- Make sure `api/send-email.js` is committed and pushed.
 - **Redeploy** the project in Vercel after pushing — any deploy built before the
   `api/` folder existed won't include the function.
+- Ensure there is **no `vercel.json`** in the repo; a `functions.runtime` value
+  there causes the "Function Runtimes must have a valid version" build error and
+  prevents the function from deploying.
 - Confirm the deployment's build log shows the function being built.
 - After deploying, verify with:
   `curl -X POST https://<your-site>.vercel.app/api/send-email -H "Content-Type: application/json" -d '{}'`
@@ -86,8 +91,10 @@ An unverified sender is being used. Either:
   an address on that domain.
 
 ### Build/static assets not loading
-Make sure `vercel.json`, `api/send-email.js`, and the root static files are all
-committed, and that the project build command is `node build.js`.
+Make sure `api/send-email.js` and the root static files are all committed.
+Do **not** commit a `vercel.json` (its build config breaks both static serving
+and the API function on current Vercel). The project build command is
+`node build.js`.
 
 ## Local Development
 

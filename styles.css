@@ -1530,6 +1530,79 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 [data-theme="light"] .footer-nav a    { color: rgba(74,85,104,0.6); }
 
 /* ============================================================
+   CUSTOM CURSOR
+   ============================================================ */
+@media (hover: hover) and (pointer: fine) {
+  body.custom-cursor,
+  body.custom-cursor a,
+  body.custom-cursor button,
+  body.custom-cursor .btn,
+  body.custom-cursor .project-link,
+  body.custom-cursor .nav-link,
+  body.custom-cursor .footer-nav a,
+  body.custom-cursor .footer-cta-link,
+  body.custom-cursor .pagination-btn,
+  body.custom-cursor .pagination-page,
+  body.custom-cursor .theme-toggle,
+  body.custom-cursor .hamburger {
+    cursor: none;
+  }
+
+  .cursor-dot,
+  .cursor-ring {
+    position: fixed;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    border-radius: 50%;
+    z-index: 12000;
+    opacity: 0;
+    will-change: transform;
+  }
+
+  .cursor-dot {
+    width: 7px;
+    height: 7px;
+    background: var(--clr-accent);
+    transform: translate(-50%, -50%);
+    transition: opacity var(--dur-base) var(--ease);
+  }
+
+  .cursor-ring {
+    width: 34px;
+    height: 34px;
+    border: 1.5px solid var(--clr-accent);
+    transform: translate(-50%, -50%);
+    transition: width var(--dur-base) var(--ease),
+                height var(--dur-base) var(--ease),
+                border-color var(--dur-base) var(--ease),
+                background var(--dur-base) var(--ease),
+                opacity var(--dur-base) var(--ease);
+  }
+
+  body.custom-cursor.visible .cursor-dot,
+  body.custom-cursor.visible .cursor-ring {
+    opacity: 1;
+  }
+
+  /* Hover state over interactive elements */
+  body.custom-cursor .cursor-ring.cursor-hover {
+    width: 56px;
+    height: 56px;
+    border-color: var(--clr-accent-2);
+    background: rgba(99,102,241,0.12);
+  }
+}
+
+/* Never show the custom cursor on touch devices */
+@media (hover: none), (pointer: coarse) {
+  .cursor-dot,
+  .cursor-ring {
+    display: none;
+  }
+}
+
+/* ============================================================
    BACK TO TOP
    ============================================================ */
 .back-to-top {

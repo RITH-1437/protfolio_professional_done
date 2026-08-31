@@ -519,6 +519,69 @@ window.addEventListener('resize', debounce(() => {
 }, 300));
 
 /* =============================================================
+   CUSTOM CURSOR
+   ============================================================= */
+function initCursor() {
+  const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+  if (!finePointer || prefersReducedMotion) return;
+
+  const dot  = $('.cursor-dot');
+  const ring = $('.cursor-ring');
+  if (!dot || !ring) return;
+
+  document.body.classList.add('custom-cursor');
+
+  let mouseX = -100, mouseY = -100;
+  let ringX = -100,  ringY = -100;
+  let visible = false;
+  let rafId = null;
+  let hovering = false;
+
+  function setDot(x, y) {
+    dot.style.transform = `translate(${x}px, ${y}px) translate(-50%, -50%)`;
+  }
+  function setRing(x, y) {
+    ring.style.transform = `translate(${x}px, ${y}px) translate(-50%, -50%)`;
+  }
+
+  function loop() {
+    ringX += (mouseX - ringX) * 0.18;
+    ringY += (mouseY - ringY) * 0.18;
+    setRing(ringX, ringY);
+    rafId = requestAnimationFrame(loop);
+  }
+
+  document.addEventListener('mousemove', e => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+    setDot(mouseX, mouseY);
+
+    if (!visible) {
+      visible = true;
+      document.body.classList.add('visible');
+      ringX = mouseX;
+      ringY = mouseY;
+      setRing(ringX, ringY);
+      loop();
+    }
+
+    const target = e.target.closest('a, button, .btn, .project-link, .project-gh-btn, .chip, .highlight-item, .service-card, .skill-group, input, textarea, [role="button"]');
+    const nowHovering = !!target;
+    if (nowHovering !== hovering) {
+      hovering = nowHovering;
+      ring.classList.toggle('cursor-hover', hovering);
+    }
+  }, { passive: true });
+
+  document.addEventListener('mouseleave', () => {
+    visible = false;
+    document.body.classList.remove('visible');
+    if (rafId) cancelAnimationFrame(rafId);
+    rafId = null;
+  });
+}
+
+/* =============================================================
    BOOT — initialise everything after DOM ready
    ============================================================= */
 document.addEventListener('DOMContentLoaded', () => {
@@ -529,6 +592,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initProjectsPagination();
   initBackToTop();
   initFooter();
+  initCursor();
   initParticles();
   initContactForm();
 });

@@ -527,12 +527,14 @@ function initCursor() {
 
   const dot  = $('.cursor-dot');
   const ring = $('.cursor-ring');
-  if (!dot || !ring) return;
+  const glow = $('.cursor-glow');
+  if (!dot || !ring || !glow) return;
 
   document.body.classList.add('custom-cursor');
 
   let mouseX = -100, mouseY = -100;
   let ringX = -100,  ringY = -100;
+  let glowX = -100,  glowY = -100;
   let visible = false;
   let rafId = null;
   let hovering = false;
@@ -543,11 +545,17 @@ function initCursor() {
   function setRing(x, y) {
     ring.style.transform = `translate(${x}px, ${y}px) translate(-50%, -50%)`;
   }
+  function setGlow(x, y) {
+    glow.style.transform = `translate(${x}px, ${y}px) translate(-50%, -50%)`;
+  }
 
   function loop() {
     ringX += (mouseX - ringX) * 0.18;
     ringY += (mouseY - ringY) * 0.18;
+    glowX += (mouseX - glowX) * 0.08;
+    glowY += (mouseY - glowY) * 0.08;
     setRing(ringX, ringY);
+    setGlow(glowX, glowY);
     rafId = requestAnimationFrame(loop);
   }
 
@@ -561,7 +569,10 @@ function initCursor() {
       document.body.classList.add('visible');
       ringX = mouseX;
       ringY = mouseY;
+      glowX = mouseX;
+      glowY = mouseY;
       setRing(ringX, ringY);
+      setGlow(glowX, glowY);
       loop();
     }
 

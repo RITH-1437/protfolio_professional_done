@@ -1549,7 +1549,8 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   }
 
   .cursor-dot,
-  .cursor-ring {
+  .cursor-ring,
+  .cursor-glow {
     position: fixed;
     top: 0;
     left: 0;
@@ -1558,6 +1559,14 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
     z-index: 12000;
     opacity: 0;
     will-change: transform;
+  }
+
+  .cursor-glow {
+    width: 240px;
+    height: 240px;
+    background: radial-gradient(circle, var(--clr-accent-glow), transparent 70%);
+    transform: translate(-50%, -50%);
+    transition: opacity var(--dur-slow) var(--ease);
   }
 
   .cursor-dot {
@@ -1581,7 +1590,8 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   }
 
   body.custom-cursor.visible .cursor-dot,
-  body.custom-cursor.visible .cursor-ring {
+  body.custom-cursor.visible .cursor-ring,
+  body.custom-cursor.visible .cursor-glow {
     opacity: 1;
   }
 
@@ -1597,7 +1607,8 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 /* Never show the custom cursor on touch devices */
 @media (hover: none), (pointer: coarse) {
   .cursor-dot,
-  .cursor-ring {
+  .cursor-ring,
+  .cursor-glow {
     display: none;
   }
 }

@@ -1,86 +1,90 @@
 # Vercel Deployment Guide
 
-## Environment Variables Setup
+This portfolio is a static site served by Vercel, with a small **serverless function** (`api/send-email.js`) that delivers contact-form messages via **[Resend](https://resend.com)**.
 
-To deploy your portfolio to Vercel, you need to configure the EmailJS environment variables in your Vercel project.
+## Why Resend + a serverless function?
 
-### Step 1: Add Environment Variables to Vercel
+- Resend API keys (`re_...`) are **secret** and must never be exposed to the browser.
+- The contact form therefore `POST`s to `/api/send-email`, which reads `RESEND_API_KEY`
+  from the server environment and sends the email through Resend.
+- The `to` address defaults to `nairithrin143@gmail.com`.
 
-1. Go to your Vercel project dashboard
-2. Navigate to **Settings** → **Environment Variables**
-3. Add the following three variables:
+## Step 1: Create a Resend API key
 
-| Variable Name | Value | Example |
-|--------------|-------|---------|
-| `EMAILJS_PUBLIC_KEY` | Your EmailJS public key | `hwYjaXfaARoJ1b-WA` |
-| `EMAILJS_SERVICE_ID` | Your EmailJS service ID | `service_vulxbtf` |
-| `EMAILJS_TEMPLATE_ID` | Your EmailJS template ID | `template_lo3avs9` |
+1. Sign in at [resend.com](https://resend.com)
+2. Go to **API Keys** and create a new key (copy `re_...`).
+3. For sending before verifying a domain: with the default `onboarding@resend.dev`
+   sender, Resend allows sending **to your own verified account email** (your Gmail).
+   To send to other addresses, you must **verify a domain** under
+   **Domains** and add the DNS records Resend provides.
 
-4. Make sure to set them for **Production**, **Preview**, and **Development** environments
+## Step 2: Add environment variables to Vercel
 
-### Step 2: Deploy to Vercel
+In your Vercel project → **Settings** → **Environment Variables**, add:
 
-#### Option A: Deploy via Vercel CLI
+| Variable | Value | Notes |
+|----------|-------|-------|
+| `RESEND_API_KEY` | `re_...` | **Required** — your Resend API key |
+| `CONTACT_TO_EMAIL` | `nairithrin143@gmail.com` | Optional — delivery address (default) |
+| `CONTACT_FROM_EMAIL` | `onboarding@resend.dev` | Optional — sender (before domain verification) |
+
+Set them for **Production**, **Preview**, and **Development**.
+
+> The old EmailJS variables (`EMAILJS_PUBLIC_KEY`, `EMAILJS_SERVICE_ID`,
+> `EMAILJS_TEMPLATE_ID`) are no longer used and can be removed.
+
+## Step 3: Deploy
+
+#### Option A: Vercel CLI
 ```bash
-# Install Vercel CLI (if not already installed)
 npm install -g vercel
-
-# Deploy
 vercel --prod
 ```
 
-#### Option B: Deploy via Git
-1. Push your code to GitHub/GitLab/Bitbucket
-2. Import the repository in Vercel dashboard
-3. Vercel will automatically build and deploy
+#### Option B: Via Git
+1. Push the repository to GitHub/GitLab/Bitbucket.
+2. Import it in the Vercel dashboard — Vercel auto-builds using `vercel.json`.
+3. Add the environment variables above before/after deploy, then redeploy.
 
-### Step 3: Verify Deployment
+## How it works
 
-After deployment:
-1. Visit your deployed site
-2. Test the contact form to ensure EmailJS is working correctly
-
-## How It Works
-
-- **Local Development**: Uses `config.js` (not committed to Git)
-- **Vercel Production**: Uses environment variables set in Vercel dashboard
-- **Build Process**: The `build.js` script replaces placeholders in `index.html` with actual environment variable values during deployment
+- **Static site**: served from the repo root (`index.html`, `styles.css`,
+  `script.js`, `images/`, `assets/`) via `vercel.json` static builds.
+- **Contact form** (`script.js`): on submit, `fetch('/api/send-email', ...)` is called.
+- **`api/send-email.js`**: a serverless function that validates the payload and
+  calls the Resend API with `RESEND_API_KEY`.
+- **Build**: `build.js` copies `index.html`, `styles.css`, `script.js`,
+  `README.md`, and the `images/` folder into `dist/` (kept for local/built output;
+  the live site serves from the root).
 
 ## Troubleshooting
 
-### Issue: Contact form not working
-- Check that all three environment variables are set in Vercel
-- Verify the values match your EmailJS account credentials
-- Check the browser console for any error messages
+### "Resend API key is not configured"
+`RESEND_API_KEY` is unset in Vercel → add it and redeploy.
 
-### Issue: `412 Gmail_API: Invalid grant`
-This means EmailJS can reach your EmailJS service, but the Gmail authorization connected to that service has expired or was revoked.
+### "Missing required fields"
+The API expects `name`, `email`, `subject`, and `message` in the JSON body.
 
-1. Sign in to your EmailJS dashboard
-2. Open **Email Services**
-3. Select the Gmail service used by `EMAILJS_SERVICE_ID` (`service_vulxbtf`)
-4. Click **Reconnect** or re-authorize the Gmail account
-5. Send another test message from the deployed site
+### Resend error / `domain not verified`
+An unverified sender is being used. Either:
+- Keep `CONTACT_FROM_EMAIL=onboarding@resend.dev` and send to your own verified
+  account email, or
+- Verify a domain under Resend → **Domains** and set `CONTACT_FROM_EMAIL` to
+  an address on that domain.
 
-If reconnecting the existing service is not available, create a new Gmail service in EmailJS, update `EMAILJS_SERVICE_ID` in Vercel, and redeploy.
-
-### Issue: Build fails on Vercel
-- Ensure `build.js`, `vercel.json`, and `package.json` are committed to your repository
-- Check the build logs in Vercel dashboard for specific errors
+### Build/static assets not loading
+Make sure `vercel.json`, `api/send-email.js`, and the root static files are all
+committed, and that the project build command is `node build.js`.
 
 ## Local Development
 
-For local development, create a `config.js` file (it's in `.gitignore`):
+The form requires the `/api/send-email` endpoint which only runs on Vercel.
+For local testing, either:
+- Run a local server and proxy `/api/*` to a local Node handler, or
+- Test the deployed endpoint.
 
-```javascript
-const CONFIG = {
-    EMAILJS_PUBLIC_KEY: "your-public-key",
-    EMAILJS_SERVICE_ID: "your-service-id",
-    EMAILJS_TEMPLATE_ID: "your-template-id"
-};
-```
-
-Then simply open `index.html` in your browser or use a local server:
+You can still open `index.html` directly to preview the layout, but the form
+submit will only work when served with the API available.
 ```bash
 python -m http.server 8000
 # or

@@ -1,42 +1,22 @@
-// Build script to inject environment variables into index.html
+// Build script to copy static assets into dist/ for Vercel.
+// Email is handled server-side by api/send-email.js (Resend), so no
+// environment variables need to be injected into the HTML.
+
 const fs = require('fs');
 const path = require('path');
-
-// Load .env file for local development (ignored in production where env vars are set by the host)
-try {
-    require('dotenv').config();
-} catch (e) {
-    // dotenv not installed — environment variables must be set externally (e.g. Vercel dashboard)
-}
 
 const inputFile = path.join(__dirname, 'index.html');
 const outputDir = path.join(__dirname, 'dist');
 const outputFile = path.join(outputDir, 'index.html');
-
-// Validate required environment variables
-const required = ['EMAILJS_PUBLIC_KEY', 'EMAILJS_SERVICE_ID', 'EMAILJS_TEMPLATE_ID'];
-const missing = required.filter(key => !process.env[key]);
-if (missing.length > 0) {
-    console.error('✗ Missing required environment variables:', missing.join(', '));
-    console.error('  Set them in Vercel Dashboard → Project → Settings → Environment Variables');
-    process.exit(1);
-}
-
-// Read the template
-let html = fs.readFileSync(inputFile, 'utf8');
-
-// Replace placeholders with environment variables
-html = html.replace(/\{\{EMAILJS_PUBLIC_KEY\}\}/g, process.env.EMAILJS_PUBLIC_KEY);
-html = html.replace(/\{\{EMAILJS_SERVICE_ID\}\}/g, process.env.EMAILJS_SERVICE_ID);
-html = html.replace(/\{\{EMAILJS_TEMPLATE_ID\}\}/g, process.env.EMAILJS_TEMPLATE_ID);
 
 // Create dist directory if it doesn't exist
 if (!fs.existsSync(outputDir)) {
     fs.mkdirSync(outputDir, { recursive: true });
 }
 
-// Write the processed file
-fs.writeFileSync(outputFile, html);
+// Copy the main HTML file
+fs.copyFileSync(inputFile, outputFile);
+console.log('✓ Copied index.html');
 
 // Copy other files and the images folder to dist
 const rootFilesToCopy = ['styles.css', 'script.js', 'README.md'];

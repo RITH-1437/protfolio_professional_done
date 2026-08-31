@@ -7,10 +7,8 @@
 
 /* ── Config ── */
 const CONFIG = {
-  emailjs: {
-    publicKey:  'rRBwkMN6Au2l2cVRQ',
-    serviceId:  'service_3lw8wsw',
-    templateId: 'template_zpxtsi9',
+  api: {
+    endpoint: '/api/send-email',
   },
   contactEmail: 'nairithrin143@gmail.com',
   typingRoles: [
@@ -27,10 +25,7 @@ const CONFIG = {
   ],
 };
 
-/* ── EmailJS ── */
-if (typeof emailjs !== 'undefined') {
-  emailjs.init({ publicKey: CONFIG.emailjs.publicKey });
-}
+/* ── EmailJS init removed — forms now POST to the /api/send-email serverless function ── */
 
 /* ── Utility helpers ── */
 const $ = (sel, ctx = document) => ctx.querySelector(sel);
@@ -356,25 +351,31 @@ function initContactForm() {
     btn.innerHTML = '<i class="fas fa-spinner fa-spin" aria-hidden="true"></i> <span>Sending…</span>';
     btn.disabled = true;
 
-    const params = {
-      title:   $('#subject', form).value,
-      name:    $('#name', form).value,
-      email:   $('#email', form).value,
+    const payload = {
+      name:   $('#name', form).value,
+      email:  $('#email', form).value,
+      subject: $('#subject', form).value,
       message: $('#message', form).value,
-      time:    new Date().toLocaleString(),
-      initial: $('#name', form).value.charAt(0).toUpperCase(),
     };
 
     try {
-      if (!CONFIG.emailjs.publicKey || CONFIG.emailjs.publicKey === 'YOUR_PUBLIC_KEY') {
-        throw new Error('not_configured');
+      const response = await fetch(CONFIG.api.endpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+
+      const result = await response.json().catch(() => ({}));
+
+      if (!response.ok) {
+        throw new Error(result?.error || 'send_failed');
       }
-      await emailjs.send(CONFIG.emailjs.serviceId, CONFIG.emailjs.templateId, params);
+
       showNotification('Message sent! I\'ll get back to you soon.', 'success');
       form.reset();
     } catch (err) {
-      const txt = String(err?.text || err?.message || '').toLowerCase();
-      const msg = txt.includes('not_configured') || txt.includes('invalid grant')
+      const txt = String(err?.message || '').toLowerCase();
+      const msg = txt.includes('not_configured') || txt.includes('not configured') || txt.includes('api key is not configured')
         ? `Email not configured yet. Contact me at ${CONFIG.contactEmail}`
         : `Couldn't send right now. Email me at ${CONFIG.contactEmail}`;
       showNotification(msg, 'error');

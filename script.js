@@ -222,6 +222,7 @@ function initScrollAnimations() {
     '.projects-grid .project-card',
     '.about-highlights .highlight-item',
     '.timeline-item',
+    '.services-grid .service-card',
   ];
   staggerGroups.forEach(sel => {
     $$(sel).forEach((el, i) => {

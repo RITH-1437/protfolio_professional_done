@@ -38,9 +38,9 @@ if (!fs.existsSync(outputDir)) {
 // Write the processed file
 fs.writeFileSync(outputFile, html);
 
-// Copy other files to dist
-const filesToCopy = ['styles.css', 'script.js', 'me.jpg', 'README.md'];
-filesToCopy.forEach(file => {
+// Copy other files and the images folder to dist
+const rootFilesToCopy = ['styles.css', 'script.js', 'README.md'];
+rootFilesToCopy.forEach(file => {
     const srcPath = path.join(__dirname, file);
     const destPath = path.join(outputDir, file);
     if (fs.existsSync(srcPath)) {
@@ -50,6 +50,18 @@ filesToCopy.forEach(file => {
         console.log(`⚠ Skipped ${file} (not found)`);
     }
 });
+
+const imagesSrc = path.join(__dirname, 'images');
+const imagesDest = path.join(outputDir, 'images');
+if (fs.existsSync(imagesSrc)) {
+    if (!fs.existsSync(imagesDest)) fs.mkdirSync(imagesDest, { recursive: true });
+    fs.readdirSync(imagesSrc).forEach(file => {
+        fs.copyFileSync(path.join(imagesSrc, file), path.join(imagesDest, file));
+    });
+    console.log('✓ Copied images/');
+} else {
+    console.log('⚠ Skipped images/ (not found)');
+}
 
 console.log('✓ Build completed successfully!');
 console.log('✓ Files written to dist/');

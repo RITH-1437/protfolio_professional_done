@@ -1,6 +1,6 @@
 # Portfolio - RIN Nairith
 
-A modern, professional portfolio website showcasing my skills and projects as a Full Stack Developer.
+A modern, professional portfolio website showcasing my skills, services, and projects as a Software Developer.
 
 ## 🚀 Features
 
@@ -9,6 +9,7 @@ A modern, professional portfolio website showcasing my skills and projects as a 
 - **Interactive UI**: Smooth scrolling, hover effects, and dynamic project overlays
 - **Theme Toggle**: Dark and light mode with optimized contrast for readability
 - **Project Showcase**: Hover-activated GitHub links displayed as overlays on project images
+- **Services Integration**: Dedicated Services section linking to my live professional services platform
 
 ## 🛠️ Tech Stack
 
@@ -24,18 +25,43 @@ A modern, professional portfolio website showcasing my skills and projects as a 
 ├── index.html      # Main HTML file
 ├── styles.css      # Styling and animations
 ├── script.js       # Interactive functionality
+├── build.js        # Build script (injects env vars, copies assets → dist/)
+├── images/         # Project and profile images
 └── README.md       # This file
 ```
 
 ## 🎯 Sections
 
-- **Home**: Hero section with introduction and stats
+- **Home**: Hero section with introduction, stats, and CTA buttons
 - **About**: Professional background and expertise highlights
 - **Skills**: Technical skills organized by category with visual indicators
-- **Projects**: Featured projects with GitHub links
+- **Experience**: Professional journey and timeline
+- **Projects**: Featured projects with GitHub and live links
+- **Services**: Professional services offering and CTA to my services platform
 - **Contact**: Contact form and information
 
+## 🧑‍💻 Services
+
+I offer professional software development services — from idea to production.
+
+**🚀 Live Site:** [rin-nairith-services.vercel.app](https://rin-nairith-services.vercel.app/)  
+**📦 Source:** [github.com/RITH-1437/rin-nairith-services](https://github.com/RITH-1437/rin-nairith-services)
+
+The services platform lets visitors explore my:
+- **Services**
+- **Development Process**
+- **Pricing**
+- **About**
+- **FAQ**
+- **Contact**
+
 ## 💼 Featured Projects
+
+### RIN Nairith — Professional Services Platform
+**Status**: Live · Personal Product  
+My dedicated services website where visitors can explore my services, development process, transparent pricing, about, FAQ, and contact.  
+**Explore**: Services · Process · Pricing · About · FAQ · Contact  
+[Visit Live Site](https://rin-nairith-services.vercel.app/) · [View on GitHub](https://github.com/RITH-1437/rin-nairith-services)
 
 ### File Extension Validator
 **Duration**: 11/2025 – 12/2025  
@@ -77,7 +103,7 @@ View the live portfolio: [Portfolio Website](https://rith-1437.github.io/protfol
 
 ## 📄 License
 
-© 2025 RIN Nairith. All rights reserved.
+© 2026 RIN Nairith. All rights reserved.
 
 ---
 

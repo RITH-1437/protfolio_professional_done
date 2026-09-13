@@ -217,6 +217,7 @@ function initScrollAnimations() {
     '.projects-grid .project-card',
     '.about-highlights .highlight-item',
     '.timeline-item',
+    '.certificate-card',
     '.services-grid .service-card',
   ];
   staggerGroups.forEach(sel => {

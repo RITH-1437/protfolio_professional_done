@@ -249,13 +249,26 @@ function initScrollAnimations() {
 /* =============================================================
    GITHUB INTEGRATION
    ============================================================= */
+/* Repos never shown as GitHub cards (lower-case names):
+   - already hand-written as cards in index.html (avoid duplicates)
+   - not portfolio pieces (this site, profile README, lab/sample repos) */
+const HIDDEN_REPOS = new Set([
+  // hand-written cards
+  'rin-nairith-services', 'devscore-ai', 'gokh', 'zeroping', 'prompthub',
+  'todo_app', 'coffee_aroma_spring', 'cpu-scheduling', 'file_extension',
+  // not portfolio pieces
+  'protfolio_professional_done', 'rith-1437', 'cc-gic-e20221557',
+  'cicd-node-app', 'bot-services', 'trading-discipline',
+]);
+
 async function fetchGitHubRepos() {
   try {
     const url = `${CONFIG.github.apiUrl}?per_page=${CONFIG.github.perPage}&sort=updated`;
     const response = await fetch(url);
     if (!response.ok) throw new Error(`GitHub API error: ${response.status}`);
     const repos = await response.json();
-    return repos.filter(repo => !repo.private && !repo.fork);
+    return repos.filter(repo =>
+      !repo.private && !repo.fork && !HIDDEN_REPOS.has(repo.name.toLowerCase()));
   } catch (error) {
     console.error('Failed to fetch GitHub repositories:', error);
     return [];
@@ -270,11 +283,16 @@ const PROJECT_IMAGES = {
   'zeroping': './images/zeroping.png',
   'prompthub': './images/prompthub.png',
   'todo_app': './images/todo.png',
+  'high-school-math': './images/high-school-math.jpg',
+  'ecommerce-project-vue': './images/ecommerce-vue.jpg',
+  'microsoft-office-learning': './images/office-academy.jpg',
+  'typing_master': './images/typing-master.jpg',
 };
 
 /* Live-site URLs that override the repo's GitHub "Website" field */
 const PROJECT_HOMEPAGES = {
   'high-school-math': 'https://math-high-school.vercel.app/',
+  'chess-with-ai': '', // deployment is gone (404) — hide the live link
 };
 
 /* Hand-written card content that replaces the short GitHub repo description/topics */
@@ -311,7 +329,8 @@ function createProjectCard(repo) {
   const details = PROJECT_DETAILS[repo.name.toLowerCase()] || {};
   const title = details.title || repo.name.replace(/-|_/g, ' ');
   const description = details.description || repo.description || 'No description available.';
-  const homepage = PROJECT_HOMEPAGES[repo.name.toLowerCase()] || repo.homepage;
+  const key = repo.name.toLowerCase();
+  const homepage = key in PROJECT_HOMEPAGES ? PROJECT_HOMEPAGES[key] : repo.homepage;
   const hasHomepage = homepage && homepage.trim() !== '';
   const isFeatured = FEATURED_REPOS.includes(repo.name.toLowerCase());
   
@@ -456,7 +475,19 @@ function initProjectsPagination() {
     state.current = state.wanted = page;
     writePageToUrl(page);
     render();
+    animatePageIn();
     scrollGridIntoView();
+  }
+
+  function animatePageIn() {
+    if (prefersReducedMotion) return;
+    state.cards.filter(c => !c.classList.contains('hidden')).forEach((card, i) => {
+      card.classList.remove('page-enter');
+      void card.offsetWidth; // restart the animation
+      card.style.animationDelay = `${i * 70}ms`;
+      card.classList.add('page-enter');
+      card.addEventListener('animationend', () => card.classList.remove('page-enter'), { once: true });
+    });
   }
 
   function render() {
@@ -825,12 +856,118 @@ function initCursor() {
 }
 
 /* =============================================================
+   MOTION — word reveals, count-up, tilt, spotlight, magnetic buttons
+   ============================================================= */
+function initMotion() {
+  /* Split section titles into words so they can rise in one by one */
+  $$('.section-title').forEach(title => {
+    if (title.dataset.split) return;
+    title.dataset.split = '1';
+    let i = 0;
+    [...title.childNodes].forEach(node => {
+      if (node.nodeType !== Node.TEXT_NODE) return;
+      const frag = document.createDocumentFragment();
+      node.textContent.split(/(\s+)/).forEach(part => {
+        if (!part) return;
+        if (/^\s+$/.test(part)) { frag.appendChild(document.createTextNode(part)); return; }
+        const word = document.createElement('span');
+        word.className = 'word';
+        const inner = document.createElement('span');
+        inner.className = 'word-inner';
+        inner.style.setProperty('--i', i++);
+        inner.textContent = part;
+        word.appendChild(inner);
+        frag.appendChild(word);
+      });
+      node.replaceWith(frag);
+    });
+  });
+
+  /* Index skill chips for the staggered pop-in */
+  $$('.skills-grid .chip').forEach((chip, i) => chip.style.setProperty('--i', i));
+
+  if (prefersReducedMotion) return;
+
+  /* Count up numeric stats (e.g. "15+") when they scroll into view */
+  const countObs = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      countObs.unobserve(entry.target);
+      const el = entry.target;
+      const m = el.textContent.trim().match(/^(\d+)(.*)$/);
+      if (!m) return;
+      const target = parseInt(m[1], 10);
+      const suffix = m[2];
+      const start = performance.now();
+      const dur = 1200;
+      const tick = now => {
+        const t = Math.min(1, (now - start) / dur);
+        const eased = 1 - Math.pow(1 - t, 3);
+        el.textContent = Math.round(target * eased) + suffix;
+        if (t < 1) requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+    });
+  }, { threshold: 0.6 });
+  $$('.stat-num').forEach(el => { if (/^\d/.test(el.textContent.trim())) countObs.observe(el); });
+
+  /* Pointer effects only on devices with a real hover pointer */
+  if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+
+  const CARD_SEL = '.project-card, .service-card, .certificate-card, .timeline-card, .about-card';
+  const TILT_SEL = '.project-card, .service-card';
+  const MAX_TILT = 6; // degrees
+
+  /* Spotlight + 3D tilt (delegated, so GitHub cards added later work too) */
+  document.addEventListener('pointermove', e => {
+    const card = e.target.closest?.(CARD_SEL);
+    if (!card) return;
+    const r = card.getBoundingClientRect();
+    const x = e.clientX - r.left;
+    const y = e.clientY - r.top;
+    card.style.setProperty('--mx', `${x}px`);
+    card.style.setProperty('--my', `${y}px`);
+
+    if (card.matches(TILT_SEL)) {
+      const rx = ((y / r.height) - 0.5) * -MAX_TILT;
+      const ry = ((x / r.width) - 0.5) * MAX_TILT;
+      card.classList.add('is-tilting');
+      card.style.transform =
+        `perspective(900px) rotateX(${rx.toFixed(2)}deg) rotateY(${ry.toFixed(2)}deg) translateY(-4px)`;
+    }
+  }, { passive: true });
+
+  document.addEventListener('pointerout', e => {
+    const card = e.target.closest?.(TILT_SEL);
+    if (!card || card.contains(e.relatedTarget)) return;
+    card.classList.remove('is-tilting');
+    card.style.transform = '';
+  }, { passive: true });
+
+  /* Magnetic buttons: drift slightly toward the cursor */
+  $$('.btn, .theme-toggle').forEach(btn => {
+    btn.addEventListener('pointermove', e => {
+      const r = btn.getBoundingClientRect();
+      const dx = (e.clientX - (r.left + r.width / 2)) * 0.25;
+      const dy = (e.clientY - (r.top + r.height / 2)) * 0.35;
+      btn.classList.add('is-magnet');
+      btn.style.translate = `${dx.toFixed(1)}px ${dy.toFixed(1)}px`;
+    });
+    btn.addEventListener('pointerleave', () => {
+      btn.classList.remove('is-magnet');
+      btn.style.translate = '';
+    });
+  });
+}
+
+/* =============================================================
    BOOT — initialise everything after DOM ready
    ============================================================= */
 document.addEventListener('DOMContentLoaded', () => {
   initTheme();
   initNavbar();
   initTyping();
+  initMotion();
   initScrollAnimations();
   initProjectsPagination(); // paginate the static cards straight away
   loadGitHubProjects();     // then add GitHub cards and re-paginate

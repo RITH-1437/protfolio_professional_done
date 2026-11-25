@@ -11,6 +11,11 @@ const CONFIG = {
     endpoint: '/api/send-email',
   },
   contactEmail: 'nairithrin143@gmail.com',
+  github: {
+    username: 'RITH-1437',
+    apiUrl: 'https://api.github.com/users/RITH-1437/repos',
+    perPage: 100,
+  },
   typingRoles: [
     'Software Developer',
     'PHP Framework Author',
@@ -228,6 +233,119 @@ function initScrollAnimations() {
   });
 
   $$('[data-animate]').forEach(el => observer.observe(el));
+}
+
+/* =============================================================
+   GITHUB INTEGRATION
+   ============================================================= */
+async function fetchGitHubRepos() {
+  try {
+    const url = `${CONFIG.github.apiUrl}?per_page=${CONFIG.github.perPage}&sort=updated`;
+    const response = await fetch(url);
+    if (!response.ok) throw new Error(`GitHub API error: ${response.status}`);
+    const repos = await response.json();
+    return repos.filter(repo => !repo.private && !repo.fork);
+  } catch (error) {
+    console.error('Failed to fetch GitHub repositories:', error);
+    return [];
+  }
+}
+
+function createProjectCard(repo) {
+  const article = document.createElement('article');
+  article.className = 'project-card github-project';
+  article.setAttribute('data-animate', 'fade-up');
+
+  const language = repo.language || 'Unknown';
+  const description = repo.description || 'No description available.';
+  const hasHomepage = repo.homepage && repo.homepage.trim() !== '';
+  
+  // Extract primary topics/languages for tech tags
+  const topics = repo.topics || [];
+  const techTags = topics.length > 0 
+    ? topics.slice(0, 5).map(t => `<span>${t}</span>`).join('')
+    : `<span>${language}</span>`;
+
+  // Format dates
+  const updated = new Date(repo.updated_at);
+  const formattedDate = updated.toLocaleDateString('en-US', { year: 'numeric', month: '2-digit' });
+
+  article.innerHTML = `
+    <div class="project-img">
+      <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=600&h=340&fit=crop" 
+           alt="${repo.name} screenshot" 
+           loading="lazy" 
+           width="600" 
+           height="340" />
+      <a href="${repo.html_url}" 
+         target="_blank" 
+         rel="noopener noreferrer" 
+         class="project-gh-btn" 
+         aria-label="View ${repo.name} on GitHub">
+        <i class="fab fa-github" aria-hidden="true"></i>
+      </a>
+    </div>
+    <div class="project-body">
+      <div class="project-top">
+        <div>
+          <span class="project-date">${formattedDate}</span>
+          <h3>${repo.name.replace(/-|_/g, ' ')}</h3>
+        </div>
+        ${repo.stargazers_count > 0 ? `<span class="project-status project-status--live">★ ${repo.stargazers_count}</span>` : ''}
+      </div>
+      <p>${description}</p>
+      <div class="project-tech">
+        ${techTags}
+      </div>
+    </div>
+    ${hasHomepage ? `
+      <div class="project-footer">
+        <a href="${repo.homepage}" 
+           target="_blank" 
+           rel="noopener noreferrer" 
+           class="project-link">
+          <i class="fas fa-external-link-alt" aria-hidden="true"></i> View Live Site
+        </a>
+      </div>
+    ` : ''}
+  `;
+
+  return article;
+}
+
+async function loadGitHubProjects() {
+  const grid = $('.projects-grid');
+  if (!grid) return;
+
+  // Show loading indicator
+  const loader = document.createElement('div');
+  loader.className = 'github-loading';
+  loader.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Loading projects from GitHub...';
+  loader.style.cssText = 'grid-column: 1/-1; text-align: center; padding: 2rem; color: var(--text-muted);';
+  grid.appendChild(loader);
+
+  const repos = await fetchGitHubRepos();
+  
+  // Remove loader
+  loader.remove();
+
+  if (repos.length === 0) {
+    const errorMsg = document.createElement('div');
+    errorMsg.className = 'github-error';
+    errorMsg.innerHTML = '<i class="fas fa-exclamation-circle"></i> Unable to load GitHub projects.';
+    errorMsg.style.cssText = 'grid-column: 1/-1; text-align: center; padding: 2rem; color: var(--text-muted);';
+    grid.appendChild(errorMsg);
+    return;
+  }
+
+  // Add GitHub project cards to the grid
+  repos.forEach(repo => {
+    const card = createProjectCard(repo);
+    grid.appendChild(card);
+  });
+
+  // Reinitialize pagination with all projects
+  initProjectsPagination();
 }
 
 /* =============================================================
@@ -607,7 +725,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initNavbar();
   initTyping();
   initScrollAnimations();
-  initProjectsPagination();
+  loadGitHubProjects(); // Load GitHub projects first, then init pagination
   initBackToTop();
   initFooter();
   initCursor();

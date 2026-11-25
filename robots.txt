@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://rin-nairith.vercel.app/sitemap.xml
+Sitemap: https://rith-1437.github.io/protfolio_professional_done/sitemap.xml

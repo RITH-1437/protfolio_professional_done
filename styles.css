@@ -13,7 +13,7 @@
   --clr-accent-glow: rgba(99,102,241,0.18);
   --clr-text:        #e6edf3;
   --clr-text-2:      #8b949e;
-  --clr-text-3:      #484f58;
+  --clr-text-3:      #767c85;
   --clr-green:       #3fb950;
   --clr-white:       #ffffff;
 
@@ -1963,3 +1963,55 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 [data-theme="light"] .modal-body iframe { border: 1px solid var(--clr-border); }
 
 [data-theme="light"] .navbar { border-bottom-color: rgba(0,0,0,0.08); }
+
+
+/* =============================================================
+   GitHub Integration Styles
+   ============================================================= */
+.github-loading,
+.github-error {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 2rem;
+  color: var(--text-muted);
+  font-size: 1rem;
+}
+
+.github-loading i {
+  margin-right: 0.5rem;
+  animation: spin 1s linear infinite;
+}
+
+.github-error i {
+  margin-right: 0.5rem;
+  color: var(--error, #ef4444);
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.github-project .project-tech span {
+  text-transform: capitalize;
+}
+
+/* Ensure dynamically added projects maintain grid flow */
+.projects-grid .github-project {
+  animation: fadeInUp 0.4s ease-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

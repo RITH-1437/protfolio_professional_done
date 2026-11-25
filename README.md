@@ -8,6 +8,7 @@ A modern, professional portfolio website showcasing my skills, services, and pro
 - **Responsive Layout**: Fully optimized for desktop, tablet, and mobile devices
 - **Interactive UI**: Smooth scrolling, hover effects, and dynamic project overlays
 - **Theme Toggle**: Dark and light mode with optimized contrast for readability
+- **GitHub Integration**: Automatically fetches and displays projects from GitHub (github.com/RITH-1437)
 - **Project Showcase**: Hover-activated GitHub links displayed as overlays on project images
 - **Services Integration**: Dedicated Services section linking to my live professional services platform
 

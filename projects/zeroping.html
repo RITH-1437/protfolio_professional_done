@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ZeroPing — PHP Framework · Case Study · RIN Nairith</title>
+    <meta name="description" content="A modern PHP MVC framework written from scratch with zero third-party runtime dependencies — router, DI container, ORM, validation, cache, queue, scheduler and CLI all built by hand, and published on Packagist." />
+    <link rel="canonical" href="https://rith-1437.github.io/protfolio_professional_done/projects/zeroping.html" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="ZeroPing — PHP Framework · Case Study" />
+    <meta property="og:description" content="A modern PHP MVC framework written from scratch with zero third-party runtime dependencies — router, DI container, ORM, validation, cache, queue, scheduler and CLI all built by hand, and published on Packagist." />
+    <meta property="og:url" content="https://rith-1437.github.io/protfolio_professional_done/projects/zeroping.html" />
+    <link rel="icon" type="image/x-icon" href="../assets/favicon/favicon.ico" />
+    <link rel="stylesheet" href="../styles.css" />
+    <link rel="stylesheet" href="case-study.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
+  </head>
+  <body>
+    <header class="cs-topbar">
+      <div class="cs-topbar-inner">
+        <a class="cs-back" href="../index.html#projects"><i class="fas fa-arrow-left" aria-hidden="true"></i> All projects</a>
+        <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Toggle color theme"><i class="fas fa-moon" aria-hidden="true"></i></button>
+      </div>
+    </header>
+
+    <main class="cs-wrap">
+      <section class="cs-hero">
+        <div class="section-label is-visible">Case study · Open source</div>
+        <h1>ZeroPing — PHP Framework</h1>
+        <p class="cs-lead">A modern PHP MVC framework written from scratch with zero third-party runtime dependencies — router, DI container, ORM, validation, cache, queue, scheduler and CLI all built by hand, and published on Packagist.</p>
+        <div class="cs-actions"><a class="btn btn-ghost" href="https://github.com/RITH-1437/ZeroPing" target="_blank" rel="noopener noreferrer"><i class="fab fa-github" aria-hidden="true"></i> Source on GitHub</a><a class="btn btn-ghost" href="https://packagist.org/packages/rith-1437/zeroping" target="_blank" rel="noopener noreferrer"><i class="fas fa-box" aria-hidden="true"></i> Packagist</a></div>
+        <dl class="cs-meta"><div><dt>Role</dt><dd>Author &amp; maintainer</dd></div><div><dt>Timeline</dt><dd>06/2026 – Present</dd></div><div><dt>Language</dt><dd>PHP 8.1 – 8.5</dd></div><div><dt>License</dt><dd>Open source</dd></div></dl>
+      </section>
+
+      <figure class="cs-shot cs-reveal">
+        <img src="../images/zeroping.png" alt="ZeroPing PHP framework" width="800" height="450" />
+      </figure>
+
+      <section class="cs-section cs-reveal">
+        <h2>The problem</h2>
+        <p>Most “lightweight” PHP frameworks still pull in a third-party ORM, container or router, so you inherit a tree of packages you never chose and can’t easily read.</p><p>ZeroPing set out to prove a complete, familiar framework could be built from first principles — readable end to end, with nothing hidden in vendor code — and to deeply understand how frameworks like Laravel work by building one.</p>
+      </section>
+
+      <section class="cs-section cs-reveal">
+        <h2>By the numbers</h2>
+        <div class="cs-stats"><div class="cs-stat"><b>0</b><span>runtime dependencies</span></div><div class="cs-stat"><b>20+</b><span>validation rules</span></div><div class="cs-stat"><b>5</b><span>PHP versions in CI</span></div><div class="cs-stat"><b>1</b><span>command to start</span></div></div>
+      </section>
+
+      <section class="cs-section cs-reveal">
+        <h2>What I built</h2>
+        <div class="cs-features"><div class="cs-feature"><i class="fas fa-sitemap" aria-hidden="true"></i><h3>MVC + DI</h3><p>Service container, service providers and a middleware pipeline, all written from scratch.</p></div><div class="cs-feature"><i class="fas fa-route" aria-hidden="true"></i><h3>Routing</h3><p>Static and dynamic routes, groups, prefixes, named routes and route caching.</p></div><div class="cs-feature"><i class="fas fa-database" aria-hidden="true"></i><h3>Active Record ORM</h3><p>Relationships, query builder, migrations and seeding.</p></div><div class="cs-feature"><i class="fas fa-shield-halved" aria-hidden="true"></i><h3>Security</h3><p>CSRF protection, encryption, hashing and rate limiting built in.</p></div><div class="cs-feature"><i class="fas fa-layer-group" aria-hidden="true"></i><h3>Queue &amp; scheduler</h3><p>Background jobs with sync and database drivers plus a task scheduler.</p></div><div class="cs-feature"><i class="fas fa-terminal" aria-hidden="true"></i><h3>`php zero` CLI</h3><p>Code generators, route listing, environment doctor, debug toolbar and a dev server on port 1437.</p></div></div>
+      </section>
+
+      <section class="cs-section cs-reveal">
+        <h2>Stack &amp; key decisions</h2>
+        <div class="cs-stack"><span class="chip">PHP 8.1+</span><span class="chip">MVC</span><span class="chip">PHPUnit</span><span class="chip">Composer / Packagist</span><span class="chip">Docker</span><span class="chip">Nginx</span><span class="chip">GitHub Actions</span><span class="chip">AWS EC2</span></div>
+        <div class="cs-decisions"><div class="cs-decision"><h3>Every layer hand-written</h3><p>Router, container, ORM, validator, cache, queue and encryption share one coherent style because they were designed together — and anyone can trace a request from entry point to response.</p></div><div class="cs-decision"><h3>Zero configuration to run</h3><p>Sensible defaults are baked in: <code>php zero new my-app</code> then <code>php zero serve</code> gives a working app. You only configure what you choose to change.</p></div><div class="cs-decision"><h3>Tested across the PHP matrix</h3><p>GitHub Actions runs the PHPUnit suite on PHP 8.1, 8.2, 8.3, 8.4 and 8.5 so the framework stays compatible as PHP evolves.</p></div><div class="cs-decision"><h3>Shipped like a real package</h3><p>Published on Packagist for <code>composer create-project</code>, with Docker + Nginx deployment to AWS EC2 for the documentation site.</p></div></div>
+      </section>
+
+      <a class="cs-next cs-reveal" href="high-school-math.html">
+        <span><small>Next case study</small><strong>High School Math</strong></span>
+        <i class="fas fa-arrow-right" aria-hidden="true"></i>
+      </a>
+    </main>
+
+    <script src="case-study.js"></script>
+  </body>
+</html>

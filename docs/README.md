@@ -28,10 +28,13 @@ A modern, professional portfolio website showcasing my skills, services, and pro
 ├── script.js       # Interactive functionality
 ├── build.js        # Build script (copies assets → dist/)
 ├── images/         # Project and profile images
+├── projects/       # Case-study pages (GoKH, High School Math, ZeroPing)
 ├── assets/         # Favicons and site manifest
 ├── robots.txt      # Search-engine crawl rules (served at site root)
 ├── sitemap.xml     # Search-engine sitemap (served at site root)
-└── README.md       # This file
+└── docs/
+    ├── README.md       # This file
+    └── DEPLOYMENT.md   # Vercel + Resend deployment guide
 ```
 
 ## 🎯 Sections

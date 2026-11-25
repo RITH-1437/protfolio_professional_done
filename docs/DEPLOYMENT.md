@@ -59,7 +59,7 @@ vercel --prod
 - **`api/send-email.js`**: a serverless function that validates the payload and
   calls the Resend API with `RESEND_API_KEY`.
 - **Build**: `build.js` copies `index.html`, `styles.css`, `script.js`,
-  `README.md`, and the `images/` folder into `dist/` (kept for local/built output;
+  `robots.txt`, `sitemap.xml`, and the `images/`, `projects/` and `assets/` folders into `dist/` (kept for local/built output;
   the live site serves from the root).
 
 ## Troubleshooting

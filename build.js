@@ -19,7 +19,7 @@ fs.copyFileSync(inputFile, outputFile);
 console.log('✓ Copied index.html');
 
 // Copy other files and the images folder to dist
-const rootFilesToCopy = ['styles.css', 'script.js', 'README.md', 'robots.txt', 'sitemap.xml'];
+const rootFilesToCopy = ['styles.css', 'script.js', 'robots.txt', 'sitemap.xml'];
 rootFilesToCopy.forEach(file => {
     const srcPath = path.join(__dirname, file);
     const destPath = path.join(outputDir, file);
@@ -31,17 +31,16 @@ rootFilesToCopy.forEach(file => {
     }
 });
 
-const imagesSrc = path.join(__dirname, 'images');
-const imagesDest = path.join(outputDir, 'images');
-if (fs.existsSync(imagesSrc)) {
-    if (!fs.existsSync(imagesDest)) fs.mkdirSync(imagesDest, { recursive: true });
-    fs.readdirSync(imagesSrc).forEach(file => {
-        fs.copyFileSync(path.join(imagesSrc, file), path.join(imagesDest, file));
-    });
-    console.log('✓ Copied images/');
-} else {
-    console.log('⚠ Skipped images/ (not found)');
-}
+// Copy asset folders (recursively) into dist/
+['images', 'projects', 'assets'].forEach(dir => {
+    const src = path.join(__dirname, dir);
+    if (!fs.existsSync(src)) {
+        console.log(`⚠ Skipped ${dir}/ (not found)`);
+        return;
+    }
+    fs.cpSync(src, path.join(outputDir, dir), { recursive: true });
+    console.log(`✓ Copied ${dir}/`);
+});
 
 console.log('✓ Build completed successfully!');
 console.log('✓ Files written to dist/');

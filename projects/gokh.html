@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GoKH — Cambodia Trip Planner · Case Study · RIN Nairith</title>
+    <meta name="description" content="A single-page app for planning a Cambodia trip with friends: pick destinations, add your crew, set dates, transport, stay and budget, build a day-by-day itinerary — then share the whole plan as one link. No account, no server." />
+    <link rel="canonical" href="https://rith-1437.github.io/protfolio_professional_done/projects/gokh.html" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="GoKH — Cambodia Trip Planner · Case Study" />
+    <meta property="og:description" content="A single-page app for planning a Cambodia trip with friends: pick destinations, add your crew, set dates, transport, stay and budget, build a day-by-day itinerary — then share the whole plan as one link. No account, no server." />
+    <meta property="og:url" content="https://rith-1437.github.io/protfolio_professional_done/projects/gokh.html" />
+    <link rel="icon" type="image/x-icon" href="../assets/favicon/favicon.ico" />
+    <link rel="stylesheet" href="../styles.css" />
+    <link rel="stylesheet" href="case-study.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
+  </head>
+  <body>
+    <header class="cs-topbar">
+      <div class="cs-topbar-inner">
+        <a class="cs-back" href="../index.html#projects"><i class="fas fa-arrow-left" aria-hidden="true"></i> All projects</a>
+        <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Toggle color theme"><i class="fas fa-moon" aria-hidden="true"></i></button>
+      </div>
+    </header>
+
+    <main class="cs-wrap">
+      <section class="cs-hero">
+        <div class="section-label is-visible">Case study · Travel</div>
+        <h1>GoKH — Cambodia Trip Planner</h1>
+        <p class="cs-lead">A single-page app for planning a Cambodia trip with friends: pick destinations, add your crew, set dates, transport, stay and budget, build a day-by-day itinerary — then share the whole plan as one link. No account, no server.</p>
+        <div class="cs-actions"><a class="btn btn-primary" href="https://gokh.vercel.app/" target="_blank" rel="noopener noreferrer"><i class="fas fa-arrow-up-right-from-square" aria-hidden="true"></i> Visit live site</a><a class="btn btn-ghost" href="https://github.com/RITH-1437/gokh" target="_blank" rel="noopener noreferrer"><i class="fab fa-github" aria-hidden="true"></i> Source on GitHub</a></div>
+        <dl class="cs-meta"><div><dt>Role</dt><dd>Design &amp; development</dd></div><div><dt>Timeline</dt><dd>08/2026 – Present</dd></div><div><dt>Platform</dt><dd>Web · single-page app</dd></div><div><dt>Runtime deps</dt><dd>Just Vue</dd></div></dl>
+      </section>
+
+      <figure class="cs-shot cs-reveal">
+        <img src="../images/gokh.png" alt="GoKH trip planner interface" width="800" height="450" />
+      </figure>
+
+      <section class="cs-section cs-reveal">
+        <h2>The problem</h2>
+        <p>Group trips in Cambodia are usually planned in chat threads: dates in one message, the budget in another, the route somewhere else, and nobody sure what was agreed.</p><p>GoKH puts the whole plan in one place and makes sharing frictionless — friends open a link and keep planning, without signing up for anything.</p>
+      </section>
+
+      <section class="cs-section cs-reveal">
+        <h2>By the numbers</h2>
+        <div class="cs-stats"><div class="cs-stat"><b>20</b><span>Cambodian destinations</span></div><div class="cs-stat"><b>90</b><span>days max per trip</span></div><div class="cs-stat"><b>3</b><span>route templates (7/10/14 days)</span></div><div class="cs-stat"><b>1</b><span>runtime dependency</span></div><div class="cs-stat"><b>0</b><span>accounts needed</span></div></div>
+      </section>
+
+      <section class="cs-section cs-reveal">
+        <h2>What I built</h2>
+        <div class="cs-features"><div class="cs-feature"><i class="fas fa-map-location-dot" aria-hidden="true"></i><h3>Destinations</h3><p>20 destinations with suggested stay, best season, entry fees, tips and curated activities — or type in any other place.</p></div><div class="cs-feature"><i class="fas fa-users" aria-hidden="true"></i><h3>Crew</h3><p>Add, rename and remove travellers, with exactly one trip leader.</p></div><div class="cs-feature"><i class="fas fa-calendar-days" aria-hidden="true"></i><h3>Smart itinerary</h3><p>Days are generated from the date range and keep their activities when dates change; one-tap suggestions and route templates.</p></div><div class="cs-feature"><i class="fas fa-wallet" aria-hidden="true"></i><h3>Budget split</h3><p>USD or KHR, per-traveller split and contribution tracking.</p></div><div class="cs-feature"><i class="fas fa-cloud-sun" aria-hidden="true"></i><h3>Live weather</h3><p>An Open-Meteo forecast appears for trips within the next 14 days.</p></div><div class="cs-feature"><i class="fas fa-link" aria-hidden="true"></i><h3>One-link sharing</h3><p>The entire trip is encoded in a share link; drafts autosave in the browser so a refresh never loses work.</p></div></div>
+      </section>
+
+      <section class="cs-section cs-reveal">
+        <h2>Stack &amp; key decisions</h2>
+        <div class="cs-stack"><span class="chip">Vue 3.5</span><span class="chip">TypeScript</span><span class="chip">Vite</span><span class="chip">Tailwind CSS</span><span class="chip">Vitest</span><span class="chip">Vue Test Utils</span><span class="chip">Open-Meteo API</span><span class="chip">Vercel</span></div>
+        <div class="cs-decisions"><div class="cs-decision"><h3>The trip lives in the link</h3><p>Instead of a database, the full plan is serialised into the share URL. Sharing is instant, there is nothing to host or secure server-side, and every link is a snapshot that still works later.</p></div><div class="cs-decision"><h3>Treat shared links as untrusted input</h3><p>Because anyone can craft a link, incoming trip data is validated and sanitised before it is rendered, and the site ships with strict security headers.</p></div><div class="cs-decision"><h3>Content as data</h3><p>Destinations, activities and travel advice are plain data files based on a research report, so they can be kept current without touching UI code.</p></div><div class="cs-decision"><h3>CI runs type-check, tests and build</h3><p>Every change goes through vue-tsc, the unit/component test suite and a production build before it can deploy.</p></div></div>
+      </section>
+
+      <a class="cs-next cs-reveal" href="zeroping.html">
+        <span><small>Next case study</small><strong>ZeroPing — PHP Framework</strong></span>
+        <i class="fas fa-arrow-right" aria-hidden="true"></i>
+      </a>
+    </main>
+
+    <script src="case-study.js"></script>
+  </body>
+</html>

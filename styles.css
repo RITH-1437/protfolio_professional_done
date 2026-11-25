@@ -253,7 +253,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
     padding: 0 var(--space-3) 0 var(--space-6);
     gap: var(--space-5);
     border-radius: 999px;
-    background: rgba(28,35,51,0.45);
+    background: rgba(22,27,34,0.78);
     border-color: rgba(255,255,255,0.12);
     backdrop-filter: blur(18px) saturate(180%);
     -webkit-backdrop-filter: blur(18px) saturate(180%);
@@ -261,7 +261,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
                 inset 0 1px 0 rgba(255,255,255,0.08);
   }
   .navbar.scrolled .nav-container:hover {
-    background: rgba(28,35,51,0.62);
+    background: rgba(22,27,34,0.88);
     border-color: var(--clr-border-hover);
     box-shadow: 0 10px 40px rgba(0,0,0,0.4),
                 0 0 0 4px var(--clr-accent-glow),
@@ -269,13 +269,13 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   }
 
   [data-theme="light"] .navbar.scrolled .nav-container {
-    background: rgba(255,255,255,0.55);
+    background: rgba(255,255,255,0.78);
     border-color: rgba(255,255,255,0.7);
     box-shadow: 0 8px 32px rgba(15,23,42,0.12),
                 inset 0 1px 0 rgba(255,255,255,0.9);
   }
   [data-theme="light"] .navbar.scrolled .nav-container:hover {
-    background: rgba(255,255,255,0.72);
+    background: rgba(255,255,255,0.9);
     border-color: var(--clr-border-hover);
     box-shadow: 0 10px 40px rgba(15,23,42,0.16),
                 0 0 0 4px var(--clr-accent-glow);
@@ -2238,3 +2238,13 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   .code-card, .project-card.page-enter { animation: none; }
 }
 
+
+/* Project card footer: live link + case study side by side */
+.project-footer { display: flex; gap: var(--space-2); }
+.project-footer .project-link { flex: 1; justify-content: center; white-space: nowrap; }
+.project-link--case {
+  color: var(--clr-accent-2);
+  border-color: var(--clr-border-hover);
+  background: var(--clr-accent-glow);
+}
+.project-link--case:hover { color: var(--clr-text); background: var(--clr-accent-glow); }

@@ -301,6 +301,7 @@ const PROJECT_DETAILS = {
     title: 'High School Math – Digital Textbook',
     description: 'Free English & Khmer math textbook for Cambodian Grades 7–12, with 264 formulas, step-by-step worked examples, a 2D/3D Shape Lab, and Diploma & BacII exam practice.',
     tech: ['React', 'TypeScript', 'Vite', 'KaTeX', 'Vitest', 'Playwright', 'Khmer / English'],
+    caseStudy: 'projects/high-school-math.html',
   },
 };
 
@@ -378,14 +379,19 @@ function createProjectCard(repo) {
         ${techTags}
       </div>
     </div>
-    ${hasHomepage ? `
+    ${hasHomepage || details.caseStudy ? `
       <div class="project-footer">
-        <a href="${homepage}" 
-           target="_blank" 
-           rel="noopener noreferrer" 
+        ${hasHomepage ? `
+        <a href="${homepage}"
+           target="_blank"
+           rel="noopener noreferrer"
            class="project-link">
-          <i class="fas fa-external-link-alt" aria-hidden="true"></i> View Live Site
-        </a>
+          <i class="fas fa-external-link-alt" aria-hidden="true"></i> ${details.caseStudy ? 'Live Site' : 'View Live Site'}
+        </a>` : ''}
+        ${details.caseStudy ? `
+        <a href="${details.caseStudy}" class="project-link project-link--case">
+          <i class="fas fa-book-open" aria-hidden="true"></i> Case Study
+        </a>` : ''}
       </div>
     ` : ''}
   `;

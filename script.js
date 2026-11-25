@@ -267,12 +267,83 @@ async function fetchGitHubRepos() {
     const response = await fetch(url);
     if (!response.ok) throw new Error(`GitHub API error: ${response.status}`);
     const repos = await response.json();
-    return repos.filter(repo =>
-      !repo.private && !repo.fork && !HIDDEN_REPOS.has(repo.name.toLowerCase()));
+    // All public, non-fork repos (stats use these; cards filter further)
+    return repos.filter(repo => !repo.private && !repo.fork);
   } catch (error) {
     console.error('Failed to fetch GitHub repositories:', error);
     return [];
   }
+}
+
+/* GitHub stats strip: repo/star/language counts + language bar */
+const LANG_COLORS = {
+  JavaScript: '#f1e05a', TypeScript: '#3178c6', PHP: '#4F5D95', Vue: '#41b883',
+  Java: '#b07219', Python: '#3572A5', CSS: '#663399', HTML: '#e34c26',
+  'C#': '#178600', Dart: '#00B4AB', Shell: '#89e051', Blade: '#f7523f',
+};
+
+async function renderGitHubStats(repos) {
+  const box = $('#gh-stats');
+  if (!box || !repos.length) return;
+
+  const counts = {};
+  repos.forEach(r => { if (r.language) counts[r.language] = (counts[r.language] || 0) + 1; });
+  const langs = Object.entries(counts).sort((a, b) => b[1] - a[1]);
+  const stars = repos.reduce((sum, r) => sum + (r.stargazers_count || 0), 0);
+
+  let years = 0;
+  try {
+    const res = await fetch(`https://api.github.com/users/${CONFIG.github.username}`);
+    if (res.ok) {
+      const user = await res.json();
+      years = Math.max(1, Math.floor((Date.now() - new Date(user.created_at)) / (365.25 * 864e5)));
+    }
+  } catch { /* the tile just shows 0+ */ }
+
+  const values = { repos: repos.length, stars, languages: langs.length, years };
+
+  /* Language bar: top 6, the rest grouped as "Other" */
+  const total = langs.reduce((s, [, n]) => s + n, 0);
+  const top = langs.slice(0, 6);
+  const other = total - top.reduce((s, [, n]) => s + n, 0);
+  if (other > 0) top.push(['Other', other]);
+  const bar = $('.gh-langs-bar', box);
+  const legend = $('.gh-langs-legend', box);
+  bar.innerHTML = '';
+  legend.innerHTML = '';
+  top.forEach(([name, n], i) => {
+    const pct = (n / total) * 100;
+    const color = LANG_COLORS[name] || 'var(--clr-text-3)';
+    const seg = document.createElement('span');
+    seg.style.cssText = `--w:${pct.toFixed(2)}%;--c:${color};--d:${i * 80}ms`;
+    bar.appendChild(seg);
+    const li = document.createElement('li');
+    li.innerHTML = `<i style="background:${color}"></i>${name} <em>${Math.round(pct)}%</em>`;
+    legend.appendChild(li);
+  });
+
+  box.hidden = false;
+
+  /* Count up + grow the bar once the strip scrolls into view */
+  const start = () => {
+    box.classList.add('is-in');
+    $$('[data-gh]', box).forEach(el => {
+      const target = values[el.dataset.gh] || 0;
+      const suffix = el.dataset.gh === 'years' ? '+' : '';
+      if (prefersReducedMotion) { el.textContent = target + suffix; return; }
+      const t0 = performance.now();
+      const tick = now => {
+        const t = Math.min(1, (now - t0) / 1100);
+        el.textContent = Math.round(target * (1 - Math.pow(1 - t, 3))) + suffix;
+        if (t < 1) requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+    });
+  };
+  const obs = new IntersectionObserver(entries => {
+    if (entries.some(e => e.isIntersecting)) { obs.disconnect(); start(); }
+  }, { threshold: 0.3 });
+  obs.observe(box);
 }
 
 /* Local screenshots for repos that have one; matched by lower-case repo name */
@@ -410,7 +481,9 @@ async function loadGitHubProjects() {
   loader.style.cssText = 'grid-column: 1/-1; text-align: center; padding: 2rem; color: var(--text-muted);';
   grid.appendChild(loader);
 
-  const repos = await fetchGitHubRepos();
+  const allRepos = await fetchGitHubRepos();
+  renderGitHubStats(allRepos);
+  const repos = allRepos.filter(repo => !HIDDEN_REPOS.has(repo.name.toLowerCase()));
   
   // Remove loader
   loader.remove();

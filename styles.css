@@ -2248,3 +2248,100 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   background: var(--clr-accent-glow);
 }
 .project-link--case:hover { color: var(--clr-text); background: var(--clr-accent-glow); }
+
+/* =============================================================
+   GITHUB STATS STRIP
+   ============================================================= */
+.gh-stats {
+  display: grid;
+  grid-template-columns: 1fr 1.25fr;
+  gap: var(--space-4);
+  margin-bottom: var(--space-7);
+}
+.gh-stats[hidden] { display: none; }
+.gh-stats-tiles {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-3);
+}
+.gh-stat,
+.gh-langs,
+.gh-chart {
+  background: var(--clr-bg-card);
+  border: 1px solid var(--clr-border);
+  border-radius: var(--radius-lg);
+}
+.gh-stat { padding: var(--space-4) var(--space-5); }
+.gh-stat b {
+  display: block;
+  font-size: 1.75rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+  color: var(--clr-text);
+}
+.gh-stat span { font-size: 0.8rem; color: var(--clr-text-2); }
+
+.gh-langs { padding: var(--space-5); display: flex; flex-direction: column; gap: var(--space-4); }
+.gh-langs-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-3);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--clr-text);
+}
+.gh-langs-head i { margin-right: 6px; color: var(--clr-text-2); }
+.gh-langs-head a { font-size: 0.8rem; font-weight: 500; color: var(--clr-accent-2); }
+.gh-langs-head a i { margin: 0 0 0 4px; color: inherit; transition: translate var(--dur-fast) var(--ease); }
+.gh-langs-head a:hover i { translate: 3px 0; }
+
+.gh-langs-bar {
+  display: flex;
+  gap: 3px;
+  height: 10px;
+  border-radius: 99px;
+  overflow: hidden;
+  background: var(--clr-bg-2);
+}
+.gh-langs-bar span {
+  width: 0;
+  background: var(--c);
+  transition: width 900ms cubic-bezier(0.2, 0.8, 0.2, 1) var(--d);
+}
+.gh-stats.is-in .gh-langs-bar span { width: var(--w); }
+
+.gh-langs-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-size: 0.8rem;
+  color: var(--clr-text-2);
+}
+.gh-langs-legend li { display: inline-flex; align-items: center; gap: 6px; }
+.gh-langs-legend i { width: 9px; height: 9px; border-radius: 50%; }
+.gh-langs-legend em { font-style: normal; color: var(--clr-text-3); }
+
+.gh-chart {
+  grid-column: 1 / -1;
+  margin: 0;
+  padding: var(--space-4) var(--space-5);
+  overflow-x: auto;
+}
+.gh-chart img {
+  display: block; width: 100%; min-width: 560px; height: auto;
+  /* chart is drawn on white; invert it for the dark theme */
+  filter: invert(0.88) hue-rotate(180deg) saturate(1.4);
+}
+[data-theme="light"] .gh-chart img { filter: none; }
+
+@media (max-width: 768px) {
+  .gh-stats { grid-template-columns: 1fr; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .gh-langs-bar span { transition: none; }
+}

@@ -1020,6 +1020,11 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   transition: transform var(--dur-slow) var(--ease);
 }
 .project-card:hover .project-img img { transform: scale(1.04); }
+/* GitHub social previews are 2:1 with text near the edges — show whole image */
+.project-img img.project-img--gh-preview {
+  object-fit: contain;
+  background: #fff;
+}
 
 /* GitHub overlay button */
 .project-gh-btn {

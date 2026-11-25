@@ -251,18 +251,64 @@ async function fetchGitHubRepos() {
   }
 }
 
+/* Local screenshots for repos that have one; matched by lower-case repo name */
+const PROJECT_IMAGES = {
+  'rin-nairith-services': './images/service.png',
+  'devscore-ai': './images/gitradar.png',
+  'gokh': './images/gokh.png',
+  'zeroping': './images/zeroping.png',
+  'prompthub': './images/prompthub.png',
+  'todo_app': './images/todo.png',
+};
+
+/* Live-site URLs that override the repo's GitHub "Website" field */
+const PROJECT_HOMEPAGES = {
+  'high-school-math': 'https://math-high-school.vercel.app/',
+};
+
+/* Hand-written card content that replaces the short GitHub repo description/topics */
+const PROJECT_DETAILS = {
+  'high-school-math': {
+    title: 'High School Math – Digital Textbook',
+    description: 'Free bilingual (English & Khmer) mathematics textbook and interactive lab for Cambodian students in Grades 7–12, aligned with the MoEYS curriculum. Covers 27 subjects and 74 topics with 264 formulas, each with derivations, step-by-step worked examples, and practice exercises. Includes a 2D/3D Shape Lab with live dimensions and a timed exam lab for Diploma (Grade 9) and BacII (Grade 12) — 100% client-side with no accounts or tracking.',
+    tech: ['React', 'TypeScript', 'Vite', 'KaTeX', 'Vitest', 'Playwright', 'Khmer / English'],
+  },
+};
+
+/* GitHub repos pinned to the start of page 1 with a Featured badge (in this order) */
+const FEATURED_REPOS = ['high-school-math'];
+
+/* Fallback shown if the GitHub preview image fails to load */
+const PROJECT_FALLBACK_IMG = 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=600&h=340&fit=crop';
+
+/* Each repo gets its own image: a local screenshot if we have one,
+   otherwise GitHub's generated social preview (name, description,
+   language, stars) — or the repo's custom social preview if set. */
+function projectImageFor(repo) {
+  const local = PROJECT_IMAGES[repo.name.toLowerCase()];
+  if (local) return local;
+  const version = encodeURIComponent(repo.pushed_at || repo.updated_at || '1');
+  return `https://opengraph.githubassets.com/${version}/${repo.full_name}`;
+}
+
 function createProjectCard(repo) {
   const article = document.createElement('article');
   article.className = 'project-card github-project';
   article.setAttribute('data-animate', 'fade-up');
 
   const language = repo.language || 'Unknown';
-  const description = repo.description || 'No description available.';
-  const hasHomepage = repo.homepage && repo.homepage.trim() !== '';
+  const details = PROJECT_DETAILS[repo.name.toLowerCase()] || {};
+  const title = details.title || repo.name.replace(/-|_/g, ' ');
+  const description = details.description || repo.description || 'No description available.';
+  const homepage = PROJECT_HOMEPAGES[repo.name.toLowerCase()] || repo.homepage;
+  const hasHomepage = homepage && homepage.trim() !== '';
+  const isFeatured = FEATURED_REPOS.includes(repo.name.toLowerCase());
   
   // Extract primary topics/languages for tech tags
   const topics = repo.topics || [];
-  const techTags = topics.length > 0 
+  const techTags = details.tech
+    ? details.tech.map(t => `<span>${t}</span>`).join('')
+    : topics.length > 0 
     ? topics.slice(0, 5).map(t => `<span>${t}</span>`).join('')
     : `<span>${language}</span>`;
 
@@ -272,11 +318,13 @@ function createProjectCard(repo) {
 
   article.innerHTML = `
     <div class="project-img">
-      <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=600&h=340&fit=crop" 
-           alt="${repo.name} screenshot" 
-           loading="lazy" 
-           width="600" 
-           height="340" />
+      <img src="${projectImageFor(repo)}"
+           class="${PROJECT_IMAGES[repo.name.toLowerCase()] ? '' : 'project-img--gh-preview'}"
+           alt="${repo.name} preview"
+           loading="lazy"
+           width="600"
+           height="340"
+           onerror="this.onerror=null;this.src='${PROJECT_FALLBACK_IMG}';" />
       <a href="${repo.html_url}" 
          target="_blank" 
          rel="noopener noreferrer" 
@@ -289,9 +337,11 @@ function createProjectCard(repo) {
       <div class="project-top">
         <div>
           <span class="project-date">${formattedDate}</span>
-          <h3>${repo.name.replace(/-|_/g, ' ')}</h3>
+          <h3>${title}</h3>
         </div>
-        ${repo.stargazers_count > 0 ? `<span class="project-status project-status--live">★ ${repo.stargazers_count}</span>` : ''}
+        ${isFeatured
+          ? '<span class="project-status project-status--live">Featured</span>'
+          : repo.stargazers_count > 0 ? `<span class="project-status project-status--live">★ ${repo.stargazers_count}</span>` : ''}
       </div>
       <p>${description}</p>
       <div class="project-tech">
@@ -300,7 +350,7 @@ function createProjectCard(repo) {
     </div>
     ${hasHomepage ? `
       <div class="project-footer">
-        <a href="${repo.homepage}" 
+        <a href="${homepage}" 
            target="_blank" 
            rel="noopener noreferrer" 
            class="project-link">
@@ -338,11 +388,15 @@ async function loadGitHubProjects() {
     return;
   }
 
-  // Add GitHub project cards to the grid
+  // Add GitHub project cards to the grid; featured repos go first on page 1
+  const featured = [];
   repos.forEach(repo => {
     const card = createProjectCard(repo);
-    grid.appendChild(card);
+    const rank = FEATURED_REPOS.indexOf(repo.name.toLowerCase());
+    if (rank === -1) grid.appendChild(card);
+    else featured[rank] = card;
   });
+  featured.filter(Boolean).reverse().forEach(card => grid.prepend(card));
 
   // Reinitialize pagination with all projects
   initProjectsPagination();
@@ -382,16 +436,13 @@ function initProjectsPagination() {
       }
     });
 
-    /* rebuild page number buttons (windowed: 1 2 … 7 8) */
+    /* rebuild page number buttons (windowed: 1 … 3 4 5 … 7) */
     pagesWrap.innerHTML = '';
 
-    const EDGE_PAGES = 2; // always show this many pages at each end
+    const EDGE_PAGES = 1; // always show this many pages at each end
     const SIBLINGS = 1;   // pages shown either side of the current page
 
     function pageItems() {
-      if (pages <= 7) {
-        return Array.from({ length: pages }, (_, i) => i + 1);
-      }
       const items = [];
       for (let p = 1; p <= pages; p++) {
         const isEdge = p <= EDGE_PAGES || p > pages - EDGE_PAGES;

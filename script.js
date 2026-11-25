@@ -382,22 +382,52 @@ function initProjectsPagination() {
       }
     });
 
-    /* rebuild page number buttons */
+    /* rebuild page number buttons (windowed: 1 2 … 7 8) */
     pagesWrap.innerHTML = '';
-    for (let p = 1; p <= pages; p++) {
+
+    const EDGE_PAGES = 2; // always show this many pages at each end
+    const SIBLINGS = 1;   // pages shown either side of the current page
+
+    function pageItems() {
+      if (pages <= 7) {
+        return Array.from({ length: pages }, (_, i) => i + 1);
+      }
+      const items = [];
+      for (let p = 1; p <= pages; p++) {
+        const isEdge = p <= EDGE_PAGES || p > pages - EDGE_PAGES;
+        const isNear = Math.abs(p - current) <= SIBLINGS;
+        if (isEdge || isNear) {
+          items.push(p);
+        } else if (items[items.length - 1] !== '…') {
+          items.push('…');
+        }
+      }
+      return items;
+    }
+
+    pageItems().forEach(item => {
+      if (item === '…') {
+        const ellipsis = document.createElement('span');
+        ellipsis.className = 'pagination-ellipsis';
+        ellipsis.textContent = '…';
+        ellipsis.setAttribute('aria-hidden', 'true');
+        pagesWrap.appendChild(ellipsis);
+        return;
+      }
+
       const btn = document.createElement('button');
       btn.type = 'button';
-      btn.className = 'pagination-page' + (p === current ? ' active' : '');
-      btn.textContent = String(p);
-      btn.setAttribute('aria-label', `Page ${p}`);
-      btn.setAttribute('aria-current', p === current ? 'page' : 'false');
+      btn.className = 'pagination-page' + (item === current ? ' active' : '');
+      btn.textContent = String(item);
+      btn.setAttribute('aria-label', `Page ${item}`);
+      btn.setAttribute('aria-current', item === current ? 'page' : 'false');
       btn.addEventListener('click', () => {
-        current = p;
+        current = item;
         render();
         scrollPaginationIntoView();
       });
       pagesWrap.appendChild(btn);
-    }
+    });
 
     prevBtn.disabled = current === 1;
     nextBtn.disabled = current === pages;

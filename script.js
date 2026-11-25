@@ -61,6 +61,17 @@ function initNavbar() {
   const burger   = $('#hamburger');
   const navLinks = $$('.nav-link');
 
+  /* Width of the collapsed glass pill: links + gap + actions + padding + border */
+  const actions = $('.nav-actions');
+  const sizePill = () => {
+    if (!menu || !actions) return;
+    const w = menu.scrollWidth + 24 + actions.offsetWidth + 32 + 12 + 2;
+    navbar.style.setProperty('--nav-pill-w', `${Math.ceil(w)}px`);
+  };
+  sizePill();
+  window.addEventListener('resize', throttle(sizePill, 150));
+  document.fonts?.ready.then(sizePill);
+
   /* Scroll: add .scrolled class + active section highlight */
   const onScroll = throttle(() => {
     navbar.classList.toggle('scrolled', window.scrollY > 40);
@@ -270,7 +281,7 @@ const PROJECT_HOMEPAGES = {
 const PROJECT_DETAILS = {
   'high-school-math': {
     title: 'High School Math – Digital Textbook',
-    description: 'Free bilingual (English & Khmer) mathematics textbook and interactive lab for Cambodian students in Grades 7–12, aligned with the MoEYS curriculum. Covers 27 subjects and 74 topics with 264 formulas, each with derivations, step-by-step worked examples, and practice exercises. Includes a 2D/3D Shape Lab with live dimensions and a timed exam lab for Diploma (Grade 9) and BacII (Grade 12) — 100% client-side with no accounts or tracking.',
+    description: 'Free English & Khmer math textbook for Cambodian Grades 7–12, with 264 formulas, step-by-step worked examples, a 2D/3D Shape Lab, and Diploma & BacII exam practice.',
     tech: ['React', 'TypeScript', 'Vite', 'KaTeX', 'Vitest', 'Playwright', 'Khmer / English'],
   },
 };
@@ -385,6 +396,7 @@ async function loadGitHubProjects() {
     errorMsg.innerHTML = '<i class="fas fa-exclamation-circle"></i> Unable to load GitHub projects.';
     errorMsg.style.cssText = 'grid-column: 1/-1; text-align: center; padding: 2rem; color: var(--text-muted);';
     grid.appendChild(errorMsg);
+    initProjectsPagination();
     return;
   }
 
@@ -398,41 +410,64 @@ async function loadGitHubProjects() {
   });
   featured.filter(Boolean).reverse().forEach(card => grid.prepend(card));
 
-  // Reinitialize pagination with all projects
+  // Re-run pagination with all projects (keeps the current page)
   initProjectsPagination();
 }
 
 /* =============================================================
    PROJECTS PAGINATION (6 per page)
    ============================================================= */
+/* State lives outside the function so it can be called again (after the
+   GitHub cards arrive) without resetting the page or re-binding buttons.
+   The current page is kept in the URL (?page=N) so it survives a reload. */
+const projectsPager = { cards: [], current: 1, wanted: 1, bound: false };
+
+function readPageFromUrl() {
+  const n = parseInt(new URLSearchParams(location.search).get('page'), 10);
+  return Number.isInteger(n) && n > 0 ? n : 1;
+}
+
+function writePageToUrl(page) {
+  const url = new URL(location.href);
+  if (page > 1) url.searchParams.set('page', String(page));
+  else url.searchParams.delete('page');
+  history.replaceState(history.state, '', url);
+}
+
 function initProjectsPagination() {
   const grid = $('.projects-grid');
   const pagination = $('#projects-pagination');
   if (!grid || !pagination) return;
 
-  const cards   = $$('.project-card', grid);
-  const perPage = 6;
-  const pages   = Math.max(1, Math.ceil(cards.length / perPage));
-
   const pagesWrap = $('#pagination-pages');
   const prevBtn   = $('#pagination-prev');
   const nextBtn   = $('#pagination-next');
+  const perPage   = 6;
+  const state     = projectsPager;
 
-  let current = 1;
+  state.cards = $$('.project-card', grid);
+  const pages = Math.max(1, Math.ceil(state.cards.length / perPage));
 
-  function reveal(card) {
-    card.classList.add('is-visible');
+  if (!state.bound) state.wanted = readPageFromUrl();
+  // Use the page asked for (URL or last click) once enough cards exist
+  state.current = Math.min(state.wanted, pages);
+
+  function goTo(page) {
+    state.current = state.wanted = page;
+    writePageToUrl(page);
+    render();
+    scrollGridIntoView();
   }
 
   function render() {
+    const current = state.current;
     let idx = 0;
-    cards.forEach((card, i) => {
-      const page = Math.floor(i / perPage) + 1;
-      const show = page === current;
+    state.cards.forEach((card, i) => {
+      const show = Math.floor(i / perPage) + 1 === current;
       card.classList.toggle('hidden', !show);
       if (show) {
         card.style.order = String(idx++);
-        reveal(card);
+        card.classList.add('is-visible');
       }
     });
 
@@ -442,21 +477,15 @@ function initProjectsPagination() {
     const EDGE_PAGES = 1; // always show this many pages at each end
     const SIBLINGS = 1;   // pages shown either side of the current page
 
-    function pageItems() {
-      const items = [];
-      for (let p = 1; p <= pages; p++) {
-        const isEdge = p <= EDGE_PAGES || p > pages - EDGE_PAGES;
-        const isNear = Math.abs(p - current) <= SIBLINGS;
-        if (isEdge || isNear) {
-          items.push(p);
-        } else if (items[items.length - 1] !== '…') {
-          items.push('…');
-        }
-      }
-      return items;
+    const items = [];
+    for (let p = 1; p <= pages; p++) {
+      const isEdge = p <= EDGE_PAGES || p > pages - EDGE_PAGES;
+      const isNear = Math.abs(p - current) <= SIBLINGS;
+      if (isEdge || isNear) items.push(p);
+      else if (items[items.length - 1] !== '…') items.push('…');
     }
 
-    pageItems().forEach(item => {
+    items.forEach(item => {
       if (item === '…') {
         const ellipsis = document.createElement('span');
         ellipsis.className = 'pagination-ellipsis';
@@ -465,18 +494,13 @@ function initProjectsPagination() {
         pagesWrap.appendChild(ellipsis);
         return;
       }
-
       const btn = document.createElement('button');
       btn.type = 'button';
       btn.className = 'pagination-page' + (item === current ? ' active' : '');
       btn.textContent = String(item);
       btn.setAttribute('aria-label', `Page ${item}`);
       btn.setAttribute('aria-current', item === current ? 'page' : 'false');
-      btn.addEventListener('click', () => {
-        current = item;
-        render();
-        scrollPaginationIntoView();
-      });
+      btn.addEventListener('click', () => goTo(item));
       pagesWrap.appendChild(btn);
     });
 
@@ -486,21 +510,23 @@ function initProjectsPagination() {
     nextBtn.setAttribute('aria-disabled', String(current === pages));
   }
 
-  function scrollPaginationIntoView() {
-    const rect = pagination.getBoundingClientRect();
-    const alreadyVisible = rect.top >= 0 && rect.bottom <= window.innerHeight;
-    if (!alreadyVisible) {
-      const top = pagination.offsetTop - 80;
-      window.scrollTo({ top, behavior: 'smooth' });
-    }
+  /* After changing page, bring the top of the project grid into view */
+  function scrollGridIntoView() {
+    const top = grid.getBoundingClientRect().top + window.scrollY - 90;
+    if (Math.abs(window.scrollY - top) > 4) window.scrollTo({ top, behavior: 'smooth' });
   }
 
-  prevBtn?.addEventListener('click', () => {
-    if (current > 1) { current--; render(); scrollPaginationIntoView(); }
-  });
-  nextBtn?.addEventListener('click', () => {
-    if (current < pages) { current++; render(); scrollPaginationIntoView(); }
-  });
+  // Bind prev/next once; they read the shared state, so re-init is safe
+  if (!state.bound) {
+    prevBtn?.addEventListener('click', () => {
+      if (state.current > 1) goTo(state.current - 1);
+    });
+    nextBtn?.addEventListener('click', () => {
+      const total = Math.ceil(state.cards.length / perPage);
+      if (state.current < total) goTo(state.current + 1);
+    });
+    state.bound = true;
+  }
 
   render();
 }
@@ -806,7 +832,8 @@ document.addEventListener('DOMContentLoaded', () => {
   initNavbar();
   initTyping();
   initScrollAnimations();
-  loadGitHubProjects(); // Load GitHub projects first, then init pagination
+  initProjectsPagination(); // paginate the static cards straight away
+  loadGitHubProjects();     // then add GitHub cards and re-paginate
   initBackToTop();
   initFooter();
   initCursor();

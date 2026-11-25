@@ -2345,3 +2345,148 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 @media (prefers-reduced-motion: reduce) {
   .gh-langs-bar span { transition: none; }
 }
+
+/* =============================================================
+   COMMAND PALETTE
+   ============================================================= */
+.cmdk-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 34px;
+  padding: 0 8px 0 10px;
+  border-radius: var(--radius-sm);
+  background: var(--clr-bg-card);
+  border: 1px solid var(--clr-border);
+  color: var(--clr-text-2);
+  font-size: 0.8rem;
+  transition: color var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease);
+}
+.cmdk-trigger:hover { color: var(--clr-text); border-color: var(--clr-border-hover); }
+.cmdk-trigger kbd,
+.cmdk kbd {
+  white-space: nowrap;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  padding: 2px 6px;
+  border-radius: 5px;
+  border: 1px solid var(--clr-border);
+  background: var(--clr-bg-2);
+  color: var(--clr-text-2);
+}
+@media (max-width: 768px) {
+  .cmdk-trigger kbd { display: none; }
+  .cmdk-trigger { width: 34px; justify-content: center; padding: 0; }
+}
+
+.cmdk { position: fixed; inset: 0; z-index: 3000; }
+.cmdk[hidden] { display: none; }
+.cmdk-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(1,4,9,0.6);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  opacity: 0;
+  transition: opacity 160ms var(--ease);
+}
+.cmdk-panel {
+  position: relative;
+  width: min(620px, calc(100% - 32px));
+  margin: 12vh auto 0;
+  background: var(--clr-bg-card);
+  border: 1px solid var(--clr-border);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 24px 80px rgba(0,0,0,0.55), 0 0 0 1px var(--clr-accent-glow);
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(-8px) scale(0.98);
+  transition: opacity 160ms var(--ease), transform 160ms var(--ease);
+}
+.cmdk.is-open .cmdk-backdrop { opacity: 1; }
+.cmdk.is-open .cmdk-panel { opacity: 1; transform: none; }
+body.cmdk-open { overflow: hidden; }
+
+.cmdk-search {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--clr-border);
+  color: var(--clr-text-3);
+}
+.cmdk-search input {
+  flex: 1;
+  min-width: 0;
+  background: none;
+  border: none;
+  outline: none;
+  font: inherit;
+  font-size: 1rem;
+  color: var(--clr-text);
+}
+.cmdk-search input::placeholder { color: var(--clr-text-3); }
+.cmdk-search kbd { cursor: pointer; }
+
+.cmdk-list {
+  list-style: none;
+  margin: 0;
+  padding: 6px;
+  max-height: min(420px, 55vh);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+.cmdk-group {
+  padding: 10px 10px 4px;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--clr-text-3);
+}
+.cmdk-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: var(--radius-md);
+  color: var(--clr-text-2);
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+.cmdk-item i { width: 18px; text-align: center; color: var(--clr-text-3); }
+.cmdk-item span { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.cmdk-item small { font-size: 0.75rem; color: var(--clr-text-3); white-space: nowrap; }
+.cmdk-item.is-active { background: var(--clr-accent-glow); color: var(--clr-text); }
+.cmdk-item.is-active i { color: var(--clr-accent-2); }
+.cmdk-empty { padding: 28px; text-align: center; color: var(--clr-text-3); font-size: 0.9rem; }
+
+.cmdk-foot {
+  display: flex;
+  gap: 16px;
+  padding: 10px 16px;
+  border-top: 1px solid var(--clr-border);
+  font-size: 0.72rem;
+  color: var(--clr-text-3);
+}
+.cmdk-foot kbd { margin-right: 4px; }
+@media (max-width: 560px) { .cmdk-foot { display: none; } }
+
+.cmdk-toast {
+  position: fixed;
+  left: 50%;
+  bottom: 28px;
+  translate: -50% 0;
+  z-index: 3100;
+  padding: 10px 16px;
+  border-radius: 99px;
+  background: var(--clr-bg-card);
+  border: 1px solid var(--clr-border-hover);
+  color: var(--clr-text);
+  font-size: 0.85rem;
+  box-shadow: var(--shadow-lg);
+  animation: cmdk-toast-in 200ms var(--ease);
+  transition: opacity 300ms var(--ease);
+}
+.cmdk-toast.out { opacity: 0; }
+@keyframes cmdk-toast-in { from { opacity: 0; translate: -50% 8px; } }

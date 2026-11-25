@@ -118,6 +118,10 @@
           <li><a href="#contact" class="nav-link">Contact</a></li>
         </ul>
         <div class="nav-actions">
+          <button class="cmdk-trigger" id="cmdk-trigger" type="button" aria-label="Open command palette (Ctrl+K)" aria-haspopup="dialog">
+            <i class="fas fa-magnifying-glass" aria-hidden="true"></i>
+            <kbd>Ctrl K</kbd>
+          </button>
           <button class="theme-toggle" id="theme-toggle" aria-label="Toggle color theme">
             <i class="fas fa-moon" aria-hidden="true"></i>
           </button>
@@ -886,6 +890,25 @@
         </div>
       </div>
     </footer>
+
+    <!-- Command palette (Ctrl/Cmd + K) -->
+    <div class="cmdk" id="cmdk" hidden>
+      <div class="cmdk-backdrop" data-cmdk-close></div>
+      <div class="cmdk-panel" role="dialog" aria-modal="true" aria-label="Command palette">
+        <div class="cmdk-search">
+          <i class="fas fa-magnifying-glass" aria-hidden="true"></i>
+          <input id="cmdk-input" type="text" placeholder="Jump to a section, project or action…" autocomplete="off" spellcheck="false"
+                 role="combobox" aria-expanded="true" aria-controls="cmdk-list" aria-autocomplete="list" />
+          <kbd data-cmdk-close>Esc</kbd>
+        </div>
+        <ul class="cmdk-list" id="cmdk-list" role="listbox" aria-label="Results"></ul>
+        <div class="cmdk-foot" aria-hidden="true">
+          <span><kbd>↑</kbd><kbd>↓</kbd> navigate</span>
+          <span><kbd>Enter</kbd> open</span>
+          <span><kbd>Esc</kbd> close</span>
+        </div>
+      </div>
+    </div>
 
     <!-- Custom cursor -->
     <div class="cursor-glow" aria-hidden="true"></div>

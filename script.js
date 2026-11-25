@@ -1040,6 +1040,217 @@ function initMotion() {
 }
 
 /* =============================================================
+   COMMAND PALETTE — Ctrl/Cmd + K
+   ============================================================= */
+function initCommandPalette() {
+  const root    = $('#cmdk');
+  const input   = $('#cmdk-input');
+  const list    = $('#cmdk-list');
+  const trigger = $('#cmdk-trigger');
+  if (!root || !input || !list) return;
+
+  let items = [];
+  let shown = [];
+  let active = 0;
+  let lastFocus = null;
+
+  const openUrl = url => window.open(url, '_blank', 'noopener');
+  const goSection = id => {
+    const el = document.getElementById(id);
+    if (el) window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 70, behavior: 'smooth' });
+  };
+
+  function buildItems() {
+    const sections = $$('.nav-menu .nav-link').map(a => ({
+      group: 'Sections',
+      icon: 'fa-hashtag',
+      label: a.textContent.trim(),
+      run: () => goSection(a.getAttribute('href').slice(1)),
+    }));
+
+    const projects = $$('.projects-grid .project-card').map(card => {
+      const title = $('h3', card)?.textContent.trim() || 'Project';
+      const caseLink = $('.project-link--case', card);
+      const live = $('a.project-link:not(.project-link--case)', card);
+      const gh = $('.project-gh-btn', card);
+      const href = caseLink?.getAttribute('href') || live?.href || gh?.href;
+      const internal = !!caseLink;
+      return href && {
+        group: 'Projects',
+        icon: internal ? 'fa-book-open' : 'fa-folder-open',
+        label: title,
+        hint: internal ? 'Case study' : (live ? 'Live site' : 'GitHub'),
+        run: () => internal ? (location.href = href) : openUrl(href),
+      };
+    }).filter(Boolean);
+
+    const actions = [
+      { icon: 'fa-circle-half-stroke', label: 'Toggle light / dark theme', run: () => $('#theme-toggle')?.click() },
+      { icon: 'fa-copy', label: 'Copy email address', hint: CONFIG.contactEmail, run: copyEmail },
+      { icon: 'fa-file-arrow-down', label: 'Download CV (PDF)', run: () => openUrl('rin_nairith_cv.pdf') },
+      { icon: 'fa-envelope', label: 'Send me a message', run: () => goSection('contact') },
+    ].map(a => ({ group: 'Actions', ...a }));
+
+    const links = [
+      { icon: 'fab fa-github', label: 'GitHub', hint: '@RITH-1437', url: 'https://github.com/RITH-1437' },
+      { icon: 'fab fa-linkedin', label: 'LinkedIn', url: 'https://www.linkedin.com/in/nairith-rin-4889933b3/' },
+      { icon: 'fab fa-telegram', label: 'Telegram', url: 'https://t.me/rith1506' },
+      { icon: 'fas fa-briefcase', label: 'Services website', url: 'https://rin-nairith-services.vercel.app/' },
+    ].map(l => ({ group: 'Links', ...l, run: () => openUrl(l.url) }));
+
+    return [...sections, ...projects, ...actions, ...links];
+  }
+
+  async function copyEmail() {
+    try {
+      await navigator.clipboard.writeText(CONFIG.contactEmail);
+      flash('Email copied to clipboard');
+    } catch {
+      location.href = `mailto:${CONFIG.contactEmail}`;
+    }
+  }
+
+  function flash(text) {
+    const toast = document.createElement('div');
+    toast.className = 'cmdk-toast';
+    toast.setAttribute('role', 'status');
+    toast.textContent = text;
+    document.body.appendChild(toast);
+    setTimeout(() => toast.classList.add('out'), 1600);
+    setTimeout(() => toast.remove(), 2000);
+  }
+
+  /* Rank: label prefix > word start > substring > hint/group substring >
+     loose in-order letters (label only, 3+ characters) */
+  function score(it, q) {
+    if (!q) return 1;
+    const label = it.label.toLowerCase();
+    if (label.startsWith(q)) return 5;
+    if (label.split(/[\s–—\-/]+/).some(w => w.startsWith(q))) return 4;
+    if (label.includes(q)) return 3;
+    if (`${it.hint || ''} ${it.group}`.toLowerCase().includes(q)) return 2;
+    if (q.length >= 3) {
+      let i = 0;
+      for (const ch of label) if (ch === q[i]) i++;
+      if (i === q.length) return 1;
+    }
+    return 0;
+  }
+
+  function render() {
+    const q = input.value.trim().toLowerCase();
+    shown = items
+      .map(it => ({ it, s: score(it, q) }))
+      .filter(x => x.s > 0)
+      .sort((a, b) => (q ? b.s - a.s : 0))
+      .map(x => x.it);
+    if (q) { // keep groups together after ranking
+      const order = [...new Set(shown.map(i => i.group))];
+      shown.sort((a, b) => order.indexOf(a.group) - order.indexOf(b.group));
+    }
+    active = Math.min(active, Math.max(0, shown.length - 1));
+
+    list.innerHTML = '';
+    if (!shown.length) {
+      list.innerHTML = '<li class="cmdk-empty">No results</li>';
+      input.removeAttribute('aria-activedescendant');
+      return;
+    }
+    let group = '';
+    shown.forEach((it, i) => {
+      if (it.group !== group) {
+        group = it.group;
+        const h = document.createElement('li');
+        h.className = 'cmdk-group';
+        h.setAttribute('role', 'presentation');
+        h.textContent = group;
+        list.appendChild(h);
+      }
+      const li = document.createElement('li');
+      li.className = 'cmdk-item' + (i === active ? ' is-active' : '');
+      li.id = `cmdk-opt-${i}`;
+      li.setAttribute('role', 'option');
+      li.setAttribute('aria-selected', String(i === active));
+      const iconCls = it.icon.includes(' ') ? it.icon : `fas ${it.icon}`;
+      li.innerHTML = `<i class="${iconCls}" aria-hidden="true"></i><span></span>${it.hint ? '<small></small>' : ''}`;
+      li.querySelector('span').textContent = it.label;
+      if (it.hint) li.querySelector('small').textContent = it.hint;
+      li.addEventListener('mousemove', () => { if (active !== i) { active = i; paintActive(); } });
+      li.addEventListener('click', () => choose(i));
+      list.appendChild(li);
+    });
+    paintActive();
+  }
+
+  function paintActive() {
+    $$('.cmdk-item', list).forEach((li, i) => {
+      li.classList.toggle('is-active', i === active);
+      li.setAttribute('aria-selected', String(i === active));
+    });
+    const el = $(`#cmdk-opt-${active}`, list);
+    if (el) {
+      input.setAttribute('aria-activedescendant', el.id);
+      el.scrollIntoView({ block: 'nearest' });
+    }
+  }
+
+  function choose(i) {
+    const it = shown[i];
+    if (!it) return;
+    close();
+    it.run();
+  }
+
+  function open() {
+    if (!root.hidden) return;
+    lastFocus = document.activeElement;
+    items = buildItems();
+    input.value = '';
+    active = 0;
+    root.hidden = false;
+    document.body.classList.add('cmdk-open');
+    render();
+    requestAnimationFrame(() => { root.classList.add('is-open'); input.focus(); });
+  }
+
+  function close() {
+    if (root.hidden) return;
+    root.classList.remove('is-open');
+    document.body.classList.remove('cmdk-open');
+    setTimeout(() => { root.hidden = true; }, prefersReducedMotion ? 0 : 160);
+    lastFocus?.focus?.();
+  }
+
+  document.addEventListener('keydown', e => {
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+      e.preventDefault();
+      root.hidden ? open() : close();
+      return;
+    }
+    const typing = /^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement?.tagName) || document.activeElement?.isContentEditable;
+    if (e.key === '/' && root.hidden && !typing) { e.preventDefault(); open(); }
+  });
+
+  input.addEventListener('input', () => { active = 0; render(); });
+  input.addEventListener('keydown', e => {
+    if (e.key === 'ArrowDown') { e.preventDefault(); active = (active + 1) % Math.max(1, shown.length); paintActive(); }
+    else if (e.key === 'ArrowUp') { e.preventDefault(); active = (active - 1 + shown.length) % Math.max(1, shown.length); paintActive(); }
+    else if (e.key === 'Enter') { e.preventDefault(); choose(active); }
+    else if (e.key === 'Escape') { e.preventDefault(); close(); }
+    else if (e.key === 'Tab') { e.preventDefault(); } // keep focus inside the dialog
+  });
+  $$('[data-cmdk-close]', root).forEach(el => el.addEventListener('click', close));
+  trigger?.addEventListener('click', open);
+
+  /* Show ⌘K instead of Ctrl K on Apple devices */
+  if (/Mac|iPhone|iPad/.test(navigator.platform || navigator.userAgent)) {
+    const kbd = $('kbd', trigger);
+    if (kbd) kbd.textContent = '⌘K';
+    trigger?.setAttribute('aria-label', 'Open command palette (⌘K)');
+  }
+}
+
+/* =============================================================
    BOOT — initialise everything after DOM ready
    ============================================================= */
 document.addEventListener('DOMContentLoaded', () => {
@@ -1055,4 +1266,5 @@ document.addEventListener('DOMContentLoaded', () => {
   initCursor();
   initParticles();
   initContactForm();
+  initCommandPalette();
 });

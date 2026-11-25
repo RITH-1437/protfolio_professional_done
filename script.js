@@ -272,15 +272,27 @@ const HIDDEN_REPOS = new Set([
   'cicd-node-app', 'bot-services', 'trading-discipline',
 ]);
 
+/* Repo list is cached for an hour: GitHub allows only 60 unauthenticated
+   requests per hour per visitor, and reloads / language switches add up. */
+const GH_CACHE_KEY = 'gh-repos-v1';
+const GH_CACHE_MS = 60 * 60 * 1000;
+
 async function fetchGitHubRepos() {
+  let cached = null;
+  try { cached = JSON.parse(localStorage.getItem(GH_CACHE_KEY)); } catch { /* storage blocked */ }
+  if (cached?.repos && Date.now() - cached.at < GH_CACHE_MS) return cached.repos;
+
   try {
     const url = `${CONFIG.github.apiUrl}?per_page=${CONFIG.github.perPage}&sort=updated`;
     const response = await fetch(url);
     if (!response.ok) throw new Error(`GitHub API error: ${response.status}`);
     const repos = await response.json();
     // All public, non-fork repos (stats use these; cards filter further)
-    return repos.filter(repo => !repo.private && !repo.fork);
+    const list = repos.filter(repo => !repo.private && !repo.fork);
+    try { localStorage.setItem(GH_CACHE_KEY, JSON.stringify({ at: Date.now(), repos: list })); } catch { /* full or blocked */ }
+    return list;
   } catch (error) {
+    if (cached?.repos) return cached.repos;   // stale copy beats an error message
     console.error('Failed to fetch GitHub repositories:', error);
     return [];
   }

@@ -166,6 +166,43 @@ const KM = {
   'Free English & Khmer math textbook for Cambodian Grades 7–12, with 264 formulas, step-by-step worked examples, a 2D/3D Shape Lab, and Diploma & BacII exam practice.':
     'សៀវភៅគណិតវិទ្យាឥតគិតថ្លៃ ជាភាសាអង់គ្លេស និងខ្មែរ សម្រាប់សិស្សថ្នាក់ទី៧–១២ នៅកម្ពុជា មានរូបមន្ត 264 លំហាត់គំរូដោះស្រាយមួយជំហានម្តងៗ Shape Lab 2D/3D និងការហាត់ប្រឡងឌីប្លូម និងបាក់ឌុប។',
   'Khmer / English': 'ខ្មែរ / អង់គ្លេស',
+  // Cards built from GitHub repo data (repo name + repo description)
+  'No description available.': 'មិនទាន់មានការពិពណ៌នា។',
+  'microsoft office learning': 'Office Academy – រៀន Microsoft Office',
+  'Interactive beginner-friendly Microsoft Word & Excel learning platform for administrative skills.':
+    'វេទិកាអន្តរកម្មសម្រាប់រៀន Microsoft Word និង Excel ងាយស្រួលសម្រាប់អ្នកចាប់ផ្តើម ដើម្បីពង្រឹងជំនាញការងាររដ្ឋបាល។',
+  'motion lab': 'Motion Lab – មន្ទីរពិសោធន៍ចលនា',
+  'Interactive creative technology laboratory for exploring, experimenting with, and customizing modern 3D animations, WebGL effects, particles, and motion experiences.':
+    'មន្ទីរពិសោធន៍បច្ចេកវិទ្យាច្នៃប្រឌិតអន្តរកម្ម សម្រាប់ស្វែងយល់ សាកល្បង និងកែសម្រួលចលនា 3D ទំនើប បែបផែន WebGL ភាគល្អិត និងបទពិសោធន៍ចលនា។',
+  'educore': 'EduCore – ប្រព័ន្ធរដ្ឋបាលសាកលវិទ្យាល័យ',
+  'University digital administration platform built with Laravel and Vue.js.':
+    'វេទិការដ្ឋបាលឌីជីថលសម្រាប់សាកលវិទ្យាល័យ បង្កើតដោយ Laravel និង Vue.js។',
+  'omni academic telegram agent': 'Omni Academic – Telegram Bot',
+  'Asynchronous Telegram Supergroup bot for university course management, thread-aware LLM assistance, document parsing, and technical message refactoring.':
+    'Telegram bot អសមកាលសម្រាប់ Supergroup ដើម្បីគ្រប់គ្រងមុខវិជ្ជានៅសាកលវិទ្យាល័យ ជំនួយ LLM តាម thread ការវិភាគឯកសារ និងការកែសម្រួលសារបច្ចេកទេស។',
+  'twintech': 'TwinTech – គ្រប់គ្រងសារពើភ័ណ្ឌកុំព្យូទ័រ',
+  'TwinTech is an enterprise-grade computer inventory and service management platform featuring asset tracking, maintenance workflows, role-based access control, and analytics.':
+    'TwinTech ជាវេទិកាគ្រប់គ្រងសារពើភ័ណ្ឌកុំព្យូទ័រ និងសេវាកម្មកម្រិតសហគ្រាស មានការតាមដានទ្រព្យសម្បត្តិ លំហូរការងារថែទាំ ការគ្រប់គ្រងសិទ្ធិតាមតួនាទី និងការវិភាគទិន្នន័យ។',
+  'CCOP': 'CCOP – ឱកាសការងារនៅកម្ពុជា',
+  'A web-based platform that centralizes career opportunities in Cambodia, helping students and job seekers discover, bookmark, and apply for jobs, internships, scholarships, and training programs.':
+    'វេទិកាគេហទំព័រដែលប្រមូលឱកាសការងារនៅកម្ពុជាមកកន្លែងតែមួយ ជួយសិស្សនិស្សិត និងអ្នកស្វែងរកការងារ ឱ្យស្វែងរក រក្សាទុក និងដាក់ពាក្យការងារ កម្មសិក្សា អាហារូបករណ៍ និងវគ្គបណ្តុះបណ្តាល។',
+  'notes app': 'Notes App – កម្មវិធីកត់ត្រា',
+  'A full-stack Notes application built with ASP.NET Core Web API, Vue 3, TypeScript, Tailwind CSS, Dapper, and SQL Server.':
+    'កម្មវិធីកត់ត្រា Full-stack បង្កើតដោយ ASP.NET Core Web API, Vue 3, TypeScript, Tailwind CSS, Dapper និង SQL Server។',
+  'typing master': 'Typing Master – ហាត់វាយអក្សរ',
+  'wedding': 'Wedding – គេហទំព័រអាពាហ៍ពិពាហ៍',
+  'ecommerce project vue': 'E-commerce – Vue និង Spring Boot',
+  'Build ecommerce webpage using vue with spring boot for ITC':
+    'គេហទំព័រលក់ទំនិញអនឡាញ បង្កើតដោយ Vue និង Spring Boot សម្រាប់វិទ្យាស្ថានបច្ចេកវិទ្យាកម្ពុជា។',
+  'chess with ai': 'Chess – អុកជាមួយ AI',
+  'This web-based chess game uses HTML, CSS, and JavaScript to create an interactive experience. It features drag-and-drop gameplay, full rule enforcement, and a basic AI opponent for instant single-player practice.':
+    'ល្បែងអុកលើគេហទំព័រ បង្កើតដោយ HTML, CSS និង JavaScript។ មានការអូសទម្លាក់កូនអុក អនុវត្តច្បាប់អុកពេញលេញ និងគូប្រកួត AI សម្រាប់ហាត់លេងម្នាក់ឯងភ្លាមៗ។',
+  'terrain rental': 'Terrain Rental – ប្រព័ន្ធជួលដី',
+  'Spring Boot terrain rental management system with MySQL, JPA, REST APIs, and testing.':
+    'ប្រព័ន្ធគ្រប់គ្រងការជួលដី បង្កើតដោយ Spring Boot ជាមួយ MySQL, JPA, REST APIs និងការធ្វើតេស្ត។',
+  'valor': 'VALOR – ហាងសម្លៀកបំពាក់បុរសដោយ AI',
+  "VALOR - AI Powered Men's Fashion Ecommerce Platform Built With Flutter And Laravel":
+    'VALOR – វេទិកាលក់សម្លៀកបំពាក់បុរសអនឡាញដែលប្រើ AI បង្កើតដោយ Flutter និង Laravel។',
 
   /* ── Services ── */
   'title.services': 'តោះ បង្កើតអ្វីមួយ ដែលដំណើរការបានពិតប្រាកដ។',

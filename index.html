@@ -10,6 +10,9 @@
     <meta name="author" content="RIN Nairith" />
     <meta name="robots" content="index, follow" />
     <link rel="canonical" href="https://rith-1437.github.io/protfolio_professional_done/" />
+    <link rel="alternate" hreflang="en" href="https://rith-1437.github.io/protfolio_professional_done/" />
+    <link rel="alternate" hreflang="km" href="https://rith-1437.github.io/protfolio_professional_done/?lang=km" />
+    <link rel="alternate" hreflang="x-default" href="https://rith-1437.github.io/protfolio_professional_done/" />
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
@@ -20,6 +23,7 @@
     <meta property="og:image" content="https://rith-1437.github.io/protfolio_professional_done/images/me.jpg" />
     <meta property="og:image:alt" content="RIN Nairith — Software Developer" />
     <meta property="og:locale" content="en_US" />
+    <meta property="og:locale:alternate" content="km_KH" />
 
     <!-- Twitter / X -->
     <meta name="twitter:card" content="summary" />
@@ -35,7 +39,7 @@
     <link rel="stylesheet" href="styles.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+Khmer:wght@400;500;600;700&display=swap" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
 
     <!-- Structured data -->
@@ -137,6 +141,10 @@
           <button class="cmdk-trigger" id="cmdk-trigger" type="button" aria-label="Open command palette (Ctrl+K)" aria-haspopup="dialog">
             <i class="fas fa-magnifying-glass" aria-hidden="true"></i>
             <kbd>Ctrl K</kbd>
+          </button>
+          <button class="lang-toggle" id="lang-toggle" type="button" data-active="en" aria-label="ប្តូរទៅភាសាខ្មែរ (Switch to Khmer)" aria-pressed="false">
+            <span class="lang-opt" data-lang="en">EN</span>
+            <span class="lang-opt" data-lang="km" lang="km">ខ្មែរ</span>
           </button>
           <button class="theme-toggle" id="theme-toggle" aria-label="Toggle color theme">
             <i class="fas fa-moon" aria-hidden="true"></i>
@@ -248,8 +256,8 @@
         <div class="about-grid">
           <div class="about-text" data-animate="fade-up">
             <h2>Building things that matter</h2>
-            <p>I'm <strong>Rin Nairith</strong> (Nairith Rin), a Software Developer in Phnom Penh, Cambodia, with a passion for clean architecture, developer tooling, and shipping production-ready software. I founded the <strong>ZeroPing PHP Framework</strong> and have deployed multiple applications on AWS EC2 with Docker, Nginx, and CI/CD pipelines.</p>
-            <p>I'm currently working at <strong>CTX-98 Co., Ltd</strong> as a Software Developer while continuously expanding my skills in cloud infrastructure, system design, and modern web development.</p>
+            <p data-i18n="about.p1">I'm <strong>Rin Nairith</strong> (Nairith Rin), a Software Developer in Phnom Penh, Cambodia, with a passion for clean architecture, developer tooling, and shipping production-ready software. I founded the <strong>ZeroPing PHP Framework</strong> and have deployed multiple applications on AWS EC2 with Docker, Nginx, and CI/CD pipelines.</p>
+            <p data-i18n="about.p2">I'm currently working at <strong>CTX-98 Co., Ltd</strong> as a Software Developer while continuously expanding my skills in cloud infrastructure, system design, and modern web development.</p>
             <div class="about-highlights">
               <div class="highlight-item" data-animate="fade-up">
                 <div class="highlight-icon"><i class="fas fa-layer-group" aria-hidden="true"></i></div>
@@ -299,7 +307,7 @@
     <section id="skills" class="skills section">
       <div class="container">
         <div class="section-label" data-animate="fade-up">Skills</div>
-        <h2 class="section-title" data-animate="fade-up">Technologies I work with</h2>
+        <h2 class="section-title" data-animate="fade-up" data-i18n="title.skills">Technologies I work with</h2>
         <div class="skills-grid" data-animate="fade-up">
 
           <div class="skill-group">
@@ -368,12 +376,12 @@
     <section id="experience" class="experience section">
       <div class="container">
         <div class="section-label" data-animate="fade-up">Experience</div>
-        <h2 class="section-title" data-animate="fade-up">Professional journey</h2>
+        <h2 class="section-title" data-animate="fade-up" data-i18n="title.experience">Professional journey</h2>
         <div class="timeline">
           <div class="timeline-item" data-animate="fade-up">
             <div class="timeline-marker" aria-hidden="true"></div>
             <div class="timeline-card">
-              <div class="timeline-header">remo
+              <div class="timeline-header">
                 <div>
                   <h3>Software Developer</h3>
                   <p class="timeline-company">CTX-98 Co., Ltd</p>
@@ -441,7 +449,7 @@
     <section id="certificates" class="certificates section">
       <div class="container">
         <div class="section-label" data-animate="fade-up">Certificates</div>
-        <h2 class="section-title" data-animate="fade-up">Verified credentials</h2>
+        <h2 class="section-title" data-animate="fade-up" data-i18n="title.certificates">Verified credentials</h2>
         <div class="certificates-grid">
           <article class="certificate-card" data-animate="fade-up">
             <div class="certificate-media">
@@ -475,7 +483,7 @@
     <section id="projects" class="projects section">
       <div class="container">
         <div class="section-label" data-animate="fade-up">Projects</div>
-        <h2 class="section-title" data-animate="fade-up">Web apps, APIs &amp; open-source projects</h2>
+        <h2 class="section-title" data-animate="fade-up" data-i18n="title.projects">Web apps, APIs &amp; open-source projects</h2>
         <div class="gh-stats" id="gh-stats" hidden>
           <div class="gh-stats-tiles">
             <div class="gh-stat"><b data-gh="repos">0</b><span>Public repos</span></div>
@@ -756,7 +764,7 @@
     <section id="services" class="services section">
       <div class="container">
         <div class="section-label" data-animate="fade-up">Services</div>
-        <h2 class="section-title" data-animate="fade-up">Let's Build Something That Works.</h2>
+        <h2 class="section-title" data-animate="fade-up" data-i18n="title.services">Let's Build Something That Works.</h2>
         <p class="services-intro" data-animate="fade-up">
           I design and build modern, scalable web applications and digital products &mdash; from idea to production. Explore the capabilities below, or visit my dedicated services platform for my full process, pricing, and ways to work with me.
         </p>
@@ -826,7 +834,7 @@
     <section id="contact" class="contact section">
       <div class="container">
         <div class="section-label" data-animate="fade-up">Contact</div>
-        <h2 class="section-title" data-animate="fade-up">Let's work together</h2>
+        <h2 class="section-title" data-animate="fade-up" data-i18n="title.contact">Let's work together</h2>
         <div class="contact-grid">
 
           <div class="contact-info" data-animate="fade-up">
@@ -964,6 +972,7 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script src="i18n.js"></script>
     <script src="script.js"></script>
   </body>
 </html>

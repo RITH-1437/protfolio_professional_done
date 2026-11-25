@@ -71,6 +71,7 @@ function initNavbar() {
   sizePill();
   window.addEventListener('resize', throttle(sizePill, 150));
   document.fonts?.ready.then(sizePill);
+  document.addEventListener('langchange', () => requestAnimationFrame(sizePill));
 
   /* Scroll: add .scrolled class + active section highlight */
   const onScroll = throttle(() => {
@@ -172,30 +173,40 @@ function initTheme() {
    ============================================================= */
 function initTyping() {
   const el = $('.typing-text');
+  const roles = () => window.I18N?.typingRoles() || CONFIG.typingRoles;
+  const seg = window.Intl?.Segmenter ? new Intl.Segmenter(undefined, { granularity: 'grapheme' }) : null;
+  const chars = s => (seg ? [...seg.segment(s)].map(x => x.segment) : [...s]);
+
   if (!el || prefersReducedMotion) {
-    if (el) el.textContent = CONFIG.typingRoles[0];
+    if (el) {
+      el.textContent = roles()[0];
+      document.addEventListener('langchange', () => { el.textContent = roles()[0]; });
+    }
     return;
   }
 
-  const roles = CONFIG.typingRoles;
   let ri = 0, ci = 0, deleting = false;
+  document.addEventListener('langchange', () => { ci = 0; deleting = false; });
 
   const tick = () => {
-    const role = roles[ri];
+    const list = roles();
+    ri %= list.length;
+    const role = chars(list[ri]);
     if (deleting) {
       ci--;
-      el.textContent = role.slice(0, ci);
-      if (ci === 0) {
+      el.textContent = role.slice(0, ci).join('');
+      if (ci <= 0) {
+        ci = 0;
         deleting = false;
-        ri = (ri + 1) % roles.length;
+        ri = (ri + 1) % list.length;
         setTimeout(tick, 420);
         return;
       }
       setTimeout(tick, 40);
     } else {
       ci++;
-      el.textContent = role.slice(0, ci);
-      if (ci === role.length) {
+      el.textContent = role.slice(0, ci).join('');
+      if (ci >= role.length) {
         deleting = true;
         setTimeout(tick, 1800);
         return;
@@ -937,29 +948,33 @@ function initCursor() {
 /* =============================================================
    MOTION — word reveals, count-up, tilt, spotlight, magnetic buttons
    ============================================================= */
-function initMotion() {
-  /* Split section titles into words so they can rise in one by one */
-  $$('.section-title').forEach(title => {
-    if (title.dataset.split) return;
-    title.dataset.split = '1';
-    let i = 0;
-    [...title.childNodes].forEach(node => {
-      if (node.nodeType !== Node.TEXT_NODE) return;
-      const frag = document.createDocumentFragment();
-      node.textContent.split(/(\s+)/).forEach(part => {
-        if (!part) return;
-        if (/^\s+$/.test(part)) { frag.appendChild(document.createTextNode(part)); return; }
-        const word = document.createElement('span');
-        word.className = 'word';
-        const inner = document.createElement('span');
-        inner.className = 'word-inner';
-        inner.style.setProperty('--i', i++);
-        inner.textContent = part;
-        word.appendChild(inner);
-        frag.appendChild(word);
-      });
-      node.replaceWith(frag);
+/* Split a section title's text into word spans so they can rise in one by one.
+   Safe to call again after the title's text changes (e.g. language switch). */
+function splitTitleWords(title) {
+  title.dataset.split = '1';
+  let i = title.querySelectorAll('.word-inner').length;
+  [...title.childNodes].forEach(node => {
+    if (node.nodeType !== Node.TEXT_NODE) return;
+    const frag = document.createDocumentFragment();
+    node.textContent.split(/(\s+)/).forEach(part => {
+      if (!part) return;
+      if (/^\s+$/.test(part)) { frag.appendChild(document.createTextNode(part)); return; }
+      const word = document.createElement('span');
+      word.className = 'word';
+      const inner = document.createElement('span');
+      inner.className = 'word-inner';
+      inner.style.setProperty('--i', i++);
+      inner.textContent = part;
+      word.appendChild(inner);
+      frag.appendChild(word);
     });
+    node.replaceWith(frag);
+  });
+}
+
+function initMotion() {
+  $$('.section-title').forEach(title => {
+    if (!title.dataset.split) splitTitleWords(title);
   });
 
   /* Index skill chips for the staggered pop-in */
@@ -1085,6 +1100,7 @@ function initCommandPalette() {
     }).filter(Boolean);
 
     const actions = [
+      { icon: 'fa-language', label: window.I18N?.lang === 'km' ? 'Switch to English' : 'ប្តូរទៅភាសាខ្មែរ (Switch to Khmer)', run: () => $('#lang-toggle')?.click() },
       { icon: 'fa-circle-half-stroke', label: 'Toggle light / dark theme', run: () => $('#theme-toggle')?.click() },
       { icon: 'fa-copy', label: 'Copy email address', hint: CONFIG.contactEmail, run: copyEmail },
       { icon: 'fa-file-arrow-down', label: 'Download CV (PDF)', run: () => openUrl('rin_nairith_cv.pdf') },
@@ -1255,6 +1271,7 @@ function initCommandPalette() {
    ============================================================= */
 document.addEventListener('DOMContentLoaded', () => {
   initTheme();
+  window.I18N?.init();
   initNavbar();
   initTyping();
   initMotion();

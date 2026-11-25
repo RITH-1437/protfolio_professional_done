@@ -22,6 +22,9 @@
     try { localStorage.setItem('theme', next); } catch (e) { /* storage blocked */ }
   });
 
+  /* Remember the language of this page so the main site opens in it too */
+  try { localStorage.setItem('lang', document.documentElement.lang === 'km' ? 'km' : 'en'); } catch (e) { /* storage blocked */ }
+
   const items = document.querySelectorAll('.cs-reveal');
   if (!('IntersectionObserver' in window)) {
     items.forEach(el => el.classList.add('is-visible'));

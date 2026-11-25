@@ -206,3 +206,7 @@ body { background: var(--clr-bg); color: var(--clr-text); }
 }
 .cs-byline a { color: var(--clr-accent-2); }
 .cs-byline a:hover { text-decoration: underline; }
+
+/* Language switch + theme toggle group in the top bar */
+.cs-tools { display: flex; align-items: center; gap: 8px; }
+.cs-tools .lang-opt { text-decoration: none; }
